@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/view/widget/products/custom_container_products.dart';
 import 'package:shopping_app/view/widget/products/custom_material_button_product.dart';
 
 class CustomBodyInsideProduct extends StatelessWidget {
@@ -18,7 +19,7 @@ class CustomBodyInsideProduct extends StatelessWidget {
     return ListView(
       children: [
         CarouselSlider(items: items, options: CarouselOptions(autoPlay: true)),
-        Text("Banana Chips - lorem ipsum dolor sit amet, consectetur"),
+        Text(CustomContainerProducts.productsInside[0].title),
         SizedBox(height: 20),
         Row(
           children: [
@@ -33,7 +34,7 @@ class CustomBodyInsideProduct extends StatelessWidget {
           ],
         ),
         SizedBox(height: 20),
-        Row(
+        const Row(
           children: [
             Text("EXP date: 23.05.2025"),
             Spacer(),

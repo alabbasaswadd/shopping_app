@@ -1,10 +1,11 @@
+import 'dart:convert';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/translations.dart';
 import 'package:shopping_app/view/widget/settings/custom_alert_dialog_settings.dart';
 import 'package:shopping_app/view/widget/settings/custom_bottom_sheet_settings.dart';
 import 'package:shopping_app/view/widget/settings/custom_listtile_settings.dart';
@@ -20,6 +21,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool switch_isEnable = false;
   String selectedLanguage = "en"; // متغير لتحديد اللغة الحالية
+  Map<String, String> translations = {}; // لتخزين الترجمات
 
   @override
   void initState() {
@@ -53,6 +55,7 @@ class _SettingsState extends State<Settings> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       selectedLanguage = prefs.getString('language') ?? 'en';
+      _loadTranslations(selectedLanguage); // تحميل الترجمات بناءً على اللغة
       context.read<LocalazationsCubit>().changeLang(selectedLanguage);
     });
   }
@@ -63,13 +66,28 @@ class _SettingsState extends State<Settings> {
     await prefs.setString('language', language);
   }
 
+  /// تحميل الترجمات من ملف JSON
+  Future<void> _loadTranslations(String languageCode) async {
+    String jsonString =
+        await rootBundle.loadString('assets/localazations/$languageCode.json');
+    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+    setState(() {
+      translations = Map<String, String>.from(jsonMap);
+    });
+  }
+
+  String getTranslation(String key) {
+    return translations[key] ??
+        key; // إرجاع النص المترجم أو المفتاح إذا لم يكن موجودًا
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 8,
         shadowColor: Colors.black,
-        title: Text("Settings"),
+        title: Text(getTranslation('settings_title')),
         centerTitle: true,
       ),
       body: ListView(
@@ -81,16 +99,18 @@ class _SettingsState extends State<Settings> {
                   showModalBottomSheet(
                       context: context,
                       builder: (context) => CustomBottomSheetSettings(
-                            textBottomSheet: "Username",
+                            textBottomSheet: getTranslation('username'),
                             widget: Column(children: [
-                              CustomTextFieldSettings(label: "Username"),
-                              CustomTextFieldSettings(label: "Phone Number"),
+                              CustomTextFieldSettings(
+                                  label: getTranslation('username')),
+                              CustomTextFieldSettings(
+                                  label: getTranslation('phone_number')),
                               CustomButtonSettings(),
                             ]),
                           ));
                 },
                 icon: Icons.person,
-                title: "Username",
+                title: getTranslation('username'),
                 children: [Text("Merdan"), Icon(Icons.arrow_forward)]),
           ),
           CustomListtileSettings(
@@ -98,16 +118,18 @@ class _SettingsState extends State<Settings> {
                 showModalBottomSheet(
                     context: context,
                     builder: (context) => CustomBottomSheetSettings(
-                          textBottomSheet: "Phone Number",
+                          textBottomSheet: getTranslation('phone_number'),
                           widget: Column(children: [
-                            CustomTextFieldSettings(label: "Username"),
-                            CustomTextFieldSettings(label: "Phone Number"),
+                            CustomTextFieldSettings(
+                                label: getTranslation('username')),
+                            CustomTextFieldSettings(
+                                label: getTranslation('phone_number')),
                             CustomButtonSettings(),
                           ]),
                         ));
               },
               icon: Icons.phone_android,
-              title: "Phone Number",
+              title: getTranslation('phone_number'),
               children: [
                 Expanded(child: Text("+9635456124")),
                 Icon(Icons.arrow_forward)
@@ -117,9 +139,9 @@ class _SettingsState extends State<Settings> {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => CustomBottomSheetSettings(
-                    textBottomSheet: "Language",
+                    textBottomSheet: getTranslation('language'),
                     widget: Container(
-                      height: 150,
+                      height: 180,
                       child: ListView(children: [
                         CustomCardSettings(
                           onChanged: (val) {},
@@ -129,11 +151,12 @@ class _SettingsState extends State<Settings> {
                                 selectedLanguage = "ar";
                               });
                               await _saveLanguage("ar");
+                              _loadTranslations("ar");
                               context
                                   .read<LocalazationsCubit>()
                                   .changeLang("ar");
                             },
-                            leading: Text("Arabic"),
+                            leading: Text(getTranslation('arabic')),
                             trailing: Radio(
                               value: "ar",
                               groupValue: selectedLanguage,
@@ -142,6 +165,7 @@ class _SettingsState extends State<Settings> {
                                   selectedLanguage = "ar";
                                 });
                                 await _saveLanguage("ar");
+                                _loadTranslations("ar");
                                 context
                                     .read<LocalazationsCubit>()
                                     .changeLang("ar");
@@ -157,19 +181,21 @@ class _SettingsState extends State<Settings> {
                                 selectedLanguage = "en";
                               });
                               await _saveLanguage("en");
+                              _loadTranslations("en");
                               context
                                   .read<LocalazationsCubit>()
                                   .changeLang("en");
                             },
-                            leading: Text("English"),
+                            leading: Text(getTranslation('english')),
                             trailing: Radio(
                               value: "en",
                               groupValue: selectedLanguage,
                               onChanged: (val) async {
-                                await MyI18n
-                                    .loadTranslations(); // تغيير إلى الإنجليزية
-                                setState(() {});
+                                setState(() {
+                                  selectedLanguage = "en";
+                                });
                                 await _saveLanguage("en");
+                                _loadTranslations("en");
                                 context
                                     .read<LocalazationsCubit>()
                                     .changeLang("en");
@@ -183,9 +209,11 @@ class _SettingsState extends State<Settings> {
                 );
               },
               icon: Icons.language,
-              title: "Language",
+              title: getTranslation('language'),
               children: [
-                Text(selectedLanguage == "ar" ? "Arabic" : "English"),
+                Text(selectedLanguage == "ar"
+                    ? getTranslation('arabic')
+                    : getTranslation('english')),
                 Icon(Icons.arrow_forward)
               ]),
           CustomListtileSettings(
@@ -202,17 +230,16 @@ class _SettingsState extends State<Settings> {
                 });
               },
               icon: Icons.dark_mode,
-              title: "Dark Mode",
+              title: getTranslation('dark_mode'),
               children: [
                 Switch(
                     thumbColor: switch_isEnable
-                        ? WidgetStatePropertyAll(AppColor.kWhiteColor)
-                        : WidgetStatePropertyAll(AppColor.kSecondColor),
+                        ? MaterialStateProperty.all(AppColor.kWhiteColor)
+                        : MaterialStateProperty.all(AppColor.kSecondColor),
                     value: switch_isEnable,
                     onChanged: (val) async {
                       setState(() {
                         switch_isEnable = val;
-
                         _saveSwitchValue(val);
                         if (switch_isEnable) {
                           AdaptiveTheme.of(context).setDark();
@@ -234,7 +261,7 @@ class _SettingsState extends State<Settings> {
                       ));
             },
             icon: Icons.logout,
-            title: "Log Out".i18n,
+            title: getTranslation('log_out'),
             children: [],
           )
         ],

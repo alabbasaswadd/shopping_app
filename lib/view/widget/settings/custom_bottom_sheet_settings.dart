@@ -13,7 +13,7 @@ class CustomBottomSheetSettings extends StatelessWidget {
         showDragHandle: true,
         onClosing: () {},
         builder: (context) => Container(
-            height: 250,
+            height: 260,
             child: Column(children: [
               Text(
                 textBottomSheet,

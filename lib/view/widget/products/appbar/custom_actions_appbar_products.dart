@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
-import '../../../screens/card/card.dart';
-import '../../../screens/notifications/notifications.dart';
+import '../../../screens/card.dart';
+import '../../../screens/notifications.dart';
 
 class CustomActionsAppbarProducts extends StatelessWidget {
   const CustomActionsAppbarProducts({super.key});
@@ -23,45 +23,6 @@ class CustomActionsAppbarProducts extends StatelessWidget {
                 Navigator.of(context).pushNamed(CardPage.id);
               },
               icon: Icon(Icons.shopping_cart)),
-          IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => BottomSheet(
-                        enableDrag: true,
-                        showDragHandle: true,
-                        onClosing: () {},
-                        builder: (context) => Container(
-                                child: Column(children: [
-                              Text(
-                                "Filter",
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                              CustomFilterButtonProducts(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => DatePickerDialog(
-                                          firstDate: DateTime(2012),
-                                          lastDate: DateTime(2100)));
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(DateTime.now().toString()),
-                                    Icon(Icons.calendar_month)
-                                  ],
-                                ),
-                              ),
-                              CustomFilterButtonProducts(
-                                child: Text("Product(145)"),
-                                onPressed: () {},
-                              )
-                            ]))));
-              },
-              icon: Icon(
-                Icons.tune,
-              )),
         ],
       ),
     );

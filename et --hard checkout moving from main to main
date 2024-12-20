@@ -1,0 +1,18 @@
+[33m6d05e76[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33m0ab3ace[m HEAD@{1}: reset: moving to HEAD~1
+[33m5bd2481[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{2}: reset: moving to HEAD
+[33m5bd2481[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{3}: reset: moving to HEAD
+[33m5bd2481[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{4}: checkout: moving from main to main
+[33m5bd2481[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{5}: checkout: moving from main to main
+[33m5bd2481[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{6}: pull: Fast-forward
+[33m8566763[m HEAD@{7}: checkout: moving from 3b51ea0bf0ffd0a2a6846934c19827643e323051 to main
+[33m3b51ea0[m HEAD@{8}: commit: test
+[33me6f20c4[m HEAD@{9}: commit: tester
+[33m99e99da[m HEAD@{10}: commit: test commit
+[33mf7fa0c0[m HEAD@{11}: commit: first commit
+[33m11d8193[m HEAD@{12}: commit: first commit
+[33md0797bc[m HEAD@{13}: commit: edit
+[33m4885e03[m HEAD@{14}: checkout: moving from main to 4885e030ec3f6b73fab5b36c31eadb7374b01bc1
+[33m8566763[m HEAD@{15}: commit: first
+[33m4885e03[m HEAD@{16}: commit: as
+[33m6665ca4[m HEAD@{17}: commit (initial): alabbas2002

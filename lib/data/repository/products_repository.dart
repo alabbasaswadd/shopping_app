@@ -5,8 +5,7 @@ class ProductsRepository {
   Dio dio = Dio();
 
   Future<List<ProductsModel>> getData() async {
-    Response response =
-        await dio.get('https://fakestoreapi.com/products');
+    Response response = await dio.get('https://fakestoreapi.com/products');
     if (response.statusCode == 200) {
       List<dynamic> productsJson = response.data;
       print(productsJson);

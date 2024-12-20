@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/view/screens/home_screen.dart';
-import 'package:shopping_app/view/screens/onboarding/onboarding.dart';
-import 'package:shopping_app/view/screens/products/products.dart';
+import 'package:shopping_app/view/screens/onboarding.dart';
+import 'package:shopping_app/view/screens/products.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

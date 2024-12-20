@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/onboarding_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
-import 'package:shopping_app/view/screens/auth/login.dart';
+import 'package:shopping_app/view/screens/login.dart';
 import 'package:shopping_app/view/screens/home_screen.dart';
 
 class Onboarding extends StatefulWidget {

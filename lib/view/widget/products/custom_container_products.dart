@@ -4,10 +4,13 @@ import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/model/products_model.dart';
+import 'package:shopping_app/view/screens/inside_produt.dart';
 
 class CustomContainerProducts extends StatefulWidget {
   CustomContainerProducts({super.key});
-
+  static List<ProductsModel> productsInside = [];
+  static List<ProductsModel> productsCard = [];
+  static List<ProductsModel> productsFavourite = [];
   @override
   State<CustomContainerProducts> createState() =>
       _CustomContainerProductsState();
@@ -41,70 +44,89 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
             return ListView.builder(
                 itemCount: productsList.length,
                 itemBuilder: (context, i) {
-                  return Container(
-                      padding: EdgeInsets.all(5),
-                      height: 142,
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // يجعل المحتوى يبدأ من الأعلى
-                        children: [
-                          Container(
-                            height: double.infinity,
-                            width: 100,
-                            child: Image.network(
-                              productsList[i].image ??
-                                  "https://i.imgur.com/BG8J0Fj.jpg",
-                              fit: BoxFit.fill,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(InsideProdut.id);
+                      CustomContainerProducts.productsInside.add(ProductsModel(
+                        title: productsList[i].title,
+                        description: productsList[i].description,
+                        image: productsList[i].image,
+                        price: productsList[i].price,
+                      ));
+                    },
+                    child: Container(
+                        padding: EdgeInsets.all(5),
+                        height: 142,
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // يجعل المحتوى يبدأ من الأعلى
+                          children: [
+                            Container(
+                              height: double.infinity,
+                              width: 100,
+                              child: Image.network(
+                                productsList[i].image ??
+                                    "https://i.imgur.com/BG8J0Fj.jpg",
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
 
-                          const SizedBox(width: 10), // مساحة بين العناصر
+                            const SizedBox(width: 10), // مساحة بين العناصر
 
-                          // العنصر النصي (title + price)
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .center, // يبدأ النص من اليسار
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    productsList[i].title,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
+                            // العنصر النصي (title + price)
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .center, // يبدأ النص من اليسار
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      productsList[i].title,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
                                   ),
+                                  // مساحة بين النصوص
+                                  Text(
+                                    "${productsList[i].price} ₺",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge!
+                                        .copyWith(fontSize: 20),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // العنصر الأخير (trailing)
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                      Icons.favorite_border_outlined),
                                 ),
-                                // مساحة بين النصوص
-                                Text(
-                                  "${productsList[i].price} ₺",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontSize: 20),
+                                IconButton(
+                                  onPressed: () {
+                                    CustomContainerProducts.productsCard.add(
+                                        ProductsModel(
+                                            title: productsList[i].title,
+                                            description:
+                                                productsList[i].description,
+                                            image: productsList[i].image,
+                                            price: productsList[i].price));
+                                  },
+                                  icon: const Icon(Icons.shopping_cart),
                                 ),
                               ],
                             ),
-                          ),
-
-                          // العنصر الأخير (trailing)
-                          Column(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon:
-                                    const Icon(Icons.favorite_border_outlined),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.shopping_cart),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ));
+                          ],
+                        )),
+                  );
                 });
           } else {
             return Center(child: Text('No products found.'));

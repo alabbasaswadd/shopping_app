@@ -1,8 +1,6 @@
 import 'package:i18n_extension/i18n_extension.dart';
 import 'package:i18n_extension_importer/i18n_extension_importer.dart';
 
-// flutter pub run i18n_extension_importer:getstrings --output-file json
-
 class MyI18n {
   static Translations translations = Translations.byLocale("en_us");
 
