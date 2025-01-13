@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
-import 'package:shopping_app/view/screens/splash.dart';
+import 'package:shopping_app/presentation/screens/splash.dart';
 import 'routes.dart';
 
 void main() async {

@@ -14,18 +14,11 @@ class ProductsModel {
   factory ProductsModel.fromJson(Map<String, dynamic> json) {
     return ProductsModel(
       title: json['title'],
-      description: json['dsecription'],
+      description: json['description'],
       image: json['image'],
       price: json['price'].toDouble(),
     );
   }
-  // factory ProductsModel.fromJson(Map<String, dynamic> json) {
-  //   return ProductsModel(
-  //     title: json['title'],
-  //     image: json['image'],
-  //     price: json['price'].toDouble(),
-  //   );
-  // }
 
   Map<String, dynamic> toJson() {
     return {

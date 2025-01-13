@@ -4,7 +4,7 @@
             "outputFile": "com.example.shopping_app-mergeDebugResources-26:/values-it/values-it.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\alabbas\\.gradle\\caches\\transforms-3\\c666c258fca39b3353b46678a6b928ab\\transformed\\core-1.13.1\\res\\values-it\\values-it.xml",
+                    "source": "C:\\Users\\alabbas\\.gradle\\caches\\transforms-3\\889ae3adf7a24645889ee22f4dad2cac\\transformed\\core-1.13.1\\res\\values-it\\values-it.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

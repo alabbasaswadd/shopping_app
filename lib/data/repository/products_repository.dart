@@ -1,17 +1,13 @@
-import 'package:dio/dio.dart';
 import 'package:shopping_app/data/model/products_model.dart';
+import 'package:shopping_app/data/web_services/products_web_services.dart';
 
 class ProductsRepository {
-  Dio dio = Dio();
-
+  final ProductsWebServices productsWebServices;
+  ProductsRepository(this.productsWebServices);
   Future<List<ProductsModel>> getData() async {
-    Response response = await dio.get('https://fakestoreapi.com/products');
-    if (response.statusCode == 200) {
-      List<dynamic> productsJson = response.data;
-      print(productsJson);
-      return productsJson.map((json) => ProductsModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch products: ${response.statusCode}');
-    }
+    final products = await productsWebServices.getData();
+    return products.map((product) => ProductsModel.fromJson(product)).toList();
   }
 }
+
+
