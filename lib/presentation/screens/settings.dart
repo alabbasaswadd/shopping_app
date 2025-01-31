@@ -3,9 +3,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/presentation/screens/login.dart';
 import 'package:shopping_app/presentation/widget/settings/custom_alert_dialog_settings.dart';
 import 'package:shopping_app/presentation/widget/settings/custom_bottom_sheet_settings.dart';
 import 'package:shopping_app/presentation/widget/settings/custom_listtile_settings.dart';
@@ -100,13 +102,15 @@ class _SettingsState extends State<Settings> {
                       context: context,
                       builder: (context) => CustomBottomSheetSettings(
                             textBottomSheet: getTranslation('username'),
-                            widget: Column(children: [
-                              CustomTextFieldSettings(
-                                  label: getTranslation('username')),
-                              CustomTextFieldSettings(
-                                  label: getTranslation('phone_number')),
-                              CustomButtonSettings(),
-                            ]),
+                            widget: SingleChildScrollView(
+                              child: Column(children: [
+                                CustomTextFieldSettings(
+                                    label: getTranslation('username')),
+                                CustomTextFieldSettings(
+                                    label: getTranslation('phone_number')),
+                                CustomButtonSettings(),
+                              ]),
+                            ),
                           ));
                 },
                 icon: Icons.person,
@@ -119,13 +123,15 @@ class _SettingsState extends State<Settings> {
                     context: context,
                     builder: (context) => CustomBottomSheetSettings(
                           textBottomSheet: getTranslation('phone_number'),
-                          widget: Column(children: [
-                            CustomTextFieldSettings(
-                                label: getTranslation('username')),
-                            CustomTextFieldSettings(
-                                label: getTranslation('phone_number')),
-                            CustomButtonSettings(),
-                          ]),
+                          widget: SingleChildScrollView(
+                            child: Column(children: [
+                              CustomTextFieldSettings(
+                                  label: getTranslation('username')),
+                              CustomTextFieldSettings(
+                                  label: getTranslation('phone_number')),
+                              CustomButtonSettings(),
+                            ]),
+                          ),
                         ));
               },
               icon: Icons.phone_android,
@@ -254,7 +260,9 @@ class _SettingsState extends State<Settings> {
               showDialog(
                   context: context,
                   builder: (context) => CustomAlertDialogSettings(
-                        onOk: () {},
+                        onOk: () {
+                          Get.offAllNamed(Login.id);
+                        },
                         onNo: () {
                           Navigator.pop(context);
                         },

@@ -3,13 +3,14 @@ class ProductsModel {
   final String? description;
   final String image;
   final double price;
+  int quantity;
 
-  ProductsModel({
-    required this.title,
-     this.description,
-    required this.image,
-    required this.price,
-  });
+  ProductsModel(
+      {required this.title,
+      this.description,
+      required this.image,
+      required this.price,
+      this.quantity = 1});
 
   factory ProductsModel.fromJson(Map<String, dynamic> json) {
     return ProductsModel(

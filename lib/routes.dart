@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
-import 'package:shopping_app/data/repository/products_repository.dart';
-import 'package:shopping_app/data/web_services/products_web_services.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/card.dart';
@@ -11,6 +7,8 @@ import 'package:shopping_app/presentation/screens/produc_details.dart';
 import 'package:shopping_app/presentation/screens/products.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';
 import 'presentation/screens/favorite.dart';
+import 'presentation/screens/payment.dart';
+import 'presentation/screens/signup.dart';
 import 'progres.dart';
 import 'presentation/screens/login.dart';
 import 'presentation/screens/home_screen.dart';
@@ -20,6 +18,8 @@ import 'presentation/screens/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   Login.id: (context) => Login(),
+  Payment.id: (context) => Payment(),
+  SignUp.id: (context) => SignUp(),
   Account.id: (context) => Account(),
   Orders.id: (context) => Orders(),
   About.id: (context) => About(),

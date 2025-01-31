@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/login.dart';
 import 'package:shopping_app/presentation/screens/produc_details.dart';
 import 'package:shopping_app/presentation/screens/products.dart';
-import 'package:shopping_app/presentation/screens/settings.dart'; // تأكد من المسار
+import 'package:shopping_app/presentation/screens/settings.dart';
+
+import 'signup.dart'; // تأكد من المسار
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

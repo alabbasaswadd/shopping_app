@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
@@ -70,7 +71,7 @@ class Productes extends StatelessWidget {
                             context: context,
                             builder: (context) => CustomAlertDialogSettings(
                                   onOk: () {
-                                    Navigator.of(context).pushNamed(Login.id);
+                                    Get.offAllNamed(Login.id);
                                   },
                                   onNo: () {
                                     Navigator.pop(context);
@@ -82,7 +83,7 @@ class Productes extends StatelessWidget {
             ),
             appBar: AppBar(
               elevation: 8,
-              shadowColor: Colors.grey,
+              shadowColor: Colors.black,
               title: CustomTitleAppbarProducts(),
               actions: [CustomActionsAppbarProducts()],
             ),

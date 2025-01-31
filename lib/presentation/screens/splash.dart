@@ -5,6 +5,8 @@ import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
 import 'package:shopping_app/presentation/screens/products.dart';
 
+import 'signup.dart';
+
 class Splash extends StatefulWidget {
   const Splash({super.key});
   static String id = "splash";
@@ -29,7 +31,7 @@ class _SplashState extends State<Splash> {
       // إذا شاهد المستخدم صفحات الـ onboarding مسبقًا
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => SignUp()),
       );
     } else {
       // إذا لم يشاهد المستخدم صفحات الـ onboarding

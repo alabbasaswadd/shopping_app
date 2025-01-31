@@ -9,12 +9,14 @@ import 'package:shopping_app/data/model/products_model.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
 import 'package:shopping_app/presentation/screens/produc_details.dart';
 
+import 'appbar/custom_title_appbar_products.dart';
+
 class CustomContainerProducts extends StatefulWidget {
   CustomContainerProducts({super.key});
   static List<ProductsModel> productsInside = [];
   static List<ProductsModel> productsCard = [];
-
   static List<ProductsModel> productsFavorite = [];
+
   @override
   State<CustomContainerProducts> createState() =>
       _CustomContainerProductsState();
@@ -43,7 +45,9 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
       } else if (state is ProductsSuccess) {
         products = (state).products;
         return ListView.builder(
-            itemCount: products.length,
+            itemCount: CustomTitleAppbarProducts.controller.text == ""
+                ? products.length
+                : CustomTitleAppbarProducts.productsSearch.length,
             itemBuilder: (context, i) {
               return InkWell(
                 onTap: () {
@@ -88,7 +92,10 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                 fit: BoxFit.cover,
                               );
                             },
-                            products[i].image,
+                            CustomTitleAppbarProducts.controller.text == ""
+                                ? products[i].image
+                                : CustomTitleAppbarProducts
+                                    .productsSearch[i].image,
                           ),
                         ),
 
@@ -102,13 +109,17 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  products[i].title,
+                                  CustomTitleAppbarProducts.controller.text ==
+                                          ""
+                                      ? products[i].title
+                                      : CustomTitleAppbarProducts
+                                          .productsSearch[i].title,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                               // مساحة بين النصوص
                               Text(
-                                "${products[i].price} ₺",
+                                "${CustomTitleAppbarProducts.controller.text == "" ? products[i].price : CustomTitleAppbarProducts.productsSearch[i].price} ₺",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
@@ -123,29 +134,68 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                           children: [
                             IconButton(
                               onPressed: () {
-                                CustomContainerProducts.productsFavorite.add(
-                                    ProductsModel(
-                                        title: products[i].title,
-                                        description: products[i].description,
-                                        image: products[i].image,
-                                        price: products[i].price));
-                                Fluttertoast.showToast(
+                                bool isAlreadyAdded = CustomContainerProducts
+                                    .productsFavorite
+                                    .any(
+                                  (product) =>
+                                      product.title == products[i].title,
+                                );
+
+                                if (isAlreadyAdded) {
+                                  Fluttertoast.showToast(
+                                    msg: "Already in the Favorite",
+                                    backgroundColor: AppColor.kRedColor,
+                                  );
+                                } else {
+                                  Fluttertoast.showToast(
                                     msg: "Added To Favorite",
-                                    backgroundColor: AppColor.kPrimaryColor);
+                                    backgroundColor: AppColor.kPrimaryColor,
+                                  );
+
+                                  CustomContainerProducts.productsFavorite.add(
+                                    ProductsModel(
+                                      title: products[i].title,
+                                      description: products[i].description,
+                                      image: products[i].image,
+                                      price: products[i].price,
+                                      quantity:
+                                          1, // تعيين الكمية الافتراضية عند الإضافة
+                                    ),
+                                  );
+                                }
                               },
                               icon: const Icon(Icons.favorite_border_outlined),
                             ),
                             IconButton(
                               onPressed: () {
-                                Fluttertoast.showToast(
-                                    msg: "Added To Card",
-                                    backgroundColor: AppColor.kPrimaryColor);
-                                CustomContainerProducts.productsCard.add(
+                                bool isAlreadyAdded =
+                                    CustomContainerProducts.productsCard.any(
+                                  (product) =>
+                                      product.title == products[i].title,
+                                );
+
+                                if (isAlreadyAdded) {
+                                  Fluttertoast.showToast(
+                                    msg: "Already in the Cart",
+                                    backgroundColor: AppColor.kRedColor,
+                                  );
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: "Added To Cart",
+                                    backgroundColor: AppColor.kPrimaryColor,
+                                  );
+
+                                  CustomContainerProducts.productsCard.add(
                                     ProductsModel(
-                                        title: products[i].title,
-                                        description: products[i].description,
-                                        image: products[i].image,
-                                        price: products[i].price));
+                                      title: products[i].title,
+                                      description: products[i].description,
+                                      image: products[i].image,
+                                      price: products[i].price,
+                                      quantity:
+                                          1, // تعيين الكمية الافتراضية عند الإضافة
+                                    ),
+                                  );
+                                }
                               },
                               icon: const Icon(Icons.shopping_cart),
                             ),

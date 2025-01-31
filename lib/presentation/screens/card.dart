@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/presentation/widget/products/appbar/custom_title_appbar_products.dart';
+import 'package:shopping_app/presentation/screens/payment.dart';
 import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
 
 class CardPage extends StatefulWidget {
@@ -13,7 +14,36 @@ class CardPage extends StatefulWidget {
 }
 
 class _CardPageState extends State<CardPage> {
-  int notification = 0;
+  double _totalPrice = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    calculateTotalPrice(); // حساب الإجمالي عند تشغيل الصفحة
+  }
+
+  void calculateTotalPrice() {
+    setState(() {
+      _totalPrice = CustomContainerProducts.productsCard.fold(
+          0.0, (sum, item) => sum + ((item.price ?? 0.0) * item.quantity));
+    });
+  }
+
+  void increaseQuantity(int index) {
+    setState(() {
+      CustomContainerProducts.productsCard[index].quantity +=1 ;
+      calculateTotalPrice();
+    });
+  }
+
+  void decreaseQuantity(int index) {
+    setState(() {
+      if (CustomContainerProducts.productsCard[index].quantity > 1) {
+        CustomContainerProducts.productsCard[index].quantity--;
+        calculateTotalPrice();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +66,7 @@ class _CardPageState extends State<CardPage> {
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(10)),
                   child: Row(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, // يجعل المحتوى يبدأ من الأعلى
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
                         height: double.infinity,
@@ -48,14 +77,10 @@ class _CardPageState extends State<CardPage> {
                           fit: BoxFit.fill,
                         ),
                       ),
-
-                      const SizedBox(width: 10), // مساحة بين العناصر
-
-                      // العنصر النصي (title + price)
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.center, // يبدأ النص من اليسار
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: Text(
@@ -63,7 +88,6 @@ class _CardPageState extends State<CardPage> {
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
-                            // مساحة بين النصوص
                             Text(
                               "${CustomContainerProducts.productsCard[i].price} ₺",
                               style: Theme.of(context)
@@ -74,27 +98,69 @@ class _CardPageState extends State<CardPage> {
                           ],
                         ),
                       ),
-
-                      // العنصر الأخير (trailing)
-
-                      Center(
-                        child: IconButton(
-                          onPressed: () {
-                            Fluttertoast.showToast(
-                                msg: "ٌRemoved From Card",
-                                backgroundColor: AppColor.kRedColor);
-                            setState(() {
-                              CustomContainerProducts.productsCard.removeAt(i);
-                            });
-                          },
-                          icon: const Icon(Icons.remove_shopping_cart,
-                              color: Colors.red),
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Fluttertoast.showToast(
+                                  msg: "Removed From Card",
+                                  backgroundColor: AppColor.kRedColor);
+                              setState(() {
+                                CustomContainerProducts.productsCard
+                                    .removeAt(i);
+                                calculateTotalPrice(); // تحديث الإجمالي بعد الحذف
+                              });
+                            },
+                            icon: const Icon(Icons.remove_shopping_cart,
+                                color: Colors.red),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () => decreaseQuantity(i),
+                                  icon: Icon(Icons.remove)),
+                              Text(
+                                "${CustomContainerProducts.productsCard[i].quantity}",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              IconButton(
+                                  onPressed: () => increaseQuantity(i),
+                                  icon: Icon(Icons.add)),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 );
-              }),
+              },
+            ),
+      bottomNavigationBar: Container(
+        color: AppColor.kThirtColor,
+        padding: EdgeInsets.all(3),
+        height: 80,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Center(
+                child: Text(
+                  "Total: ${_totalPrice.toStringAsFixed(2)} ₺",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              MaterialButton(
+                color: AppColor.kPrimaryColor,
+                textColor: Colors.white,
+                onPressed: () {
+                  Get.toNamed(Payment.id);
+                },
+                child: Text("Payment"),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
