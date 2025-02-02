@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/card.dart';
+import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders.dart';
 import 'package:shopping_app/presentation/screens/produc_details.dart';
 import 'package:shopping_app/presentation/screens/products.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';
+import 'package:shopping_app/presentation/screens/stores.dart';
 import 'presentation/screens/favorite.dart';
 import 'presentation/screens/payment.dart';
 import 'presentation/screens/signup.dart';
@@ -18,6 +20,8 @@ import 'presentation/screens/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   Login.id: (context) => Login(),
+  Stores.id: (context) => Stores(),
+  Offers.id: (context) => Offers(),
   Payment.id: (context) => Payment(),
   SignUp.id: (context) => SignUp(),
   Account.id: (context) => Account(),

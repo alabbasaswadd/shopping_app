@@ -28,7 +28,10 @@ class CustomBodyInsideProduct extends StatelessWidget {
           // Carousel Slider
           CarouselSlider(
             items: items,
-            options: CarouselOptions(autoPlay: true),
+            options: CarouselOptions(
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlay: true,
+            ),
           ),
           SizedBox(height: 20),
 
@@ -61,78 +64,25 @@ class CustomBodyInsideProduct extends StatelessWidget {
                             softWrap: true, // يسمح بالتفاف النص
                           ),
                         ),
-                        Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: AppColor.kSecondColor,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Text(
-                            "In Storage 450",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                     SizedBox(height: 20),
 
                     // Expiry Date and Barcode
-                    Row(
-                      children: [
-                        Text(productDetails.price.toString()),
-                        Spacer(),
-                        Text("4006581016825"),
-                      ],
-                    ),
+                    Text(productDetails.price.toString()),
                     SizedBox(height: 20),
 
                     // Product Image
-                    Container(
-                      width: double.infinity,
-                      child: Image.asset(
-                        AdaptiveTheme.of(context).mode ==
-                                AdaptiveThemeMode.light
-                            ? AppImages.kBackground
-                            : AppImages.kBackgroundDark,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-
-                    // Quantity and Add to Cart Button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            CustomMaterialButtonProduct(
-                              text: "-",
-                              color: Theme.of(context).colorScheme.secondary,
-                              colorText: AppColor.kPrimaryColor,
-                            ),
-                            SizedBox(width: 10),
-                            Text("1028"),
-                            SizedBox(width: 10),
-                            CustomMaterialButtonProduct(
-                              text: "+",
-                              color: AppColor.kPrimaryColor,
-                              colorText: AppColor.kWhiteColor,
-                            ),
-                          ],
-                        ),
-                        MaterialButton(
-                          color: AppColor.kPrimaryColor,
-                          textColor: AppColor.kWhiteColor,
-                          onPressed: () {},
-                          child: Text("Add To Cart"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
+                    // Container(
+                    //   width: double.infinity,
+                    //   child: Image.asset(
+                    //     AdaptiveTheme.of(context).mode ==
+                    //             AdaptiveThemeMode.light
+                    //         ? AppImages.kBackground
+                    //         : AppImages.kBackgroundDark,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    // ),
                   ],
                 ),
               );

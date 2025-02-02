@@ -6,6 +6,8 @@ import 'package:shopping_app/presentation/widget/auth/appbar/custom_flexiblespac
 import 'package:shopping_app/presentation/widget/auth/custom_button.dart';
 import 'package:shopping_app/presentation/widget/auth/custom_textfield.dart';
 
+import 'signup.dart';
+
 class Login extends StatefulWidget {
   Login({super.key});
   static String id = "login";
@@ -79,7 +81,7 @@ class _LoginState extends State<Login> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.offAndToNamed(Login.id);
+                        Get.offAndToNamed(SignUp.id);
                       },
                       child: Text(
                         "SignUp",
@@ -108,50 +110,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-
-        // Container(
-        //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        //   width: double.infinity,
-        //   decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(20), color: Colors.white),
-        //   child: SingleChildScrollView(
-        //     child: Column(
-        //       children: [
-        //         Text(
-        //           "Welcome Back 👋",
-        //           style: Theme.of(context).textTheme.titleLarge,
-        //         ),
-        //         Text(
-        //           "We happy to see you again. To use your account, you should log im first.",
-        //           textAlign: TextAlign.center,
-        //         ),
-        //         Text("Enter Your e-mail"),
-        //         CustomTextfield(
-        //           text: "Email",
-        //           formKey: GlobalKey<FormFieldState>(),
-        //         ),
-        //         Text("Enter Your Password"),
-        //         CustomTextfield(
-        //           formKey: GlobalKey<FormFieldState>(),
-        //           text: "Password",
-        //           suffix: true,
-        //         ),
-        //         Row(
-        //           children: [
-        //             Checkbox(
-        //                 activeColor: AppColor.kPrimaryColor,
-        //                 value: check,
-        //                 onChanged: (val) {
-        //                   setState(() {
-        //                     check = val!;
-        //                   });
-        //                 }),
-        //             Text("Remmber me"),
-        //           ],
-        //         ),
-        //         CustomButton(),
-        //       ],
-        //     ),
-        //   ),
-        // ),

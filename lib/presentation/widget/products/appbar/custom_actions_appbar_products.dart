@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 import '../../../screens/card.dart';
+import '../../../screens/filter.dart';
 import '../../../screens/notifications.dart';
+import '../../settings/custom_bottom_sheet_settings.dart';
 
 class CustomActionsAppbarProducts extends StatelessWidget {
   const CustomActionsAppbarProducts({super.key});
@@ -13,6 +15,17 @@ class CustomActionsAppbarProducts extends StatelessWidget {
       padding: EdgeInsets.all(2),
       child: Row(
         children: [
+          IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => BottomSheet(
+                        enableDrag: true,
+                        showDragHandle: true,
+                        onClosing: () {},
+                        builder: (context) => const Filter()));
+              },
+              icon: Icon(Icons.filter_alt)),
           IconButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(Notifications.id);

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
 import 'package:shopping_app/presentation/screens/splash.dart';
+import 'presentation/screens/home_screen.dart';
 import 'routes.dart';
 
 void main() async {
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
             darkTheme: darkTheme,
             routes: routes,
             debugShowCheckedModeBanner: false,
-            initialRoute: Splash.id,
+            initialRoute: HomeScreen.id,
           ),
         );
       },
