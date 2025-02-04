@@ -26,6 +26,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   Account.id: (context) => Account(),
   Orders.id: (context) => Orders(),
   About.id: (context) => About(),
+  About.id: (context) => About(),
   Settings.id: (context) => Settings(),
   Productes.id: (context) => Productes(),
   Favorite.id: (context) => Favorite(),
