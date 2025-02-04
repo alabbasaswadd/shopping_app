@@ -8,13 +8,13 @@ class CustomFlexibleSpace extends StatelessWidget {
   Widget build(BuildContext context) {
     double widthScreen = MediaQuery.of(context).size.width;
     double heightScreen = MediaQuery.of(context).size.height;
-    bool isLandscape = widthScreen > heightScreen; // التحقق من اتجاه الشاشة
+    bool isLandscape = widthScreen > heightScreen;
 
     return Stack(children: <Widget>[
       CustomIconAppbar(
         icon: Icons.category_outlined,
         top: heightScreen *
-            (isLandscape ? 0.10 : 0.05), // زيادة المسافة في الوضع العرضي
+            (isLandscape ? 0.10 : 0.05), 
         left: widthScreen * 0.12,
         rotate: -0.2,
       ),

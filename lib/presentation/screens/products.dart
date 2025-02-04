@@ -35,32 +35,32 @@ class Productes extends StatelessWidget {
                     icon: Icons.person,
                     title: "Account",
                     ontap: () {
-                      Navigator.of(context).pushNamed(Account.id);
+                      Get.toNamed(Account.id);
                     },
                   ),
                   CustomDrawerItem(
                       icon: Icons.favorite,
                       title: "Favorite",
                       ontap: () {
-                        Navigator.of(context).pushNamed(Favorite.id);
+                        Get.toNamed(Favorite.id);
                       }),
                   CustomDrawerItem(
                       icon: Icons.wallet_giftcard_rounded,
                       title: "orders",
                       ontap: () {
-                        Navigator.of(context).pushNamed(Orders.id);
+                        Get.toNamed(Orders.id);
                       }),
                   CustomDrawerItem(
                       icon: Icons.settings,
                       title: "Settings",
                       ontap: () {
-                        Navigator.of(context).pushNamed(Settings.id);
+                        Get.toNamed(Settings.id);
                       }),
                   CustomDrawerItem(
                       icon: Icons.info,
                       title: "About",
                       ontap: () {
-                        Navigator.of(context).pushNamed(About.id);
+                        Get.toNamed(About.id);
                       }),
                   CustomDrawerItem(
                       icon: Icons.logout,
@@ -74,7 +74,7 @@ class Productes extends StatelessWidget {
                                     Get.offAllNamed(Login.id);
                                   },
                                   onNo: () {
-                                    Navigator.pop(context);
+                                    Get.back();
                                   },
                                 ));
                       }),
@@ -85,7 +85,7 @@ class Productes extends StatelessWidget {
               elevation: 8,
               shadowColor: Colors.black,
               title: CustomTitleAppbarProducts(),
-              actions: [CustomActionsAppbarProducts()],
+              actions: const [CustomActionsAppbarProducts()],
             ),
             body: Container(
                 padding: EdgeInsets.all(20),

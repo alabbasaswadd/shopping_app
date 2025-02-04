@@ -1,6 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 
 class Filter extends StatefulWidget {
   const Filter({super.key});
@@ -15,9 +16,31 @@ class _FilterScreenState extends State<Filter> {
   List<String> selectedCategories = [];
   List<String> selectedBrands = [];
 
-  final List<String> types = ["Image", "Filter", "Slides", "Ramp access", "Cats OK", "Garden", "Smoke-free"];
-  final List<String> categories = ["Coffee", "Phones", "Laptops", "Tablets", "Cameras", "Game consoles"];
-  final List<String> brands = ["Dell", "Samsung", "Apple", "Redmi", "Cats OK", "Smoke-free"];
+  final List<String> types = [
+    "Image",
+    "Filter",
+    "Slides",
+    "Ramp access",
+    "Cats OK",
+    "Garden",
+    "Smoke-free"
+  ];
+  final List<String> categories = [
+    "Coffee",
+    "Phones",
+    "Laptops",
+    "Tablets",
+    "Cameras",
+    "Game consoles"
+  ];
+  final List<String> brands = [
+    "Dell",
+    "Samsung",
+    "Apple",
+    "Redmi",
+    "Cats OK",
+    "Smoke-free"
+  ];
 
   void _openFilterBottomSheet() {
     showModalBottomSheet(
@@ -36,7 +59,9 @@ class _FilterScreenState extends State<Filter> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("Filter", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const Text("Filter",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                     IconButton(
                       icon: Icon(Icons.refresh, color: Colors.blue),
                       onPressed: () {
@@ -51,15 +76,13 @@ class _FilterScreenState extends State<Filter> {
                   ],
                 ),
                 const Divider(),
-
                 _buildFilterSection("Types", types, selectedTypes),
-                _buildFilterSection("Categories", categories, selectedCategories),
+                _buildFilterSection(
+                    "Categories", categories, selectedCategories),
                 _buildFilterSection("Brand", brands, selectedBrands),
-
                 const SizedBox(height: 10),
                 _buildDateSelector(),
                 const SizedBox(height: 20),
-
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -68,7 +91,8 @@ class _FilterScreenState extends State<Filter> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Apply Filters", style: TextStyle(color: Colors.white)),
+                  child: const Text("Apply Filters",
+                      style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -78,11 +102,13 @@ class _FilterScreenState extends State<Filter> {
     );
   }
 
-  Widget _buildFilterSection(String title, List<String> options, List<String> selectedOptions) {
+  Widget _buildFilterSection(
+      String title, List<String> options, List<String> selectedOptions) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(title,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
@@ -94,7 +120,9 @@ class _FilterScreenState extends State<Filter> {
               selectedColor: Colors.blue.shade100,
               onSelected: (selected) {
                 setState(() {
-                  selected ? selectedOptions.add(option) : selectedOptions.remove(option);
+                  selected
+                      ? selectedOptions.add(option)
+                      : selectedOptions.remove(option);
                 });
               },
             );
@@ -129,7 +157,8 @@ class _FilterScreenState extends State<Filter> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(DateFormat('dd.MM.yyyy').format(selectedDate), style: TextStyle(fontSize: 16)),
+            Text(DateFormat('dd.MM.yyyy').format(selectedDate),
+                style: TextStyle(fontSize: 16)),
             Icon(Icons.calendar_today, color: Colors.blue),
           ],
         ),

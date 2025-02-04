@@ -7,13 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
 import 'package:shopping_app/presentation/screens/splash.dart';
-import 'presentation/screens/home_screen.dart';
 import 'routes.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // تحميل اللغة المحفوظة
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String savedLanguage = prefs.getString('language') ?? 'en';
 
@@ -22,7 +19,7 @@ void main() async {
       providers: [
         BlocProvider(
           create: (context) => LocalazationsCubit()
-            ..changeLang(savedLanguage), // تعيين اللغة المحفوظة
+            ..changeLang(savedLanguage),
         ),
       ],
       child: const MyApp(),
@@ -56,7 +53,7 @@ class MyApp extends StatelessWidget {
             darkTheme: darkTheme,
             routes: routes,
             debugShowCheckedModeBanner: false,
-            initialRoute: HomeScreen.id,
+            initialRoute: Splash.id,
           ),
         );
       },

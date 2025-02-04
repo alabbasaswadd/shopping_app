@@ -24,30 +24,28 @@ class _CustomButtonState extends State<CustomButton> {
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
-            content: Container(
-              child: ListTile(
-                leading: VerticalDivider(
-                  thickness: 7,
-                  color: AppColor.kRedColor,
-                ),
-                title: Text("Single-line snack bar with close  affordance"),
-                trailing: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        if (AdaptiveTheme.of(context).mode ==
-                            AdaptiveThemeMode.light) {
-                          AdaptiveTheme.of(context)
-                              .setDark(); // تعيين الوضع النهاري
-                        } else {
-                          AdaptiveTheme.of(context)
-                              .setLight(); // تعيين الوضع الليلي
-                        }
-                      });
-
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    },
-                    icon: Icon(Icons.close)),
+            content: ListTile(
+              leading: VerticalDivider(
+                thickness: 7,
+                color: AppColor.kRedColor,
               ),
+              title: Text("Single-line snack bar with close  affordance"),
+              trailing: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (AdaptiveTheme.of(context).mode ==
+                          AdaptiveThemeMode.light) {
+                        AdaptiveTheme.of(context)
+                            .setDark(); 
+                      } else {
+                        AdaptiveTheme.of(context)
+                            .setLight(); 
+                      }
+                    });
+            
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  },
+                  icon: Icon(Icons.close)),
             ),
           ));
         },

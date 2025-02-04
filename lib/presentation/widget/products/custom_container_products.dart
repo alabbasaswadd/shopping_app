@@ -8,11 +8,10 @@ import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/model/products_model.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
 import 'package:shopping_app/presentation/screens/produc_details.dart';
-
 import 'appbar/custom_title_appbar_products.dart';
 
 class CustomContainerProducts extends StatefulWidget {
-  CustomContainerProducts({super.key});
+  const CustomContainerProducts({super.key});
   static List<ProductsModel> productsInside = [];
   static List<ProductsModel> productsCard = [];
   static List<ProductsModel> productsFavorite = [];
@@ -51,14 +50,14 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
             itemBuilder: (context, i) {
               return InkWell(
                 onTap: () {
-                  // تمرير المنتج المحدد فقط إلى صفحة التفاصيل
+              
                   Navigator.pushNamed(context, ProdutDetails.id,
-                      arguments: products[i] // تمرير المنتج المحدد فقط
+                      arguments: products[i] 
                       );
 
-                  // تخزين المنتج المحدد فقط في قائمة productsInside
+               
                   CustomContainerProducts.productsInside
-                      .clear(); // تفريغ القائمة لتجنب التكرار
+                      .clear(); 
                   CustomContainerProducts.productsInside.add(ProductsModel(
                     title: products[i].title,
                     description: products[i].description,
@@ -75,20 +74,20 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment
-                          .start, // يجعل المحتوى يبدأ من الأعلى
+                          .start, 
                       children: [
-                        Container(
+                        SizedBox(
                           height: double.infinity,
                           width: 100,
                           child: Image.network(
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) {
-                                // عرض الصورة الأصلية عند اكتمال التحميل
+                             
                                 return child;
                               }
 
                               return Image.asset(
-                                'assets/images/loading.gif', // الصورة المؤقتة من ملفات الأصول
+                                'assets/images/loading.gif', 
                                 fit: BoxFit.cover,
                               );
                             },
@@ -99,13 +98,13 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                           ),
                         ),
 
-                        const SizedBox(width: 10), // مساحة بين العناصر
+                        const SizedBox(width: 10), 
 
-                        // العنصر النصي (title + price)
+                      
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment
-                                .center, // يبدأ النص من اليسار
+                                .center, 
                             children: [
                               Expanded(
                                 child: Text(
@@ -117,7 +116,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
-                              // مساحة بين النصوص
+                             
                               Text(
                                 "${CustomTitleAppbarProducts.controller.text == "" ? products[i].price : CustomTitleAppbarProducts.productsSearch[i].price} ₺",
                                 style: Theme.of(context)
@@ -129,7 +128,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                           ),
                         ),
 
-                        // العنصر الأخير (trailing)
+
                         Column(
                           children: [
                             IconButton(
@@ -159,7 +158,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                       image: products[i].image,
                                       price: products[i].price,
                                       quantity:
-                                          1, // تعيين الكمية الافتراضية عند الإضافة
+                                          1, 
                                     ),
                                   );
                                 }
@@ -192,7 +191,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                       image: products[i].image,
                                       price: products[i].price,
                                       quantity:
-                                          1, // تعيين الكمية الافتراضية عند الإضافة
+                                          1, 
                                     ),
                                   );
                                 }

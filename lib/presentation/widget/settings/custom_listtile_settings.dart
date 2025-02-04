@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/constants/colors.dart';
 
 class CustomListtileSettings extends StatelessWidget {
-  CustomListtileSettings(
+  const CustomListtileSettings(
       {super.key,
       required this.icon,
       required this.title,
@@ -32,7 +31,7 @@ class CustomListtileSettings extends StatelessWidget {
                   .titleLarge!
                   .copyWith(fontSize: 17),
             ),
-            trailing: Container(
+            trailing: SizedBox(
               width: 100,
               child: Row(
                 children: children,

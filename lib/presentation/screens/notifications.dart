@@ -9,7 +9,8 @@ class Notifications extends StatelessWidget {
       appBar: AppBar(
         title: Text("Notifications"),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        elevation: 8,
+        shadowColor: Colors.black,
       ),
     );
   }

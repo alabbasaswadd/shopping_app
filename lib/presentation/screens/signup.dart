@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/login.dart';
-import 'package:shopping_app/presentation/screens/products.dart';
 import 'package:shopping_app/presentation/widget/auth/appbar/custom_flexiblespace.dart';
 import 'package:shopping_app/presentation/widget/auth/custom_button.dart';
 import 'package:shopping_app/presentation/widget/auth/custom_textfield.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({super.key});
+  const SignUp({super.key});
   static String id = "signUp";
 
   @override
@@ -37,11 +36,9 @@ class _SignUpState extends State<SignUp> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  child: Text(
-                    "Welcome Back 👋",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                Text(
+                  "Welcome Back 👋",
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
                   "We happy to see you again. To use your account, you should login first.",

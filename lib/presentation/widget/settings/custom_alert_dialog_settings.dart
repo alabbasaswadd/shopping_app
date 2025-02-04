@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 class CustomAlertDialogSettings extends StatelessWidget {
-  CustomAlertDialogSettings(
+  const CustomAlertDialogSettings(
       {super.key, required this.onOk, required this.onNo});
   final Function() onOk;
   final Function() onNo;
@@ -12,15 +12,15 @@ class CustomAlertDialogSettings extends StatelessWidget {
       actions: [
         MaterialButton(
           onPressed: onOk,
-          child: Text("Yes"),
           color: AppColor.kPrimaryColor,
           textColor: AppColor.kWhiteColor,
+          child: Text("Yes"),
         ),
         MaterialButton(
           onPressed: onNo,
-          child: Text("No"),
           color: Colors.red,
           textColor: AppColor.kWhiteColor,
+          child: Text("No"),
         ),
       ],
       title: Text(

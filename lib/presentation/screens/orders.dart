@@ -31,10 +31,10 @@ class Orders extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: AppColor.kWhiteColor,
-        title: Text("Orders", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Orders"),
         centerTitle: true,
-        backgroundColor: AppColor.kPrimaryColor,
+        elevation: 8,
+        shadowColor: Colors.black,
       ),
       body: orders.isEmpty
           ? Center(
@@ -64,20 +64,13 @@ class CustomOrderContainer extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 5,
-            spreadRadius: 2,
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🏠 العنوان
+
           Row(
             children: [
               Container(
@@ -98,15 +91,11 @@ class CustomOrderContainer extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10),
-
-          // 📦 الوصف
           Text(
             order.description,
-            style: TextStyle(fontSize: 14, color: Colors.black87),
+            style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           Divider(),
-
-          // ✅ حالة الطلب + التاريخ
           Row(
             children: [
               _buildStatusIcon(order.status),
@@ -126,12 +115,12 @@ class CustomOrderContainer extends StatelessWidget {
             ],
           ),
 
-          // 🔍 زر التفاصيل
+      
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                // TODO: إضافة وظيفة التنقل إلى تفاصيل الطلب
+          
               },
               child: Text(
                 "View Details",
@@ -147,7 +136,7 @@ class CustomOrderContainer extends StatelessWidget {
     );
   }
 
-  // 🎨 دالة لإرجاع لون الحالة
+
   Color _getStatusColor(OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
@@ -159,7 +148,7 @@ class CustomOrderContainer extends StatelessWidget {
     }
   }
 
-  // 🔘 دالة لإرجاع نص الحالة
+
   String _getStatusText(OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
@@ -171,7 +160,7 @@ class CustomOrderContainer extends StatelessWidget {
     }
   }
 
-  // 🔲 دالة لإرجاع أيقونة الحالة
+
   Icon _buildStatusIcon(OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
@@ -184,7 +173,6 @@ class CustomOrderContainer extends StatelessWidget {
   }
 }
 
-// 🛒 نموذج بيانات الطلب
 class OrderModel {
   final String address;
   final String description;
@@ -199,5 +187,4 @@ class OrderModel {
   });
 }
 
-// 🚦 حالات الطلب
 enum OrderStatus { delivered, pending, canceled }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
@@ -9,6 +10,7 @@ import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 
+// ignore: must_be_immutable
 class Onboarding extends StatefulWidget {
   Onboarding({super.key});
   static String id = "onBoarding";
@@ -65,8 +67,7 @@ class _OnboardingState extends State<Onboarding> {
                           onPressed: () async {
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.setBool('hasSeenOnboarding', true);
-                            Navigator.of(context)
-                                .pushReplacementNamed(HomeScreen.id);
+                            Get.offAndToNamed(HomeScreen.id);
                           },
                           child: Text("Go To Honik"),
                         ),

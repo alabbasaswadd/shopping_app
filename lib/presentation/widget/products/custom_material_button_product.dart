@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 class CustomMaterialButtonProduct extends StatelessWidget {
-  CustomMaterialButtonProduct(
-      {required this.text, required this.color, this.colorText});
+  const CustomMaterialButtonProduct(
+      {super.key, required this.text, required this.color, this.colorText});
   final String text;
   final Color color;
   final Color? colorText;

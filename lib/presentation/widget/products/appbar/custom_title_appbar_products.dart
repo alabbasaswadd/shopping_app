@@ -14,7 +14,7 @@ class CustomTitleAppbarProducts extends StatefulWidget {
 class _CustomTitleAppbarProductsState extends State<CustomTitleAppbarProducts> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: Form(
         child: TextFormField(

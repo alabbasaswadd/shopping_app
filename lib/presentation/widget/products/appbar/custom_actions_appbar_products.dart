@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/presentation/screens/card.dart';
+import 'package:shopping_app/presentation/screens/filter.dart';
+import 'package:shopping_app/presentation/screens/notifications.dart';
 
-import '../../../screens/card.dart';
-import '../../../screens/filter.dart';
-import '../../../screens/notifications.dart';
-import '../../settings/custom_bottom_sheet_settings.dart';
 
 class CustomActionsAppbarProducts extends StatelessWidget {
   const CustomActionsAppbarProducts({super.key});
@@ -43,7 +42,7 @@ class CustomActionsAppbarProducts extends StatelessWidget {
 }
 
 class CustomFilterButtonProducts extends StatelessWidget {
-  CustomFilterButtonProducts({required this.child, required this.onPressed});
+ const CustomFilterButtonProducts({super.key, required this.child, required this.onPressed});
 
   final Widget child;
   final Function() onPressed;

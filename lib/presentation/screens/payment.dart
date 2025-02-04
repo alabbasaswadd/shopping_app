@@ -7,7 +7,10 @@ class Payment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 8,
+        shadowColor: Colors.black,
         title: Text("Payment"),
+        centerTitle: true,
       ),
     );
   }

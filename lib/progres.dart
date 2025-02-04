@@ -9,24 +9,22 @@ class Progres extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber,
-      body: Container(
-        child: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SpinKitWave(
-              color: AppColor.kPrimaryColor,
-              size: 50.0,
-            ),
-            SpinKitChasingDots(color: AppColor.kPrimaryColor, size: 50.0),
-            SpinKitRing(color: AppColor.kPrimaryColor, size: 50.0),
-            SpinKitFadingGrid(color: AppColor.kPrimaryColor, size: 50.0),
-            SpinKitDancingSquare(color: AppColor.kPrimaryColor, size: 50.0),
-            SpinKitCircle(color: AppColor.kPrimaryColor, size: 50.0),
-            SpinKitFadingCube(color: AppColor.kPrimaryColor, size: 50.0),
-          ],
-        )),
-      ),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SpinKitWave(
+            color: AppColor.kPrimaryColor,
+            size: 50.0,
+          ),
+          SpinKitChasingDots(color: AppColor.kPrimaryColor, size: 50.0),
+          SpinKitRing(color: AppColor.kPrimaryColor, size: 50.0),
+          SpinKitFadingGrid(color: AppColor.kPrimaryColor, size: 50.0),
+          SpinKitDancingSquare(color: AppColor.kPrimaryColor, size: 50.0),
+          SpinKitCircle(color: AppColor.kPrimaryColor, size: 50.0),
+          SpinKitFadingCube(color: AppColor.kPrimaryColor, size: 50.0),
+        ],
+      )),
     );
   }
 }

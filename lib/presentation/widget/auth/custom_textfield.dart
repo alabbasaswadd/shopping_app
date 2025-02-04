@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 class CustomTextfield extends StatefulWidget {
-  CustomTextfield({
+ const CustomTextfield({
     super.key,
     required this.text,
     this.suffix = false,
@@ -44,7 +44,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           validator: (val) {
             setState(() {});
             if (val == null) {
-              print(val);
+            
               return "Error Text";
             } else {
               return null;

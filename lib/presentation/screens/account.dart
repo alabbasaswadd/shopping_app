@@ -11,6 +11,7 @@ class Account extends StatelessWidget {
         shadowColor: Colors.black,
         elevation: 8,
         title: Text("Account"),
+        centerTitle: true,
       ),
       body: Container(
         child: Column(

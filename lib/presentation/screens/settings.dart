@@ -115,7 +115,7 @@ class _SettingsState extends State<Settings> {
                 },
                 icon: Icons.person,
                 title: getTranslation('username'),
-                children: [Text("Merdan"), Icon(Icons.arrow_forward)]),
+                children: const [Text("Merdan"), Icon(Icons.arrow_forward)]),
           ),
           CustomListtileSettings(
               ontap: () {
@@ -136,7 +136,7 @@ class _SettingsState extends State<Settings> {
               },
               icon: Icons.phone_android,
               title: getTranslation('phone_number'),
-              children: [
+              children: const [
                 Expanded(child: Text("+9635456124")),
                 Icon(Icons.arrow_forward)
               ]),
@@ -270,7 +270,7 @@ class _SettingsState extends State<Settings> {
             },
             icon: Icons.logout,
             title: getTranslation('log_out'),
-            children: [],
+            children: const [],
           )
         ],
       ),

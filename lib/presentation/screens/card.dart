@@ -6,7 +6,7 @@ import 'package:shopping_app/presentation/screens/payment.dart';
 import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
 
 class CardPage extends StatefulWidget {
-  CardPage({super.key});
+  const CardPage({super.key});
   static String id = "card";
 
   @override
@@ -19,19 +19,19 @@ class _CardPageState extends State<CardPage> {
   @override
   void initState() {
     super.initState();
-    calculateTotalPrice(); // حساب الإجمالي عند تشغيل الصفحة
+    calculateTotalPrice();
   }
 
   void calculateTotalPrice() {
     setState(() {
-      _totalPrice = CustomContainerProducts.productsCard.fold(
-          0.0, (sum, item) => sum + ((item.price ?? 0.0) * item.quantity));
+      _totalPrice = CustomContainerProducts.productsCard
+          .fold(0.0, (sum, item) => sum + ((item.price) * item.quantity));
     });
   }
 
   void increaseQuantity(int index) {
     setState(() {
-      CustomContainerProducts.productsCard[index].quantity +=1 ;
+      CustomContainerProducts.productsCard[index].quantity += 1;
       calculateTotalPrice();
     });
   }
@@ -51,7 +51,8 @@ class _CardPageState extends State<CardPage> {
       appBar: AppBar(
         title: const Text("Card"),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        elevation: 8,
+        shadowColor: Colors.black,
       ),
       body: CustomContainerProducts.productsCard.isEmpty
           ? Center(child: Text("No Products In The Card"))
@@ -68,12 +69,11 @@ class _CardPageState extends State<CardPage> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         height: double.infinity,
                         width: 100,
                         child: Image.network(
-                          CustomContainerProducts.productsCard[i].image ??
-                              "https://i.imgur.com/BG8J0Fj.jpg",
+                          CustomContainerProducts.productsCard[i].image,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -137,7 +137,7 @@ class _CardPageState extends State<CardPage> {
               },
             ),
       bottomNavigationBar: Container(
-        color: AppColor.kThirtColor,
+        color: Theme.of(context).colorScheme.secondary,
         padding: EdgeInsets.all(3),
         height: 80,
         child: SingleChildScrollView(

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
-import 'package:shopping_app/presentation/screens/products.dart';
-
 import 'signup.dart';
 
 class Splash extends StatefulWidget {
@@ -28,26 +25,16 @@ class _SplashState extends State<Splash> {
     final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
     if (hasSeenOnboarding) {
-      // إذا شاهد المستخدم صفحات الـ onboarding مسبقًا
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SignUp()),
-      );
+      Get.toNamed(SignUp.id);
     } else {
-      // إذا لم يشاهد المستخدم صفحات الـ onboarding
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Onboarding()),
-      );
+      Get.toNamed(Onboarding.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: Image.asset("assets/images/logo2.jpeg")),
-      ),
+      body: Center(child: Image.asset("assets/images/logo2.jpeg")),
     );
   }
 }

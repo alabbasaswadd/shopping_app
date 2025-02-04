@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/presentation/widget/products/appbar/custom_title_appbar_products.dart';
 import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
 
 class Favorite extends StatefulWidget {
-  Favorite({super.key});
+  const Favorite({super.key});
   static String id = "favorite";
 
   @override
@@ -19,7 +18,8 @@ class _CardPageState extends State<Favorite> {
       appBar: AppBar(
         title: const Text("Favorite"),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        elevation: 8,
+        shadowColor: Colors.black,
       ),
       body: CustomContainerProducts.productsFavorite.isEmpty
           ? Center(child: Text("No Products In The Favorite"))
@@ -35,25 +35,25 @@ class _CardPageState extends State<Favorite> {
                       borderRadius: BorderRadius.circular(10)),
                   child: Row(
                     crossAxisAlignment:
-                        CrossAxisAlignment.start, // يجعل المحتوى يبدأ من الأعلى
+                        CrossAxisAlignment.start, 
                     children: [
-                      Container(
+                      SizedBox(
                         height: double.infinity,
                         width: 100,
                         child: Image.network(
-                          CustomContainerProducts.productsFavorite[i].image ??
-                              "https://i.imgur.com/BG8J0Fj.jpg",
+                          CustomContainerProducts.productsFavorite[i].image,
+                             
                           fit: BoxFit.fill,
                         ),
                       ),
 
-                      const SizedBox(width: 10), // مساحة بين العناصر
+                      const SizedBox(width: 10),
 
-                      // العنصر النصي (title + price)
+                 
                       Expanded(
                         child: Column(
                           crossAxisAlignment:
-                              CrossAxisAlignment.center, // يبدأ النص من اليسار
+                              CrossAxisAlignment.center, 
                           children: [
                             Expanded(
                               child: Text(
@@ -62,7 +62,7 @@ class _CardPageState extends State<Favorite> {
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
-                            // مساحة بين النصوص
+                          
                             Text(
                               "${CustomContainerProducts.productsFavorite[i].price} ₺",
                               style: Theme.of(context)
@@ -73,9 +73,6 @@ class _CardPageState extends State<Favorite> {
                           ],
                         ),
                       ),
-
-                      // العنصر الأخير (trailing)
-
                       Center(
                         child: IconButton(
                           onPressed: () {

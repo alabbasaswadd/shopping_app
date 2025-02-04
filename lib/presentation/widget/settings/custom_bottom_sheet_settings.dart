@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 class CustomBottomSheetSettings extends StatelessWidget {
-  CustomBottomSheetSettings(
+  const CustomBottomSheetSettings(
       {super.key, required this.widget, required this.textBottomSheet});
-  @override
   final Widget widget;
   final String textBottomSheet;
+  @override
   Widget build(BuildContext context) {
     return BottomSheet(
         enableDrag: true,
         showDragHandle: true,
         onClosing: () {},
-        builder: (context) => Container(
+        builder: (context) => SizedBox(
             height: 260,
             child: Column(children: [
               Text(
@@ -28,7 +28,8 @@ class CustomBottomSheetSettings extends StatelessWidget {
 }
 
 class CustomCardSettings extends StatelessWidget {
-  CustomCardSettings({this.lang, required this.onChanged, this.widget});
+  const CustomCardSettings(
+      {super.key, this.lang, required this.onChanged, this.widget});
   final String? lang;
   final Function(Object? val) onChanged;
   final Widget? widget;
@@ -48,7 +49,7 @@ class CustomCardSettings extends StatelessWidget {
 }
 
 class CustomTextFieldSettings extends StatelessWidget {
-  CustomTextFieldSettings({super.key, required this.label});
+  const CustomTextFieldSettings({super.key, required this.label});
   final String label;
   @override
   Widget build(BuildContext context) {

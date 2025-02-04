@@ -5,11 +5,10 @@ import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/widget/auth/appbar/custom_flexiblespace.dart';
 import 'package:shopping_app/presentation/widget/auth/custom_button.dart';
 import 'package:shopping_app/presentation/widget/auth/custom_textfield.dart';
-
 import 'signup.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+const  Login({super.key});
   static String id = "login";
 
   @override
@@ -37,11 +36,9 @@ class _LoginState extends State<Login> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  child: Text(
-                    "Welcome Back 👋",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                Text(
+                  "Welcome Back 👋",
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
                   "We happy to see you again. To use your account, you should log im first.",
