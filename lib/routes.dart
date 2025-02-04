@@ -11,7 +11,6 @@ import 'package:shopping_app/presentation/screens/stores.dart';
 import 'presentation/screens/favorite.dart';
 import 'presentation/screens/payment.dart';
 import 'presentation/screens/signup.dart';
-import 'progres.dart';
 import 'presentation/screens/login.dart';
 import 'presentation/screens/home_screen.dart';
 import 'presentation/screens/notifications.dart';
@@ -33,7 +32,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   ProdutDetails.id: (context) => ProdutDetails(),
   CardPage.id: (context) => CardPage(),
   Notifications.id: (context) => Notifications(),
-  Progres.id: (context) => Progres(),
   HomeScreen.id: (context) => HomeScreen(),
   Onboarding.id: (context) => Onboarding(),
   Splash.id: (context) => Splash(),

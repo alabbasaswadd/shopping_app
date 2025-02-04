@@ -18,7 +18,7 @@ class ProdutDetails extends StatelessWidget {
         elevation: 8,
         shadowColor: Colors.black,
         centerTitle: true,
-        title: Text("Product"),
+        title: Text("Product Details"),
       ),
       body: Container(
         padding: EdgeInsets.all(15),

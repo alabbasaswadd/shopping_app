@@ -10,7 +10,6 @@ import 'package:shopping_app/presentation/screens/splash.dart';
 import 'routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String savedLanguage = prefs.getString('language') ?? 'en';
 

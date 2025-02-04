@@ -50,14 +50,10 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
             itemBuilder: (context, i) {
               return InkWell(
                 onTap: () {
-              
                   Navigator.pushNamed(context, ProdutDetails.id,
-                      arguments: products[i] 
-                      );
+                      arguments: products[i]);
 
-               
-                  CustomContainerProducts.productsInside
-                      .clear(); 
+                  CustomContainerProducts.productsInside.clear();
                   CustomContainerProducts.productsInside.add(ProductsModel(
                     title: products[i].title,
                     description: products[i].description,
@@ -73,8 +69,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                         color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .start, 
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: double.infinity,
@@ -82,12 +77,11 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                           child: Image.network(
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) {
-                             
                                 return child;
                               }
 
                               return Image.asset(
-                                'assets/images/loading.gif', 
+                                'assets/images/loading.gif',
                                 fit: BoxFit.cover,
                               );
                             },
@@ -97,14 +91,10 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                     .productsSearch[i].image,
                           ),
                         ),
-
-                        const SizedBox(width: 10), 
-
-                      
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .center, 
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
                                 child: Text(
@@ -116,7 +106,6 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
-                             
                               Text(
                                 "${CustomTitleAppbarProducts.controller.text == "" ? products[i].price : CustomTitleAppbarProducts.productsSearch[i].price} ₺",
                                 style: Theme.of(context)
@@ -127,8 +116,6 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                             ],
                           ),
                         ),
-
-
                         Column(
                           children: [
                             IconButton(
@@ -157,8 +144,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                       description: products[i].description,
                                       image: products[i].image,
                                       price: products[i].price,
-                                      quantity:
-                                          1, 
+                                      quantity: 1,
                                     ),
                                   );
                                 }
@@ -190,8 +176,7 @@ class _CustomContainerProductsState extends State<CustomContainerProducts> {
                                       description: products[i].description,
                                       image: products[i].image,
                                       price: products[i].price,
-                                      quantity:
-                                          1, 
+                                      quantity: 1,
                                     ),
                                   );
                                 }

@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/onboarding_model.dart';
-import 'package:shopping_app/data/model/products_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
@@ -15,7 +14,7 @@ class Onboarding extends StatefulWidget {
   Onboarding({super.key});
   static String id = "onBoarding";
   static late int logisned;
-  List<ProductsModel> products = [];
+
   @override
   State<Onboarding> createState() => _OnboardingState();
 }
@@ -43,10 +42,6 @@ class _OnboardingState extends State<Onboarding> {
         body:
             "Create your account or log in to discover everything new and special.")
   ];
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

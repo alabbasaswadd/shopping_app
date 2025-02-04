@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/services.dart';
@@ -21,18 +23,17 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  // ignore: non_constant_identifier_names
   bool switch_isEnable = false;
-  String selectedLanguage = "en"; // متغير لتحديد اللغة الحالية
-  Map<String, String> translations = {}; // لتخزين الترجمات
-
+  String selectedLanguage = "en";
+  Map<String, String> translations = {};
   @override
   void initState() {
     super.initState();
-    _loadSwitchValue(); // تحميل قيمة الوضع الليلي
-    _loadLanguage(); // تحميل اللغة المحفوظة
+    _loadSwitchValue();
+    _loadLanguage();
   }
 
-  /// تحميل الثيم (وضع ليلي/نهاري) من SharedPreferences
   Future<void> _loadSwitchValue() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -46,13 +47,11 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  /// حفظ قيمة الثيم (وضع ليلي/نهاري) في SharedPreferences
   Future<void> _saveSwitchValue(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('theme', value);
   }
 
-  /// تحميل اللغة المحفوظة من SharedPreferences
   Future<void> _loadLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -62,13 +61,11 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  /// حفظ اللغة المحددة في SharedPreferences
   Future<void> _saveLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', language);
   }
 
-  /// تحميل الترجمات من ملف JSON
   Future<void> _loadTranslations(String languageCode) async {
     String jsonString =
         await rootBundle.loadString('assets/localazations/$languageCode.json');
@@ -79,8 +76,7 @@ class _SettingsState extends State<Settings> {
   }
 
   String getTranslation(String key) {
-    return translations[key] ??
-        key; // إرجاع النص المترجم أو المفتاح إذا لم يكن موجودًا
+    return translations[key] ?? key;
   }
 
   @override
@@ -240,8 +236,8 @@ class _SettingsState extends State<Settings> {
               children: [
                 Switch(
                     thumbColor: switch_isEnable
-                        ? MaterialStateProperty.all(AppColor.kWhiteColor)
-                        : MaterialStateProperty.all(AppColor.kSecondColor),
+                        ? WidgetStateProperty.all(AppColor.kWhiteColor)
+                        : WidgetStateProperty.all(AppColor.kSecondColor),
                     value: switch_isEnable,
                     onChanged: (val) async {
                       setState(() {
