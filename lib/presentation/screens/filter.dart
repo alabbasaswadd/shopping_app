@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shopping_app/core/constants/colors.dart';
 
 class Filter extends StatefulWidget {
   const Filter({super.key});
@@ -117,7 +118,7 @@ class _FilterScreenState extends State<Filter> {
             return FilterChip(
               label: Text(option),
               selected: isSelected,
-              selectedColor: Colors.blue.shade100,
+              selectedColor: AppColor.kPrimaryColor,
               onSelected: (selected) {
                 setState(() {
                   selected
@@ -165,7 +166,6 @@ class _FilterScreenState extends State<Filter> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

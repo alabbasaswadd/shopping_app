@@ -5,9 +5,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
+import 'package:shopping_app/business_logic/cubit/searching/cubit/searching_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
 import 'package:shopping_app/presentation/screens/splash.dart';
+import 'business_logic/cubit/products/products_cubit.dart';
 import 'routes.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -17,9 +20,9 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => LocalazationsCubit()
-            ..changeLang(savedLanguage),
+          create: (context) => LocalazationsCubit()..changeLang(savedLanguage),
         ),
+        BlocProvider(create: (context) => SearchingCubit()),
       ],
       child: const MyApp(),
     ),

@@ -6,27 +6,21 @@ class Stores extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Stores"),
-        centerTitle: true,
-        elevation: 8,
-        shadowColor: Colors.black,
-      ),
-      body: ListView.builder(
-        itemCount: 9,
-        itemBuilder: (context, i) => Container(
-          padding: EdgeInsets.all(5),
-          height: 200,
-          child: Card(
-            child: ListTile(
-              title: Icon(
-                Icons.home,
-                size: 40,
-              ),
+        appBar: AppBar(
+          title: Text("Stores"),
+          centerTitle: true,
+          elevation: 8,
+          shadowColor: Colors.black,
+        ),
+        body: Container(
+          child: GridView.builder(
+            itemCount: 10,
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, i) => Card(
+              child: Center(child: Text("Store")),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
