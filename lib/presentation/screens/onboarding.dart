@@ -11,7 +11,7 @@ import 'package:shopping_app/presentation/screens/home_screen.dart';
 
 // ignore: must_be_immutable
 class Onboarding extends StatefulWidget {
-  Onboarding({super.key});
+  const Onboarding({super.key});
   static String id = "onBoarding";
   static late int logisned;
 

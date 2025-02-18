@@ -8,7 +8,6 @@ import 'package:shopping_app/business_logic/cubit/localazations/localazations_cu
 import 'package:shopping_app/business_logic/cubit/searching/cubit/searching_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
 import 'package:shopping_app/presentation/screens/splash.dart';
-import 'business_logic/cubit/products/products_cubit.dart';
 import 'routes.dart';
 
 void main() async {

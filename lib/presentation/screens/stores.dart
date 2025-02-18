@@ -12,14 +12,12 @@ class Stores extends StatelessWidget {
           elevation: 8,
           shadowColor: Colors.black,
         ),
-        body: Container(
-          child: GridView.builder(
-            itemCount: 10,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            itemBuilder: (context, i) => Card(
-              child: Center(child: Text("Store")),
-            ),
+        body: GridView.builder(
+          itemCount: 10,
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (context, i) => Card(
+            child: Center(child: Text("Store")),
           ),
         ));
   }

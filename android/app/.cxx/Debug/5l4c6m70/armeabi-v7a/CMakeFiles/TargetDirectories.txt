@@ -1,0 +1,2 @@
+C:/Users/alabbas/Desktop/shopping_app/android/app/.cxx/Debug/5l4c6m70/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/alabbas/Desktop/shopping_app/android/app/.cxx/Debug/5l4c6m70/armeabi-v7a/CMakeFiles/rebuild_cache.dir

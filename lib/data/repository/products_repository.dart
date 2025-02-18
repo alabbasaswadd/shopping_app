@@ -9,5 +9,3 @@ class ProductsRepository {
     return products.map((product) => ProductsModel.fromJson(product)).toList();
   }
 }
-
-

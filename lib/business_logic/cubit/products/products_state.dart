@@ -11,6 +11,7 @@ class ProductsSuccess extends ProductsState {
 }
 
 class ProductsError extends ProductsState {
+  // ignore: prefer_typing_uninitialized_variables
   final error;
   ProductsError(this.error);
 }

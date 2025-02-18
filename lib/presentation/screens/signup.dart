@@ -95,15 +95,16 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(height: 15),
                 InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(HomeScreen.id);
-                    },
-                    child: Text(
-                      "Browse No Account",
-                      style: TextStyle(
-                        color: AppColor.kPrimaryColor,
-                      ),
-                    ))
+                  onTap: () {
+                    Navigator.of(context).pushNamed(HomeScreen.id);
+                  },
+                  child: Text(
+                    "Browse No Account",
+                    style: TextStyle(
+                      color: AppColor.kPrimaryColor,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

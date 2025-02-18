@@ -5,6 +5,15 @@ allprojects {
     }
 }
 
+buildscript {
+     repositories {
+        google()  // لإضافة مستودع Google
+        mavenCentral()  // لإضافة Maven Central
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.2' // أو أي إصدار حديث متوافق
+    }
+}
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
