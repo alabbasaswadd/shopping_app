@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
-class CustomDrawerItem extends StatelessWidget {
-  const CustomDrawerItem({
+class ProductsCustomDrawer extends StatelessWidget {
+  const ProductsCustomDrawer({
     super.key,
     required this.icon,
     required this.title,
-    this.color = const Color(0xff5673cc), required this.ontap,
+    this.color = const Color(0xff5673cc),
+    required this.ontap,
   });
   final IconData icon;
   final String title;

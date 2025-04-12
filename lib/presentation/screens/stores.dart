@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
 
 class Stores extends StatelessWidget {
   const Stores({super.key});
@@ -7,16 +9,16 @@ class Stores extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Stores"),
+          title: Text("stores".tr),
           centerTitle: true,
           elevation: 8,
           shadowColor: Colors.black,
         ),
         body: GridView.builder(
-          itemCount: 10,
+          itemCount: 12,
           gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (context, i) => Card(
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+          itemBuilder: (context, i) => MyCard(
             child: Center(child: Text("Store")),
           ),
         ));

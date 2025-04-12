@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
-class CustomIconAppbar extends StatelessWidget {
- const CustomIconAppbar(
-      {super.key, required this.icon,
+class MyIcon extends StatelessWidget {
+  const MyIcon(
+      {super.key,
+      required this.icon,
       required this.left,
       required this.top,
       this.rotate = 0});

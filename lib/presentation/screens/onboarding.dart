@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/onboarding_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';

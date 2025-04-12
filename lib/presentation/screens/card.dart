@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/presentation/screens/payment.dart';
-import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
+import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -24,22 +24,22 @@ class _CardPageState extends State<CardPage> {
 
   void calculateTotalPrice() {
     setState(() {
-      _totalPrice = CustomContainerProducts.productsCard
+      _totalPrice = ProductsBody.productsCard
           .fold(0.0, (sum, item) => sum + ((item.price) * item.quantity));
     });
   }
 
   void increaseQuantity(int index) {
     setState(() {
-      CustomContainerProducts.productsCard[index].quantity += 1;
+      ProductsBody.productsCard[index].quantity += 1;
       calculateTotalPrice();
     });
   }
 
   void decreaseQuantity(int index) {
     setState(() {
-      if (CustomContainerProducts.productsCard[index].quantity > 1) {
-        CustomContainerProducts.productsCard[index].quantity--;
+      if (ProductsBody.productsCard[index].quantity > 1) {
+        ProductsBody.productsCard[index].quantity--;
         calculateTotalPrice();
       }
     });
@@ -49,15 +49,15 @@ class _CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Card"),
+        title: Text("card".tr),
         centerTitle: true,
         elevation: 8,
         shadowColor: Colors.black,
       ),
-      body: CustomContainerProducts.productsCard.isEmpty
-          ? Center(child: Text("No Products In The Card"))
+      body: ProductsBody.productsCard.isEmpty
+          ? Center(child: Text("no_products_in_card".tr))
           : ListView.builder(
-              itemCount: CustomContainerProducts.productsCard.length,
+              itemCount: ProductsBody.productsCard.length,
               itemBuilder: (context, i) {
                 return Container(
                   padding: EdgeInsets.all(5),
@@ -73,7 +73,7 @@ class _CardPageState extends State<CardPage> {
                         height: double.infinity,
                         width: 100,
                         child: Image.network(
-                          CustomContainerProducts.productsCard[i].image,
+                          ProductsBody.productsCard[i].image,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -84,12 +84,12 @@ class _CardPageState extends State<CardPage> {
                           children: [
                             Expanded(
                               child: Text(
-                                CustomContainerProducts.productsCard[i].title,
+                                ProductsBody.productsCard[i].title,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
                             Text(
-                              "${CustomContainerProducts.productsCard[i].price} ₺",
+                              "${ProductsBody.productsCard[i].price} ₺",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge!
@@ -107,7 +107,7 @@ class _CardPageState extends State<CardPage> {
                                   msg: "Removed From Card",
                                   backgroundColor: AppColor.kRedColor);
                               setState(() {
-                                CustomContainerProducts.productsCard
+                                ProductsBody.productsCard
                                     .removeAt(i);
                                 calculateTotalPrice(); // تحديث الإجمالي بعد الحذف
                               });
@@ -121,7 +121,7 @@ class _CardPageState extends State<CardPage> {
                                   onPressed: () => decreaseQuantity(i),
                                   icon: Icon(Icons.remove)),
                               Text(
-                                "${CustomContainerProducts.productsCard[i].quantity}",
+                                "${ProductsBody.productsCard[i].quantity}",
                                 style: TextStyle(fontSize: 16),
                               ),
                               IconButton(
@@ -145,7 +145,7 @@ class _CardPageState extends State<CardPage> {
             children: [
               Center(
                 child: Text(
-                  "Total: ${_totalPrice.toStringAsFixed(2)} ₺",
+                  "total: ${_totalPrice.toStringAsFixed(2)} ₺",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -155,7 +155,7 @@ class _CardPageState extends State<CardPage> {
                 onPressed: () {
                   Get.toNamed(Payment.id);
                 },
-                child: Text("Payment"),
+                child: Text("payment".tr),
               ),
             ],
           ),

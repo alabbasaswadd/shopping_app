@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
@@ -9,47 +11,41 @@ class About extends StatelessWidget {
       appBar: AppBar(
         shadowColor: Colors.black,
         elevation: 8,
-        title: Text("About"),
+        title: Text("about".tr),
       ),
       body: Column(
         children: const [
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("FaceBook"),
               leading: Icon(Icons.facebook),
             ),
           ),
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("whatsApp"),
               leading: Icon(Icons.whatshot_sharp),
             ),
           ),
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("Youtube"),
               leading: Icon(Icons.add_box_outlined),
             ),
           ),
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("Telegram"),
               leading: Icon(Icons.telegram),
             ),
           ),
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("Instagram"),
               leading: Icon(Icons.insert_page_break),
             ),
           ),
-          Card(
-            elevation: 8,
+          MyCard(
             child: ListTile(
               title: Text("X"),
               leading: Icon(Icons.one_x_mobiledata),

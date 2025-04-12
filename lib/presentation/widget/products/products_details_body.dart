@@ -2,8 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/data/model/products_model.dart';
 
-class CustomBodyInsideProduct extends StatelessWidget {
-  const CustomBodyInsideProduct({super.key});
+class ProductsDetailsBody extends StatelessWidget {
+  const ProductsDetailsBody({super.key});
   @override
   Widget build(BuildContext context) {
     final ProductsModel productDetails =

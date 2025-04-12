@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/presentation/widget/auth/appbar/custom_icon_appbar.dart';
+import 'package:shopping_app/core/widgets/my_icon.dart';
 
 class CustomFlexibleSpace extends StatelessWidget {
   const CustomFlexibleSpace({super.key});
@@ -11,36 +11,35 @@ class CustomFlexibleSpace extends StatelessWidget {
     bool isLandscape = widthScreen > heightScreen;
 
     return Stack(children: <Widget>[
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.category_outlined,
-        top: heightScreen *
-            (isLandscape ? 0.10 : 0.05), 
+        top: heightScreen * (isLandscape ? 0.10 : 0.05),
         left: widthScreen * 0.12,
         rotate: -0.2,
       ),
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.store_outlined,
         top: heightScreen * (isLandscape ? 0.08 : 0.025),
         left: widthScreen * 0.5,
         rotate: 0.1,
       ),
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.add_box_outlined,
         top: heightScreen * (isLandscape ? 0.12 : 0.05),
         left: widthScreen * 0.85,
       ),
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.calendar_today_outlined,
         top: heightScreen * (isLandscape ? 0.4 : 0.2),
         left: widthScreen * 0.13,
         rotate: -0.2,
       ),
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.verified,
         top: heightScreen * (isLandscape ? 0.4 : 0.2),
         left: widthScreen * 0.5,
       ),
-      CustomIconAppbar(
+      MyIcon(
         icon: Icons.store_outlined,
         top: heightScreen * (isLandscape ? 0.4 : 0.2),
         left: widthScreen * 0.85,

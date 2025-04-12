@@ -25,9 +25,9 @@ class _SplashState extends State<Splash> {
     final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
     if (hasSeenOnboarding) {
-      Get.toNamed(SignUp.id);
+      Get.offAllNamed(SignUp.id);
     } else {
-      Get.toNamed(Onboarding.id);
+      Get.offAllNamed(Onboarding.id);
     }
   }
 

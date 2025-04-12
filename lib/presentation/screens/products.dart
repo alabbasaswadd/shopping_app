@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopping_app/business_logic/cubit/products/products_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
-import 'package:shopping_app/presentation/widget/products/appbar/custom_actions_appbar_products.dart';
-import 'package:shopping_app/presentation/widget/products/appbar/custom_drawer_products.dart';
-import 'package:shopping_app/presentation/widget/products/appbar/custom_title_appbar_products.dart';
-import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
+import 'package:shopping_app/presentation/widget/products/appbar/products_appbar_actions.dart';
+import 'package:shopping_app/presentation/widget/products/appbar/products_drawer.dart';
+import 'package:shopping_app/presentation/widget/products/appbar/products_appbar_title.dart';
+import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
 class Productes extends StatelessWidget {
   const Productes({super.key});
@@ -18,15 +18,14 @@ class Productes extends StatelessWidget {
         create: (context) =>
             ProductsCubit(ProductsRepository(ProductsWebServices())),
         child: Scaffold(
-            drawer: CustomDrawerProducts(),
+            drawer: ProductsDrawer(),
             appBar: AppBar(
               elevation: 8,
               shadowColor: Colors.black,
-              title: CustomTitleAppbarProducts(),
-              actions: const [CustomActionsAppbarProducts()],
+              title: ProductsAppbarTitle(),
+              actions: const [ProductsAppbarActions()],
             ),
-            body: Container(
-                padding: EdgeInsets.all(20),
-                child: CustomContainerProducts())));
+            body:
+                Container(padding: EdgeInsets.all(20), child: ProductsBody())));
   }
 }

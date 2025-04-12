@@ -7,7 +7,7 @@ part 'products_state.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   ProductsRepository productsRepository;
   List<ProductsModel> products = [];
-  ProductsCubit(this.productsRepository) : super(ProductsInitial());
+  ProductsCubit(this.productsRepository) : super(ProductsLoading());
 
   void getData() {
     emit(ProductsLoading());
@@ -19,6 +19,4 @@ class ProductsCubit extends Cubit<ProductsState> {
       emit(ProductsError(error.toString()));
     });
   }
-
-  List<ProductsModel> listOfSearch = [];
 }

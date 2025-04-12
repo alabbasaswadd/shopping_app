@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/products_model.dart';
-import 'package:shopping_app/presentation/widget/products/custom_body_inside_product.dart';
-import '../widget/products/custom_container_products.dart';
+import 'package:shopping_app/presentation/widget/products/products_details_body.dart';
+import '../widget/products/products_body.dart';
 
 class ProdutDetails extends StatelessWidget {
   const ProdutDetails({super.key});
@@ -22,11 +22,11 @@ class ProdutDetails extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.all(15),
-        child: const CustomBodyInsideProduct(),
+        child: const ProductsDetailsBody(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          bool isAlreadyAdded = CustomContainerProducts.productsCard.any(
+          bool isAlreadyAdded = ProductsBody.productsCard.any(
             (product) => product.title == productDetails.title,
           );
 
@@ -36,7 +36,7 @@ class ProdutDetails extends StatelessWidget {
               backgroundColor: AppColor.kRedColor,
             );
           } else {
-            CustomContainerProducts.productsCard.add(ProductsModel(
+            ProductsBody.productsCard.add(ProductsModel(
                 title: productDetails.title,
                 image: productDetails.image,
                 price: productDetails.price));

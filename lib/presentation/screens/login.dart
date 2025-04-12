@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
-import 'package:shopping_app/presentation/widget/auth/appbar/custom_flexiblespace.dart';
-import 'package:shopping_app/presentation/widget/auth/custom_button.dart';
-import 'package:shopping_app/presentation/widget/auth/custom_textfield.dart';
+import 'package:shopping_app/presentation/widget/auth/appbar/appbar_flexiblespace_auth.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
-const  Login({super.key});
+  const Login({super.key});
   static String id = "login";
 
   @override
@@ -17,12 +17,15 @@ const  Login({super.key});
 
 class _LoginState extends State<Login> {
   bool check = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: CustomFlexibleSpace(),
-        title: Text("Login"),
+        title: Text("login".tr),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         centerTitle: true,
         foregroundColor: Colors.white,
@@ -30,75 +33,100 @@ class _LoginState extends State<Login> {
       ),
       body: Stack(children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           width: double.infinity,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Text(
-                  "Welcome Back 👋",
+                  "Welcome_Back".tr,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Text(
-                  "We happy to see you again. To use your account, you should log im first.",
+                  "welcome_message".tr,
                   textAlign: TextAlign.center,
                 ),
                 Container(
-                    padding: EdgeInsets.only(left: 20),
-                    margin: EdgeInsets.only(top: 20),
-                    alignment: Alignment.centerLeft,
-                    child: Text("Enter Your e-mail")),
-                CustomTextfield(text: "Email"),
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      "email".tr,
+                    )),
+                MyTextFormField(
+                  label: "email".tr,
+                  controller: emailController,
+                ),
                 Container(
-                    padding: EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.only(left: 20),
                     alignment: Alignment.centerLeft,
-                    child: Text("Enter Your Password")),
-                CustomTextfield(text: "Password", suffix: true),
+                    child: Text("enter_password".tr)),
+                MyTextFormField(
+                  label: "password".tr,
+                  suffix: true,
+                  controller: passwordController,
+                ),
                 Row(
                   children: [
                     Checkbox(
-                        checkColor: AppColor.kWhiteColor,
-                        value: check,
-                        onChanged: (val) {
-                          setState(() {
-                            check = val!;
-                          });
-                        }),
-                    Text("Remmber me"),
+                      checkColor: AppColor.kWhiteColor,
+                      value: check,
+                      onChanged: (val) {
+                        setState(() {
+                          check = val!;
+                        });
+                      },
+                    ),
+                    Text("remember_me".tr),
                   ],
                 ),
-                CustomButton(),
+                MyButton(
+                  text: "login".tr,
+                  onPressed: () {
+                    if (emailController.text == "test@test.com" &&
+                        passwordController.text == "123") {
+                      Get.offAndToNamed(HomeScreen.id);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("data".tr)),
+                      );
+                    }
+                  },
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Do You Have Not An Account? ",
-                      style: TextStyle(fontSize: 13),
+                      "dont have an account ? ".tr,
+                      style: const TextStyle(fontSize: 13),
                     ),
                     InkWell(
                       onTap: () {
                         Get.offAndToNamed(SignUp.id);
                       },
                       child: Text(
-                        "SignUp",
+                        "SignUp".tr,
                         style: TextStyle(
-                            color: AppColor.kPrimaryColor, fontSize: 13),
+                          color: AppColor.kPrimaryColor,
+                          fontSize: 13,
+                        ),
                       ),
                     )
                   ],
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 InkWell(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(HomeScreen.id);
-                    },
-                    child: Text(
-                      "Browse No Account",
-                      style: TextStyle(
-                        color: AppColor.kPrimaryColor,
-                      ),
-                    ))
+                  onTap: () {
+                    Get.offAllNamed(HomeScreen.id);
+                  },
+                  child: Text(
+                    "browse_no_account".tr,
+                    style: TextStyle(
+                      color: AppColor.kPrimaryColor,
+                    ),
+                  ),
+                )
               ],
             ),
           ),

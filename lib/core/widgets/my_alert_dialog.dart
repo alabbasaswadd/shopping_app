@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
-class CustomAlertDialogSettings extends StatelessWidget {
-  const CustomAlertDialogSettings(
-      {super.key, required this.onOk, required this.onNo});
+class MyAlertDialog extends StatelessWidget {
+  const MyAlertDialog({super.key, required this.onOk, required this.onNo, required this.title, required this.content});
   final Function() onOk;
   final Function() onNo;
+  final String title;
+  final String content;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -24,10 +25,10 @@ class CustomAlertDialogSettings extends StatelessWidget {
         ),
       ],
       title: Text(
-        "Logout",
+        title,
         style: Theme.of(context).textTheme.titleLarge,
       ),
-      content: Text("Do You Really Want To Get Out ?"),
+      content: Text(content),
     );
   }
 }

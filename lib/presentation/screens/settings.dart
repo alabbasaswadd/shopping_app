@@ -1,18 +1,14 @@
-// ignore_for_file: sized_box_for_whitespace, use_build_context_synchronously
-
-import 'dart:convert';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app/business_logic/cubit/localazations/localazations_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
+import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/core/widgets/my_list_tile.dart';
+import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/login.dart';
-import 'package:shopping_app/presentation/widget/settings/custom_alert_dialog_settings.dart';
 import 'package:shopping_app/presentation/widget/settings/custom_bottom_sheet_settings.dart';
-import 'package:shopping_app/presentation/widget/settings/custom_listtile_settings.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -23,15 +19,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  // ignore: non_constant_identifier_names
   bool switch_isEnable = false;
-  String selectedLanguage = "en";
-  Map<String, String> translations = {};
+  String selectedLanguage = Get.locale?.languageCode ?? "en";
+
   @override
   void initState() {
     super.initState();
     _loadSwitchValue();
-    _loadLanguage();
   }
 
   Future<void> _loadSwitchValue() async {
@@ -52,31 +46,9 @@ class _SettingsState extends State<Settings> {
     await prefs.setBool('theme', value);
   }
 
-  Future<void> _loadLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      selectedLanguage = prefs.getString('language') ?? 'en';
-      _loadTranslations(selectedLanguage); // تحميل الترجمات بناءً على اللغة
-      context.read<LocalazationsCubit>().changeLang(selectedLanguage);
-    });
-  }
-
   Future<void> _saveLanguage(String language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', language);
-  }
-
-  Future<void> _loadTranslations(String languageCode) async {
-    String jsonString =
-        await rootBundle.loadString('assets/localazations/$languageCode.json');
-    Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-    setState(() {
-      translations = Map<String, String>.from(jsonMap);
-    });
-  }
-
-  String getTranslation(String key) {
-    return translations[key] ?? key;
   }
 
   @override
@@ -85,92 +57,80 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         elevation: 8,
         shadowColor: Colors.black,
-        title: Text(getTranslation('settings_title')),
+        title: Text("settings".tr),
         centerTitle: true,
       ),
       body: ListView(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: CustomListtileSettings(
-                ontap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) => CustomBottomSheetSettings(
-                            textBottomSheet: getTranslation('username'),
-                            widget: SingleChildScrollView(
-                              child: Column(children: [
-                                CustomTextFieldSettings(
-                                    label: getTranslation('username')),
-                                CustomTextFieldSettings(
-                                    label: getTranslation('phone_number')),
-                                CustomButtonSettings(),
-                              ]),
-                            ),
-                          ));
-                },
-                icon: Icons.person,
-                title: getTranslation('username'),
-                children: const [Text("Merdan"), Icon(Icons.arrow_forward)]),
-          ),
-          CustomListtileSettings(
+          SizedBox(height: 20),
+          MyListTile(
               ontap: () {
                 showModalBottomSheet(
                     context: context,
                     builder: (context) => CustomBottomSheetSettings(
-                          textBottomSheet: getTranslation('phone_number'),
+                          textBottomSheet: "username".tr,
                           widget: SingleChildScrollView(
                             child: Column(children: [
-                              CustomTextFieldSettings(
-                                  label: getTranslation('username')),
-                              CustomTextFieldSettings(
-                                  label: getTranslation('phone_number')),
-                              CustomButtonSettings(),
+                              MyTextFormField(label: "username".tr),
+                              MyTextFormField(label: "phone_number".tr),
+                              MyButton(text: "save", onPressed: () {}),
+                            ]),
+                          ),
+                        ));
+              },
+              icon: Icons.person,
+              title: "username".tr,
+              children: const [Text("Merdan"), Icon(Icons.arrow_forward)]),
+          MyListTile(
+              ontap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => CustomBottomSheetSettings(
+                          textBottomSheet: "phone_number".tr,
+                          widget: SingleChildScrollView(
+                            child: Column(children: [
+                              MyTextFormField(label: "username".tr),
+                              MyTextFormField(label: "phone_number".tr),
+                              MyButton(text: "save", onPressed: () {}),
                             ]),
                           ),
                         ));
               },
               icon: Icons.phone_android,
-              title: getTranslation('phone_number'),
+              title: "phone_number".tr,
               children: const [
                 Expanded(child: Text("+9635456124")),
                 Icon(Icons.arrow_forward)
               ]),
-          CustomListtileSettings(
-              ontap: () {
+          MyListTile(
+              ontap: () async {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) => CustomBottomSheetSettings(
-                    textBottomSheet: getTranslation('language'),
-                    widget: Container(
+                    textBottomSheet: "language".tr,
+                    widget: SizedBox(
                       height: 180,
                       child: ListView(children: [
                         CustomCardSettings(
                           onChanged: (val) {},
                           widget: ListTile(
                             onTap: () async {
+                              Get.updateLocale(const Locale("ar"));
                               setState(() {
                                 selectedLanguage = "ar";
                               });
                               await _saveLanguage("ar");
-                              _loadTranslations("ar");
-                              context
-                                  .read<LocalazationsCubit>()
-                                  .changeLang("ar");
                             },
-                            leading: Text(getTranslation('arabic')),
+                            leading: Text("arabic".tr),
                             trailing: Radio(
                               value: "ar",
                               groupValue: selectedLanguage,
                               onChanged: (val) async {
+                                Get.updateLocale(const Locale("ar"));
                                 setState(() {
                                   selectedLanguage = "ar";
                                 });
                                 await _saveLanguage("ar");
-                                _loadTranslations("ar");
-                                context
-                                    .read<LocalazationsCubit>()
-                                    .changeLang("ar");
                               },
                             ),
                           ),
@@ -179,28 +139,22 @@ class _SettingsState extends State<Settings> {
                           onChanged: (val) {},
                           widget: ListTile(
                             onTap: () async {
+                              Get.updateLocale(const Locale("en"));
                               setState(() {
                                 selectedLanguage = "en";
                               });
                               await _saveLanguage("en");
-                              _loadTranslations("en");
-                              context
-                                  .read<LocalazationsCubit>()
-                                  .changeLang("en");
                             },
-                            leading: Text(getTranslation('english')),
+                            leading: Text("english".tr),
                             trailing: Radio(
                               value: "en",
                               groupValue: selectedLanguage,
                               onChanged: (val) async {
+                                Get.updateLocale(const Locale("en"));
                                 setState(() {
                                   selectedLanguage = "en";
                                 });
                                 await _saveLanguage("en");
-                                _loadTranslations("en");
-                                context
-                                    .read<LocalazationsCubit>()
-                                    .changeLang("en");
                               },
                             ),
                           ),
@@ -211,14 +165,12 @@ class _SettingsState extends State<Settings> {
                 );
               },
               icon: Icons.language,
-              title: getTranslation('language'),
+              title: "language".tr,
               children: [
-                Text(selectedLanguage == "ar"
-                    ? getTranslation('arabic')
-                    : getTranslation('english')),
+                Text(selectedLanguage == "ar" ? "arabic".tr : "english".tr),
                 Icon(Icons.arrow_forward)
               ]),
-          CustomListtileSettings(
+          MyListTile(
               ontap: () async {
                 setState(() {
                   switch_isEnable = !switch_isEnable;
@@ -232,7 +184,7 @@ class _SettingsState extends State<Settings> {
                 });
               },
               icon: Icons.dark_mode,
-              title: getTranslation('dark_mode'),
+              title: "dark_mode".tr,
               children: [
                 Switch(
                     thumbColor: switch_isEnable
@@ -251,11 +203,13 @@ class _SettingsState extends State<Settings> {
                       });
                     })
               ]),
-          CustomListtileSettings(
+          MyListTile(
             ontap: () {
               showDialog(
                   context: context,
-                  builder: (context) => CustomAlertDialogSettings(
+                  builder: (context) => MyAlertDialog(
+                        content: "Do You Have Log_Out",
+                        title: "Log_Out",
                         onOk: () {
                           Get.offAllNamed(Login.id);
                         },
@@ -265,7 +219,7 @@ class _SettingsState extends State<Settings> {
                       ));
             },
             icon: Icons.logout,
-            title: getTranslation('log_out'),
+            title: "log_out".tr,
             children: const [],
           )
         ],

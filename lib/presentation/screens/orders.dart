@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 
 class Orders extends StatelessWidget {
@@ -31,7 +32,7 @@ class Orders extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Orders"),
+        title: Text("orders".tr),
         centerTitle: true,
         elevation: 8,
         shadowColor: Colors.black,
@@ -70,7 +71,6 @@ class CustomOrderContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Row(
             children: [
               Container(
@@ -114,14 +114,10 @@ class CustomOrderContainer extends StatelessWidget {
               ),
             ],
           ),
-
-      
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {
-          
-              },
+              onPressed: () {},
               child: Text(
                 "View Details",
                 style: TextStyle(
@@ -136,7 +132,6 @@ class CustomOrderContainer extends StatelessWidget {
     );
   }
 
-
   Color _getStatusColor(OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
@@ -148,7 +143,6 @@ class CustomOrderContainer extends StatelessWidget {
     }
   }
 
-
   String _getStatusText(OrderStatus status) {
     switch (status) {
       case OrderStatus.delivered:
@@ -159,7 +153,6 @@ class CustomOrderContainer extends StatelessWidget {
         return "Canceled";
     }
   }
-
 
   Icon _buildStatusIcon(OrderStatus status) {
     switch (status) {

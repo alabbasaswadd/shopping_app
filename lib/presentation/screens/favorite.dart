@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
+import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
 class Favorite extends StatefulWidget {
   const Favorite({super.key});
@@ -16,15 +17,15 @@ class _CardPageState extends State<Favorite> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Favorite"),
+        title: Text("favorite".tr),
         centerTitle: true,
         elevation: 8,
         shadowColor: Colors.black,
       ),
-      body: CustomContainerProducts.productsFavorite.isEmpty
-          ? Center(child: Text("No Products In The Favorite"))
+      body: ProductsBody.productsFavorite.isEmpty
+          ? Center(child: Text("no_products_in_favorite".tr))
           : ListView.builder(
-              itemCount: CustomContainerProducts.productsFavorite.length,
+              itemCount: ProductsBody.productsFavorite.length,
               itemBuilder: (context, i) {
                 return Container(
                   padding: EdgeInsets.all(5),
@@ -34,37 +35,30 @@ class _CardPageState extends State<Favorite> {
                       color: Theme.of(context).colorScheme.secondary,
                       borderRadius: BorderRadius.circular(10)),
                   child: Row(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, 
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         height: double.infinity,
                         width: 100,
                         child: Image.network(
-                          CustomContainerProducts.productsFavorite[i].image,
-                             
+                          ProductsBody.productsFavorite[i].image,
                           fit: BoxFit.fill,
                         ),
                       ),
-
                       const SizedBox(width: 10),
-
-                 
                       Expanded(
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.center, 
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: Text(
-                                CustomContainerProducts
+                                ProductsBody
                                     .productsFavorite[i].title,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
-                          
                             Text(
-                              "${CustomContainerProducts.productsFavorite[i].price} ₺",
+                              "${ProductsBody.productsFavorite[i].price} ₺",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleLarge!
@@ -80,7 +74,7 @@ class _CardPageState extends State<Favorite> {
                                 msg: "ٌRemoved From Favorite",
                                 backgroundColor: AppColor.kRedColor);
                             setState(() {
-                              CustomContainerProducts.productsFavorite
+                              ProductsBody.productsFavorite
                                   .removeAt(i);
                             });
                           },

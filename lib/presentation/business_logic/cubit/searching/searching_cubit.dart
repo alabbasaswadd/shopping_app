@@ -8,10 +8,8 @@ class SearchingCubit extends Cubit<SearchingState> {
 
   List<ProductsModel> allProducts = []; // جميع المنتجات
   List<ProductsModel> filteredProducts = []; // المنتجات بعد الفلترة
-
-  void setProducts(List<ProductsModel> products) {
+  void setAllProducts(List<ProductsModel> products) {
     allProducts = products;
-    emit(NotSearching(allProducts)); // عند تحميل البيانات، يتم عرض كل المنتجات
   }
 
   void searchProducts(String query) {

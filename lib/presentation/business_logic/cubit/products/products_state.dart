@@ -3,7 +3,7 @@ part of 'products_cubit.dart';
 @immutable
 sealed class ProductsState {}
 
-final class ProductsInitial extends ProductsState {}
+class ProductsLoading extends ProductsState {}
 
 class ProductsSuccess extends ProductsState {
   final List<ProductsModel> products;
@@ -11,9 +11,6 @@ class ProductsSuccess extends ProductsState {
 }
 
 class ProductsError extends ProductsState {
-  // ignore: prefer_typing_uninitialized_variables
-  final error;
+  final String error;
   ProductsError(this.error);
 }
-
-class ProductsLoading extends ProductsState {}

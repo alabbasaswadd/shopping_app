@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/presentation/widget/products/custom_container_products.dart';
+import 'package:get/utils.dart';
+import 'package:shopping_app/presentation/widget/products/products_body.dart';
+
 class Offers extends StatelessWidget {
   const Offers({super.key});
   static String id = "offers";
@@ -8,15 +10,15 @@ class Offers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Offers"),
+        title: Text("offers".tr),
         centerTitle: true,
         elevation: 8,
         shadowColor: Colors.black,
       ),
-      body: CustomContainerProducts.productsCard.isEmpty
-          ? Center(child: Text("No Products In Offers"))
+      body: ProductsBody.productsCard.isEmpty
+          ? Center(child: Text("no_products_in_offers".tr))
           : ListView.builder(
-              itemCount: CustomContainerProducts.productsCard.length,
+              itemCount: ProductsBody.productsCard.length,
               itemBuilder: (context, i) {
                 return Container(
                   padding: EdgeInsets.all(5),
@@ -32,7 +34,7 @@ class Offers extends StatelessWidget {
                           height: double.infinity,
                           width: 100,
                           child: Image.network(
-                            CustomContainerProducts.productsCard[i].image,
+                            ProductsBody.productsCard[i].image,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -43,12 +45,12 @@ class Offers extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  CustomContainerProducts.productsCard[i].title,
+                                  ProductsBody.productsCard[i].title,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
                               Text(
-                                "${CustomContainerProducts.productsCard[i].price} ₺",
+                                "${ProductsBody.productsCard[i].price} ₺",
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleLarge!
