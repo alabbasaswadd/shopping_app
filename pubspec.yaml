@@ -36,6 +36,7 @@ dependencies:
   bloc: ^9.0.0
   # onesignal_flutter: ^5.0.4
   meta: ^1.15.0
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:

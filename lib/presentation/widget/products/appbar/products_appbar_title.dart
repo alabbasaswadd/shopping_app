@@ -8,8 +8,7 @@ class ProductsAppbarTitle extends StatefulWidget {
   static TextEditingController controller = TextEditingController();
 
   @override
-  State<ProductsAppbarTitle> createState() =>
-      _CustomTitleAppbarProductsState();
+  State<ProductsAppbarTitle> createState() => _CustomTitleAppbarProductsState();
 }
 
 class _CustomTitleAppbarProductsState extends State<ProductsAppbarTitle> {

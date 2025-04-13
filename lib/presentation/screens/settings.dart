@@ -4,11 +4,12 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
+import 'package:shopping_app/core/widgets/my_bottom_sheet.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_list_tile.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/login.dart';
-import 'package:shopping_app/presentation/widget/settings/custom_bottom_sheet_settings.dart';
+import 'package:shopping_app/presentation/widget/settings/settings_card.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -67,7 +68,7 @@ class _SettingsState extends State<Settings> {
               ontap: () {
                 showModalBottomSheet(
                     context: context,
-                    builder: (context) => CustomBottomSheetSettings(
+                    builder: (context) => MyBottomSheet(
                           textBottomSheet: "username".tr,
                           widget: SingleChildScrollView(
                             child: Column(children: [
@@ -85,7 +86,7 @@ class _SettingsState extends State<Settings> {
               ontap: () {
                 showModalBottomSheet(
                     context: context,
-                    builder: (context) => CustomBottomSheetSettings(
+                    builder: (context) => MyBottomSheet(
                           textBottomSheet: "phone_number".tr,
                           widget: SingleChildScrollView(
                             child: Column(children: [
@@ -106,12 +107,12 @@ class _SettingsState extends State<Settings> {
               ontap: () async {
                 showModalBottomSheet(
                   context: context,
-                  builder: (context) => CustomBottomSheetSettings(
+                  builder: (context) => MyBottomSheet(
                     textBottomSheet: "language".tr,
                     widget: SizedBox(
                       height: 180,
                       child: ListView(children: [
-                        CustomCardSettings(
+                        SettingsCard(
                           onChanged: (val) {},
                           widget: ListTile(
                             onTap: () async {
@@ -135,7 +136,7 @@ class _SettingsState extends State<Settings> {
                             ),
                           ),
                         ),
-                        CustomCardSettings(
+                        SettingsCard(
                           onChanged: (val) {},
                           widget: ListTile(
                             onTap: () async {

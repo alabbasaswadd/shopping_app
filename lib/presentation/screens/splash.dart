@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
 import 'signup.dart';
 
@@ -15,7 +16,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 3), () {
       checkOnboardingStatus();
     });
   }
@@ -34,7 +35,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Image.asset("assets/images/logo2.jpeg")),
+      body: Center(child: Image.asset(AppImages.klogo)),
     );
   }
 }
