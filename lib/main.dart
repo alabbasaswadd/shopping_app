@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/localization/translation.dart';
+import 'package:shopping_app/data/model/user_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/products_web_services.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
@@ -16,15 +19,17 @@ import 'routes.dart';
 late String savedLanguage;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox<UserModel>('userBox');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   savedLanguage = prefs.getString('language') ?? 'en';
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => SearchingCubit()),
+        BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(
-            create: (context) =>
-                ProductsCubit(ProductsRepository(ProductsWebServices()))),
+            create: (context) => ProductsCubit(Repository(WebServices()))),
       ],
       child: const MyApp(),
     ),

@@ -46,8 +46,7 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) =>
-            ProductsCubit(ProductsRepository(ProductsWebServices())),
+        create: (context) => ProductsCubit(Repository(WebServices())),
         child: Scaffold(
           body: Container(
             padding: EdgeInsets.all(20),

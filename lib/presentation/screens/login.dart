@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
+import 'package:shopping_app/data/repository/products_repository.dart';
+import 'package:shopping_app/data/web_services/products_web_services.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/widget/auth/appbar/appbar_flexiblespace_auth.dart';
 import 'signup.dart';
@@ -19,6 +22,12 @@ class _LoginState extends State<Login> {
   bool check = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  late AuthCubit cubit;
+  @override
+  void initState() {
+    cubit = AuthCubit();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,14 +93,9 @@ class _LoginState extends State<Login> {
                 MyButton(
                   text: "login".tr,
                   onPressed: () {
-                    if (emailController.text == "test@test.com" &&
-                        passwordController.text == "123") {
-                      Get.offAndToNamed(HomeScreen.id);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("data".tr)),
-                      );
-                    }
+                    cubit.login(
+                        email: emailController.text,
+                        password: passwordController.text);
                   },
                 ),
                 Row(

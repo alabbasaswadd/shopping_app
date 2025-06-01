@@ -5,7 +5,7 @@ import 'package:shopping_app/data/repository/products_repository.dart';
 part 'products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsRepository productsRepository;
+  Repository productsRepository;
   List<ProductsModel> products = [];
   ProductsCubit(this.productsRepository) : super(ProductsLoading());
 

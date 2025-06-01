@@ -87,16 +87,23 @@ import 'package:shopping_app/core/constants/colors.dart';
 
 class MyTextFormField extends StatelessWidget {
   const MyTextFormField(
-      {super.key, required this.label, this.controller, this.suffix});
+      {super.key,
+      required this.label,
+      this.controller,
+      this.suffix,
+      this.validator});
   final String label;
   final TextEditingController? controller;
   final bool? suffix;
+  final String? Function(String?)? validator;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Form(
         child: TextFormField(
+          controller: controller,
+          validator: validator,
           cursorColor: AppColor.kPrimaryColor,
           decoration: InputDecoration(
             fillColor: Theme.of(context).colorScheme.secondary,

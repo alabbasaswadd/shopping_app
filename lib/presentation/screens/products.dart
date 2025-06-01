@@ -15,8 +15,7 @@ class Productes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) =>
-            ProductsCubit(ProductsRepository(ProductsWebServices())),
+        create: (context) => ProductsCubit(Repository(WebServices())),
         child: Scaffold(
             drawer: ProductsDrawer(),
             appBar: AppBar(
