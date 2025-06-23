@@ -6,7 +6,7 @@ import 'package:shopping_app/presentation/business_logic/cubit/products/products
 import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/products_model.dart';
-import 'package:shopping_app/presentation/screens/produc_details.dart';
+import 'package:shopping_app/presentation/screens/product_details.dart';
 
 class ProductsBody extends StatefulWidget {
   const ProductsBody({super.key});
@@ -15,8 +15,7 @@ class ProductsBody extends StatefulWidget {
   static List<ProductsModel> productsFavorite = [];
 
   @override
-  State<ProductsBody> createState() =>
-      _CustomContainerProductsState();
+  State<ProductsBody> createState() => _CustomContainerProductsState();
 }
 
 class _CustomContainerProductsState extends State<ProductsBody> {
@@ -54,7 +53,7 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        ProdutDetails.id,
+                        ProductDetails.id,
                         arguments: displayedProducts[i],
                       );
                       ProductsBody.productsInside.clear();
@@ -67,10 +66,10 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                       height: 142,
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(2, 2),
+                              color: Colors.black.withOpacity(0.3),
+                              offset: Offset(0, 2),
                               blurRadius: 3)
                         ],
                         color: Theme.of(context).colorScheme.secondary,

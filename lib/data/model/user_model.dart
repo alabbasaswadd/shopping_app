@@ -4,16 +4,18 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  final String firstName;
-  final String lastName;
-  final String birthDate;
-  final int gender;
-  final String email;
-  final String phone;
-  final String password;
-  final AddressModel address;
+  final String? id;
+  final String? firstName;
+  final String? lastName;
+  final String? birthDate;
+  final int? gender;
+  final EmailModel? email;
+  final String? phone;
+  final String? password;
+  final AddressModel? address;
 
-  UserModel({
+  UserModel( {
+    required this.id,
     required this.firstName,
     required this.lastName,
     required this.birthDate,
@@ -31,11 +33,11 @@ class UserModel {
 
 @JsonSerializable()
 class AddressModel {
-  final String city;
-  final String street;
-  final String floor;
-  final String apartment;
-  final bool defaultAddress;
+  final String? city;
+  final String? street;
+  final String? floor;
+  final String? apartment;
+  final bool? defaultAddress;
 
   AddressModel({
     required this.city,
@@ -48,4 +50,16 @@ class AddressModel {
   factory AddressModel.fromJson(Map<String, dynamic> json) =>
       _$AddressModelFromJson(json);
   Map<String, dynamic> toJson() => _$AddressModelToJson(this);
+}
+
+@JsonSerializable()
+class EmailModel {
+  final String? userName;
+  final String? password;
+  // ...
+  EmailModel({this.userName, this.password});
+
+  factory EmailModel.fromJson(Map<String, dynamic> json) =>
+      _$EmailModelFromJson(json);
+  Map<String, dynamic> toJson() => _$EmailModelToJson(this);
 }

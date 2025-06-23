@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/data/model/products_model.dart';
 import 'package:shopping_app/presentation/widget/products/products_details_body.dart';
 import '../widget/products/products_body.dart';
 
-class ProdutDetails extends StatelessWidget {
-  const ProdutDetails({super.key});
+class ProductDetails extends StatelessWidget {
+  const ProductDetails({super.key});
   static String id = "product_details";
 
   @override
@@ -14,12 +16,7 @@ class ProdutDetails extends StatelessWidget {
     final ProductsModel productDetails =
         ModalRoute.of(context)!.settings.arguments as ProductsModel;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 8,
-        shadowColor: Colors.black,
-        centerTitle: true,
-        title: Text("Product Details"),
-      ),
+      appBar: myAppBar("product_details".tr),
       body: Container(
         padding: EdgeInsets.all(15),
         child: const ProductsDetailsBody(),

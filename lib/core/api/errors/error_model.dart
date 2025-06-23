@@ -1,15 +1,20 @@
-
-import 'package:shopping_app/core/api/end_ponits.dart';
-
 class ErrorModel {
-  final int status;
-  final String errorMessage;
+  final String message;
+  final Map<String, List<String>> errors;
 
-  ErrorModel({required this.status, required this.errorMessage});
-  factory ErrorModel.fromJson(Map<String, dynamic> jsonData) {
+  ErrorModel({
+    required this.message,
+    required this.errors,
+  });
+
+  factory ErrorModel.fromJson(Map<String, dynamic> json) {
     return ErrorModel(
-      status: jsonData[ApiKey.status],
-      errorMessage: jsonData[ApiKey.errorMessage],
+      message: json['message'],
+      errors: Map<String, List<String>>.from(
+        json['errors'].map(
+          (key, value) => MapEntry(key, List<String>.from(value)),
+        ),
+      ),
     );
   }
 }

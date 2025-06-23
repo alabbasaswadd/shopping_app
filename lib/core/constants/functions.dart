@@ -1,0 +1,136 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/data/model/user_model.dart';
+
+class UserPreferencesService {
+  static const String _userKey = 'user_data';
+
+  // حفظ بيانات المستخدم
+  static Future<void> saveUser(Map<String, dynamic> userJson) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userKey, jsonEncode(userJson));
+  }
+
+  // استرجاع بيانات المستخدم
+  static Future<Map<String, dynamic>?> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userString = prefs.getString(_userKey);
+    if (userString != null) {
+      return jsonDecode(userString);
+    }
+    return null;
+  }
+
+  // استرجاع قيمة واحدة من بيانات المستخدم (مثلاً token أو الاسم)
+  static Future<String?> getUserValue(String key) async {
+    final user = await getUser();
+    if (user != null && user.containsKey(key)) {
+      return user[key].toString();
+    }
+    return null;
+  }
+
+  // حذف بيانات المستخدم (مثلاً عند تسجيل الخروج)
+  static Future<void> clearUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_userKey);
+  }
+
+  // التحقق إن كان المستخدم مسجل مسبقًا
+  static Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(_userKey);
+  }
+
+  static Future<UserModel?> getUserModel() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userString = prefs.getString(_userKey);
+    if (userString != null) {
+      final json = jsonDecode(userString);
+      return UserModel.fromJson(json);
+    }
+    return null;
+  }
+}
+
+class UserSession {
+  static UserModel? _user;
+
+  /// تحميل بيانات المستخدم من SharedPreferences وتخزينها داخليًا
+  static Future<void> init() async {
+    _user = await UserPreferencesService.getUserModel();
+  }
+
+  /// جلب كل بيانات المستخدم
+  static UserModel? get user => _user;
+
+  /// جلب قيمة معينة من بيانات المستخدم مثل الاسم الأول أو رقم الهاتف
+  static String? get id => _user?.id;
+  static String? get firstName => _user?.firstName;
+  static String? get lastName => _user?.lastName;
+  static String? get phone => _user?.phone;
+  static String? get birthDate => _user?.birthDate;
+  static String? get city => _user?.address?.city;
+  static String? get apartment => _user?.address?.apartment;
+  static String? get street => _user?.address?.street;
+  static String? get floor => _user?.address?.floor;
+  static String? get email => _user?.email?.userName;
+  static String? get password => _user?.email?.password;
+  static int? get gender => _user?.gender;
+
+  /// التحقق إذا كان المستخدم مسجل دخول
+  static bool get isLoggedIn => _user != null;
+
+  /// تحديث بيانات المستخدم بعد التعديل أو تسجيل الدخول
+  static Future<void> updateUser(UserModel userModel) async {
+    _user = userModel;
+    await UserPreferencesService.saveUser(userModel.toJson()); // ✅
+  }
+
+  /// تسجيل الخروج
+  static Future<void> clear() async {
+    _user = null;
+    await UserPreferencesService.clearUser();
+  }
+}
+
+Widget buildSectionHeader(String title) {
+  return Text(
+    title,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: AppColor.kPrimaryColor,
+    ),
+  );
+}
+
+Future<DateTime?> showDateDialog(BuildContext context) async {
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now().subtract(Duration(days: 365 * 18)),
+    firstDate: DateTime(1900),
+    lastDate: DateTime.now(),
+    helpText: 'select_birth_date'.tr,
+    cancelText: 'cancel'.tr,
+    confirmText: 'confirm'.tr,
+    builder: (context, child) {
+      return Theme(
+        data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: AppColor.kPrimaryColor, // لون اليوم المختار وخلفية الزر
+            onPrimary:
+                Colors.white, // لون النص فوق اللون الأساسي (اليوم المحدد)
+            onSurface: Colors.black, // لون النص العادي
+          ),
+          dialogBackgroundColor: Colors.white,
+        ),
+        child: child!,
+      );
+    },
+  );
+  return pickedDate;
+}

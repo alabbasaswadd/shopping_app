@@ -6,7 +6,7 @@ import 'package:shopping_app/presentation/business_logic/cubit/products/products
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/onboarding_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
-import 'package:shopping_app/data/web_services/products_web_services.dart';
+import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 
 // ignore: must_be_immutable

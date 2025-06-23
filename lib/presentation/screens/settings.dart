@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
+import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_bottom_sheet.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
-import 'package:shopping_app/core/widgets/my_list_tile.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/login.dart';
-import 'package:shopping_app/presentation/widget/settings/settings_card.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -20,210 +20,246 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  bool switch_isEnable = false;
-  String selectedLanguage = Get.locale?.languageCode ?? "en";
+  bool _isDarkMode = false;
+  String _selectedLanguage = Get.locale?.languageCode ?? "en";
+  String _phoneNumber = "+9635456124";
+
 
   @override
   void initState() {
     super.initState();
-    _loadSwitchValue();
+    _loadSettings();
   }
 
-  Future<void> _loadSwitchValue() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> _loadSettings() async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
-      switch_isEnable = prefs.getBool('theme') ?? false;
+      _isDarkMode = prefs.getBool('theme') ?? false;
+      _selectedLanguage = prefs.getString('language') ?? "en";
 
-      if (switch_isEnable) {
-        AdaptiveTheme.of(context).setDark();
-      } else {
-        AdaptiveTheme.of(context).setLight();
-      }
+      _phoneNumber = prefs.getString('phone') ?? "+9635456124";
     });
   }
 
-  Future<void> _saveSwitchValue(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('theme', value);
+  Future<void> _saveSetting<T>(String key, T value) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (value is bool) {
+      await prefs.setBool(key, value);
+    } else if (value is String) {
+      await prefs.setString(key, value);
+    }
   }
 
-  Future<void> _saveLanguage(String language) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('language', language);
+  void _showEditDialog(
+      {required String title,
+      required String initialValue,
+      required ValueChanged<String> onSave}) {
+    final controller = TextEditingController(text: initialValue);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: MyTextFormField(
+          controller: controller,
+          label: title,
+          icon: null,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("cancel".tr),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              onSave(controller.text);
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.kPrimaryColor,
+            ),
+            child: Text("save".tr),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 8,
-        shadowColor: Colors.black,
-        title: Text("settings".tr),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: [
-          SizedBox(height: 20),
-          MyListTile(
-              ontap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => MyBottomSheet(
-                          textBottomSheet: "username".tr,
-                          widget: SingleChildScrollView(
-                            child: Column(children: [
-                              MyTextFormField(label: "username".tr),
-                              MyTextFormField(label: "phone_number".tr),
-                              MyButton(text: "save", onPressed: () {}),
-                            ]),
-                          ),
-                        ));
-              },
-              icon: Icons.person,
+      appBar: myAppBar("settings".tr),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Account Settings Section
+            _buildSectionHeader("account_settings".tr),
+            _buildSettingTile(
+              icon: Icons.person_outline,
               title: "username".tr,
-              children: const [Text("Merdan"), Icon(Icons.arrow_forward)]),
-          MyListTile(
-              ontap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => MyBottomSheet(
-                          textBottomSheet: "phone_number".tr,
-                          widget: SingleChildScrollView(
-                            child: Column(children: [
-                              MyTextFormField(label: "username".tr),
-                              MyTextFormField(label: "phone_number".tr),
-                              MyButton(text: "save", onPressed: () {}),
-                            ]),
-                          ),
-                        ));
-              },
-              icon: Icons.phone_android,
+              onTap: () => _showEditDialog(
+                title: "username".tr,
+                initialValue: "aa",
+                onSave: (value) async {},
+              ),
+            ),
+            _buildSettingTile(
+              icon: Icons.phone_android_outlined,
               title: "phone_number".tr,
-              children: const [
-                Expanded(child: Text("+9635456124")),
-                Icon(Icons.arrow_forward)
-              ]),
-          MyListTile(
-              ontap: () async {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => MyBottomSheet(
-                    textBottomSheet: "language".tr,
-                    widget: SizedBox(
-                      height: 180,
-                      child: ListView(children: [
-                        SettingsCard(
-                          onChanged: (val) {},
-                          widget: ListTile(
-                            onTap: () async {
-                              Get.updateLocale(const Locale("ar"));
-                              setState(() {
-                                selectedLanguage = "ar";
-                              });
-                              await _saveLanguage("ar");
-                            },
-                            leading: Text("arabic".tr),
-                            trailing: Radio(
-                              value: "ar",
-                              groupValue: selectedLanguage,
-                              onChanged: (val) async {
-                                Get.updateLocale(const Locale("ar"));
-                                setState(() {
-                                  selectedLanguage = "ar";
-                                });
-                                await _saveLanguage("ar");
-                              },
-                            ),
-                          ),
-                        ),
-                        SettingsCard(
-                          onChanged: (val) {},
-                          widget: ListTile(
-                            onTap: () async {
-                              Get.updateLocale(const Locale("en"));
-                              setState(() {
-                                selectedLanguage = "en";
-                              });
-                              await _saveLanguage("en");
-                            },
-                            leading: Text("english".tr),
-                            trailing: Radio(
-                              value: "en",
-                              groupValue: selectedLanguage,
-                              onChanged: (val) async {
-                                Get.updateLocale(const Locale("en"));
-                                setState(() {
-                                  selectedLanguage = "en";
-                                });
-                                await _saveLanguage("en");
-                              },
-                            ),
-                          ),
-                        ),
-                      ]),
-                    ),
-                  ),
-                );
-              },
-              icon: Icons.language,
-              title: "language".tr,
-              children: [
-                Text(selectedLanguage == "ar" ? "arabic".tr : "english".tr),
-                Icon(Icons.arrow_forward)
-              ]),
-          MyListTile(
-              ontap: () async {
-                setState(() {
-                  switch_isEnable = !switch_isEnable;
-                  _saveSwitchValue(switch_isEnable);
+              value: _phoneNumber,
+              onTap: () => _showEditDialog(
+                title: "phone_number".tr,
+                initialValue: _phoneNumber,
+                onSave: (value) async {
+                  await _saveSetting('phone', value);
+                  setState(() => _phoneNumber = value);
+                },
+              ),
+            ),
+            const SizedBox(height: 24),
 
-                  if (switch_isEnable) {
+            // App Settings Section
+            _buildSectionHeader("app_settings".tr),
+            _buildSettingTile(
+              icon: Icons.language_outlined,
+              title: "language".tr,
+              value: _selectedLanguage == "ar" ? "arabic".tr : "english".tr,
+              onTap: () => _showLanguageBottomSheet(),
+            ),
+            _buildSettingTile(
+              onTap: () {},
+              icon: Icons.dark_mode_outlined,
+              title: "dark_mode".tr,
+              trailing: Switch(
+                value: _isDarkMode,
+                onChanged: (value) async {
+                  await _saveSetting('theme', value);
+                  setState(() => _isDarkMode = value);
+                  if (value) {
                     AdaptiveTheme.of(context).setDark();
                   } else {
                     AdaptiveTheme.of(context).setLight();
                   }
-                });
+                },
+                activeColor: AppColor.kPrimaryColor,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Actions Section
+            _buildSectionHeader("actions".tr),
+            _buildSettingTile(
+              icon: Icons.logout_outlined,
+              title: "log_out".tr,
+              color: Colors.red,
+              onTap: () => _showLogoutDialog(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[600],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingTile({
+    required IconData icon,
+    required String title,
+    String? value,
+    Widget? trailing,
+    Color? color,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: color ?? AppColor.kPrimaryColor),
+        title: Text(title),
+        subtitle: value != null ? Text(value) : null,
+        trailing: trailing ?? Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
+      ),
+    );
+  }
+
+  void _showLanguageBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "select_language".tr,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            RadioListTile(
+              title: Text("arabic".tr),
+              value: "ar",
+              groupValue: _selectedLanguage,
+              onChanged: (value) async {
+                await _saveSetting('language', "ar");
+                Get.updateLocale(const Locale("ar"));
+                setState(() => _selectedLanguage = "ar");
+                Navigator.pop(context);
               },
-              icon: Icons.dark_mode,
-              title: "dark_mode".tr,
-              children: [
-                Switch(
-                    thumbColor: switch_isEnable
-                        ? WidgetStateProperty.all(AppColor.kWhiteColor)
-                        : WidgetStateProperty.all(AppColor.kSecondColor),
-                    value: switch_isEnable,
-                    onChanged: (val) async {
-                      setState(() {
-                        switch_isEnable = val;
-                        _saveSwitchValue(val);
-                        if (switch_isEnable) {
-                          AdaptiveTheme.of(context).setDark();
-                        } else {
-                          AdaptiveTheme.of(context).setLight();
-                        }
-                      });
-                    })
-              ]),
-          MyListTile(
-            ontap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) => MyAlertDialog(
-                        content: "Do You Have Log_Out",
-                        title: "Log_Out",
-                        onOk: () {
-                          Get.offAllNamed(Login.id);
-                        },
-                        onNo: () {
-                          Navigator.pop(context);
-                        },
-                      ));
-            },
-            icon: Icons.logout,
-            title: "log_out".tr,
-            children: const [],
-          )
-        ],
+              activeColor: AppColor.kPrimaryColor,
+            ),
+            RadioListTile(
+              title: Text("english".tr),
+              value: "en",
+              groupValue: _selectedLanguage,
+              onChanged: (value) async {
+                await _saveSetting('language', "en");
+                Get.updateLocale(const Locale("en"));
+                setState(() => _selectedLanguage = "en");
+                Navigator.pop(context);
+              },
+              activeColor: AppColor.kPrimaryColor,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => MyAlertDialog(
+        title: "log_out".tr,
+        content: "do_you_want_to_log_out".tr,
+        onOk: () => Get.offAllNamed(Login.id),
+        onNo: () => Navigator.pop(context),
       ),
     );
   }

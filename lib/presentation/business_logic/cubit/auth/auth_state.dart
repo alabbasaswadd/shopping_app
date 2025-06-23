@@ -2,13 +2,11 @@ import 'package:shopping_app/data/model/user_model.dart';
 
 abstract class AuthState {}
 
-class AuthInitial extends AuthState {}
-
+class AuthInit extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
-  final UserModel user;
-  AuthAuthenticated(this.user);
+  AuthAuthenticated();
 }
 
 class AuthUnauthenticated extends AuthState {}
