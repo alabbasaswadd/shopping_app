@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/data/model/auth_data_model.dart';
 import 'package:shopping_app/data/model/user_model.dart';
 
 class UserPreferencesService {
   static const String _userKey = 'user_data';
 
-  // حفظ بيانات المستخدم
+  // حفظ بيانات المستخدم (JSON String)
   static Future<void> saveUser(Map<String, dynamic> userJson) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_userKey, jsonEncode(userJson));
   }
 
-  // استرجاع بيانات المستخدم
+  // استرجاع بيانات المستخدم كخريطة
   static Future<Map<String, dynamic>?> getUser() async {
     final prefs = await SharedPreferences.getInstance();
     final userString = prefs.getString(_userKey);
@@ -24,7 +25,7 @@ class UserPreferencesService {
     return null;
   }
 
-  // استرجاع قيمة واحدة من بيانات المستخدم (مثلاً token أو الاسم)
+  // استرجاع قيمة معينة من بيانات المستخدم
   static Future<String?> getUserValue(String key) async {
     final user = await getUser();
     if (user != null && user.containsKey(key)) {
@@ -33,18 +34,19 @@ class UserPreferencesService {
     return null;
   }
 
-  // حذف بيانات المستخدم (مثلاً عند تسجيل الخروج)
+  // حذف بيانات المستخدم
   static Future<void> clearUser() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_userKey);
   }
 
-  // التحقق إن كان المستخدم مسجل مسبقًا
+  // هل المستخدم مسجل دخول؟
   static Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.containsKey(_userKey);
   }
 
+  // استرجاع بيانات المستخدم كنموذج UserModel
   static Future<UserModel?> getUserModel() async {
     final prefs = await SharedPreferences.getInstance();
     final userString = prefs.getString(_userKey);
@@ -59,15 +61,15 @@ class UserPreferencesService {
 class UserSession {
   static UserModel? _user;
 
-  /// تحميل بيانات المستخدم من SharedPreferences وتخزينها داخليًا
+  /// تحميل بيانات المستخدم من SharedPreferences وتخزينها في الذاكرة
   static Future<void> init() async {
     _user = await UserPreferencesService.getUserModel();
   }
 
-  /// جلب كل بيانات المستخدم
+  /// كل بيانات المستخدم
   static UserModel? get user => _user;
 
-  /// جلب قيمة معينة من بيانات المستخدم مثل الاسم الأول أو رقم الهاتف
+  /// خصائص مباشرة من _user
   static String? get id => _user?.id;
   static String? get firstName => _user?.firstName;
   static String? get lastName => _user?.lastName;
@@ -77,17 +79,20 @@ class UserSession {
   static String? get apartment => _user?.address?.apartment;
   static String? get street => _user?.address?.street;
   static String? get floor => _user?.address?.floor;
+
+  // افترض هنا أن email من نوع String، عدل حسب نوعه الحقيقي
   static String? get email => _user?.email?.userName;
-  static String? get password => _user?.email?.password;
+
+  // إذا الجنس عدد صحيح 0 أو 1
   static int? get gender => _user?.gender;
 
-  /// التحقق إذا كان المستخدم مسجل دخول
+  /// هل المستخدم مسجل دخول؟
   static bool get isLoggedIn => _user != null;
 
-  /// تحديث بيانات المستخدم بعد التعديل أو تسجيل الدخول
+  /// تحديث بيانات المستخدم
   static Future<void> updateUser(UserModel userModel) async {
     _user = userModel;
-    await UserPreferencesService.saveUser(userModel.toJson()); // ✅
+    await UserPreferencesService.saveUser(userModel.toJson());
   }
 
   /// تسجيل الخروج

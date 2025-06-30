@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
@@ -31,7 +33,7 @@ class _ProductsDrawerState extends State<ProductsDrawer> {
     return Drawer(
       child: ListView(
         children: [
-          Image.asset("assets/images/logo2.jpeg", height: 150),
+          Image.asset(AppImages.klogo, height: 150),
           const Divider(),
           ProductsCustomDrawer(
             icon: Icons.person,
@@ -86,6 +88,7 @@ class _ProductsDrawerState extends State<ProductsDrawer> {
                   title: "log_out".tr,
                   content: "do_you_want_to_log_out".tr,
                   onOk: () {
+                    UserSession.clear();
                     cubit.logout();
                     Get.offAllNamed(SignUp.id);
                   },

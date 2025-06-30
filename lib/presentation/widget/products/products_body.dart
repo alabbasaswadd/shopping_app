@@ -100,7 +100,7 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    displayedProducts[i].title,
+                                    displayedProducts[i].name,
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   ),
@@ -122,8 +122,8 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                                   bool isAlreadyAdded = ProductsBody
                                       .productsFavorite
                                       .any((product) =>
-                                          product.title ==
-                                          displayedProducts[i].title);
+                                          product.name ==
+                                          displayedProducts[i].name);
 
                                   if (isAlreadyAdded) {
                                     Fluttertoast.showToast(
@@ -148,8 +148,8 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                                   bool isAlreadyAdded =
                                       ProductsBody.productsCard.any(
                                     (product) =>
-                                        product.title ==
-                                        displayedProducts[i].title,
+                                        product.name ==
+                                        displayedProducts[i].name,
                                   );
 
                                   if (isAlreadyAdded) {

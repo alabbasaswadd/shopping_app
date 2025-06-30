@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
 
 class Notifications extends StatelessWidget {
   const Notifications({super.key});
@@ -10,7 +11,7 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar("nottifications".tr),
+      appBar: myAppBar("notifications".tr, context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -108,18 +109,14 @@ class Notifications extends StatelessWidget {
     required bool isUnread,
     required Color iconColor,
   }) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+    return MyCard(
       child: Container(
         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary,
           border: isUnread
               ? Border.all(
                   color: Theme.of(context).primaryColor.withOpacity(0.3),
-                  width: 1.5,
+                  width: 1,
                 )
               : null,
           borderRadius: BorderRadius.circular(12),
@@ -180,7 +177,7 @@ class Notifications extends StatelessWidget {
                     width: 8,
                     height: 8,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.red,
                       shape: BoxShape.circle,
                     ),
                   ),

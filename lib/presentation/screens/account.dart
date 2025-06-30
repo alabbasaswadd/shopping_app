@@ -14,7 +14,6 @@ import 'package:shopping_app/presentation/screens/login.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});
-
   static String id = "edit_profile_page";
 
   @override
@@ -23,48 +22,61 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   late UserCubit cubit;
-  @override
-  void initState() {
-    cubit = UserCubit();
 
-    getdata();
-    super.initState();
-  }
+  // Controllers بدون تمرير قيم أولية
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _birthDateController;
+  late TextEditingController _genderController;
+  late TextEditingController _cityController;
+  late TextEditingController _streetController;
+  late TextEditingController _floorController;
+  late TextEditingController _apartmentController;
 
-  Future<void> getdata() async {
-    await cubit.getUser(UserSession.id ?? ""); // تأكد من أن id موجود
-  }
-
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController =
-      TextEditingController(text: UserSession.firstName);
-  final TextEditingController _emailController =
-      TextEditingController(text: UserSession.email);
-  final TextEditingController _phoneController =
-      TextEditingController(text: UserSession.phone);
-  final TextEditingController _lastNameController =
-      TextEditingController(text: UserSession.lastName);
-  final TextEditingController _birthDateController =
-      TextEditingController(text: UserSession.birthDate);
-  final TextEditingController _genderController =
-      TextEditingController(text: UserSession.gender == 0 ? "ذكر" : "أنثى");
-  final TextEditingController _cityController =
-      TextEditingController(text: UserSession.city);
-  final TextEditingController _streetController =
-      TextEditingController(text: UserSession.street);
-  final TextEditingController _floorController =
-      TextEditingController(text: UserSession.floor);
-  final TextEditingController _apartmentController =
-      TextEditingController(text: UserSession.apartment);
-
-  // متغيرات للتحكم في تأثيرات الـ Animated Container
   bool _personalInfoExpanded = true;
   bool _addressInfoExpanded = true;
+  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    cubit = UserCubit();
+
+    // تهيئة الكنترولرز بدون قيمة مبدئية
+    loadData();
+  }
+
+  void loadData() async {
+    await UserSession.init(); // تحميل بيانات المستخدم وتخزينها في _user
+    // تهيئة الكنترولرز بدون قيمة مبدئية
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneController = TextEditingController();
+    _birthDateController = TextEditingController();
+    _genderController = TextEditingController();
+    _cityController = TextEditingController();
+    _streetController = TextEditingController();
+    _floorController = TextEditingController();
+    _apartmentController = TextEditingController();
+    setState(() {});
+    // جلب بيانات المستخدم حسب الـ id من الـ UserSession
+    final userId = UserSession.id;
+    if (userId != null && userId.isNotEmpty) {
+      cubit.getUser(userId);
+    } else {
+      // مثلا توجه لتسجيل الدخول لو ما في id
+      print("لا يوجد معرف مستخدم");
+    }
+  }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
     _birthDateController.dispose();
     _genderController.dispose();
     _cityController.dispose();
@@ -74,47 +86,70 @@ class _AccountState extends State<Account> {
     super.dispose();
   }
 
+  // دالة لتحديث الكنترولرز حسب بيانات المستخدم
+  void _updateControllers(UserModel user) {
+    _firstNameController.text = user.firstName ?? "";
+    _lastNameController.text = user.lastName ?? "";
+    _emailController.text = user.email?.userName ?? "";
+    _phoneController.text = user.phone ?? "";
+    _birthDateController.text = user.birthDate ?? "";
+    _genderController.text = (user.gender == 0) ? "ذكر" : "أنثى";
+    _cityController.text = user.address?.city ?? "";
+    _streetController.text = user.address?.street ?? "";
+    _floorController.text = user.address?.floor ?? "";
+    _apartmentController.text = user.address?.apartment ?? "";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: myAppBar("تعديل الملف الشخصي"),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Profile Header
-              _buildProfileHeader(),
-              const SizedBox(height: 24),
-              // Personal Information Section with Animated Container
-              _buildAnimatedSection(
-                title: "المعلومات الشخصية",
-                expanded: _personalInfoExpanded,
-                onTap: () => setState(
-                    () => _personalInfoExpanded = !_personalInfoExpanded),
-                child: _buildPersonalInfoSection(),
-              ),
-              const SizedBox(height: 16),
+    return BlocProvider(
+      create: (_) => cubit,
+      child: Scaffold(
+        appBar: myAppBar("تعديل الملف الشخصي",context),
+        body: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            if (state is UserLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is UserLoaded) {
+              // حدث الكنترولرز عند جلب البيانات
+              _updateControllers(state.user);
 
-              // Address Information Section with Animated Container
-              _buildAnimatedSection(
-                title: "العنوان",
-                expanded: _addressInfoExpanded,
-                onTap: () => setState(
-                    () => _addressInfoExpanded = !_addressInfoExpanded),
-                child: _buildAddressSection(),
-              ),
-
-              // Change Password Section with Animated Container
-
-              const SizedBox(height: 24),
-
-              // Action Buttons
-              _buildActionButtons(),
-            ],
-          ),
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildProfileHeader(),
+                      const SizedBox(height: 24),
+                      _buildAnimatedSection(
+                        title: "المعلومات الشخصية",
+                        expanded: _personalInfoExpanded,
+                        onTap: () => setState(() =>
+                            _personalInfoExpanded = !_personalInfoExpanded),
+                        child: _buildPersonalInfoSection(),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildAnimatedSection(
+                        title: "العنوان",
+                        expanded: _addressInfoExpanded,
+                        onTap: () => setState(
+                            () => _addressInfoExpanded = !_addressInfoExpanded),
+                        child: _buildAddressSection(),
+                      ),
+                      const SizedBox(height: 24),
+                      _buildActionButtons(),
+                    ],
+                  ),
+                ),
+              );
+            } else if (state is UserError) {
+              return Center(child: Text("حدث خطأ: ${state.message}"));
+            }
+            // الحالة الافتراضية قبل تحميل البيانات
+            return const Center(child: Text("يرجى الانتظار..."));
+          },
         ),
       ),
     );
@@ -246,7 +281,7 @@ class _AccountState extends State<Account> {
               fontSize: 14,
               color: Colors.grey[600],
             ),
-            child: const Text("user@example.com"),
+            child: Text(_emailController.text),
           ),
         ],
       ),
@@ -345,7 +380,29 @@ class _AccountState extends State<Account> {
           duration: const Duration(milliseconds: 300),
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: _saveProfile,
+            onPressed: () async {
+              final updatedUser = UserModel(
+                id: UserSession.id,
+                firstName: _firstNameController.text,
+                lastName: _lastNameController.text,
+                phone: _phoneController.text,
+                birthDate: _birthDateController.text,
+                gender: _genderController.text == "ذكر" ? 0 : 1,
+                address: AddressModel(
+                  city: _cityController.text,
+                  street: _streetController.text,
+                  floor: _floorController.text,
+                  apartment: _apartmentController.text,
+                  defaultAddress: true,
+                ),
+                email: UserSession.user?.email,
+                password: '', // لا تغيّره لأنك ما عدّلته
+              );
+
+              // await cubit.updateUser(UserSession.id!, updatedUser);
+              // await UserSession.updateUser(
+              //     updatedUser); // 👈 لتحديث الجلسة أيضًا
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.kPrimaryColor,
               foregroundColor: Colors.white,
@@ -376,12 +433,9 @@ class _AccountState extends State<Account> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        await cubit
-                            .deleteUser(UserSession.id!); // تأكد أن id موجود
-
-                        Get.offAllNamed(
-                            Login.id); // العودة إلى صفحة تسجيل الدخول
-                        // حذف الحساب
+                        await cubit.deleteUser(UserSession.id!); // ✅
+                        await UserSession.clear(); // 🧹 حذف بيانات الجلسة
+                        Get.offAllNamed(Login.id); // 🔁 العودة لصفحة الدخول
                       },
                       child: const Text(
                         "حذف",

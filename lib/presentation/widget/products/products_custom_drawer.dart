@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
 
 class ProductsCustomDrawer extends StatelessWidget {
   const ProductsCustomDrawer({
@@ -17,8 +18,7 @@ class ProductsCustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: ontap,
-      child: Card(
-        elevation: 8,
+      child: MyCard(
         child: ListTile(
           leading: Icon(
             icon,

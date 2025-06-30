@@ -16,7 +16,7 @@ class ProductDetails extends StatelessWidget {
     final ProductsModel productDetails =
         ModalRoute.of(context)!.settings.arguments as ProductsModel;
     return Scaffold(
-      appBar: myAppBar("product_details".tr),
+      appBar: myAppBar("product_details".tr, context),
       body: Container(
         padding: EdgeInsets.all(15),
         child: const ProductsDetailsBody(),
@@ -24,7 +24,7 @@ class ProductDetails extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           bool isAlreadyAdded = ProductsBody.productsCard.any(
-            (product) => product.title == productDetails.title,
+            (product) => product.name == productDetails.name,
           );
 
           if (isAlreadyAdded) {
@@ -34,9 +34,13 @@ class ProductDetails extends StatelessWidget {
             );
           } else {
             ProductsBody.productsCard.add(ProductsModel(
-                title: productDetails.title,
+                name: productDetails.name,
                 image: productDetails.image,
-                price: productDetails.price));
+                price: productDetails.price,
+                categoryId: '',
+                currency: '',
+                shopeId: '',
+                description: ''));
             Fluttertoast.showToast(
               msg: "Added To Favorite",
               backgroundColor: AppColor.kPrimaryColor,

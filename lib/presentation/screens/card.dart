@@ -21,57 +21,57 @@ class _CartPageState extends State<CardPage> {
   @override
   void initState() {
     super.initState();
-    _calculateTotalPrice();
+    // _calculateTotalPrice();
   }
 
-  void _calculateTotalPrice() {
-    setState(() {
-      _totalPrice = ProductsBody.productsCard.fold(
-        0.0,
-        (sum, item) => sum + (item.price * item.quantity),
-      );
-    });
-  }
+  // void _calculateTotalPrice() {
+  //   setState(() {
+  //     _totalPrice = ProductsBody.productsCard.fold(
+  //       0.0,
+  //       (sum, item) => sum + (item.price * item.quantity),
+  //     );
+  //   });
+  // }
 
-  void _increaseQuantity(int index) {
-    setState(() {
-      ProductsBody.productsCard[index].quantity++;
-      _calculateTotalPrice();
-    });
-  }
+  // void _increaseQuantity(int index) {
+  //   setState(() {
+  //     ProductsBody.productsCard[index].quantity++;
+  //     _calculateTotalPrice();
+  //   });
+  // }
 
-  void _decreaseQuantity(int index) {
-    setState(() {
-      if (ProductsBody.productsCard[index].quantity > 1) {
-        ProductsBody.productsCard[index].quantity--;
-        _calculateTotalPrice();
-      }
-    });
-  }
+  // void _decreaseQuantity(int index) {
+  //   setState(() {
+  //     if (ProductsBody.productsCard[index].quantity > 1) {
+  //       ProductsBody.productsCard[index].quantity--;
+  //       _calculateTotalPrice();
+  //     }
+  //   });
+  // }
 
-  void _removeItem(int index) {
-    setState(() {
-      ProductsBody.productsCard.removeAt(index);
-      _calculateTotalPrice();
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-        SnackBar(
-          content: Text("removed_from_cart".tr),
-          backgroundColor: AppColor.kRedColor,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      );
-    });
-  }
+  // void _removeItem(int index) {
+  //   setState(() {
+  //     ProductsBody.productsCard.removeAt(index);
+  //     _calculateTotalPrice();
+  //     ScaffoldMessenger.of(Get.context!).showSnackBar(
+  //       SnackBar(
+  //         content: Text("removed_from_cart".tr),
+  //         backgroundColor: AppColor.kRedColor,
+  //         behavior: SnackBarBehavior.floating,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("cart".tr),
+      appBar: myAppBar("card".tr, context),
       body: ProductsBody.productsCard.isEmpty
           ? Center(
               child: Column(
@@ -137,7 +137,7 @@ class _CartPageState extends State<CardPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.title,
+                    item.name,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -161,7 +161,8 @@ class _CartPageState extends State<CardPage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.close, size: 20),
-                  onPressed: () => _removeItem(index),
+                  onPressed: () => print("edited"),
+                  // _removeItem(index),
                   color: Colors.red,
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
@@ -177,17 +178,19 @@ class _CartPageState extends State<CardPage> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove, size: 16),
-                        onPressed: () => _decreaseQuantity(index),
+                        onPressed: () => print("edited"),
+                        // _decreaseQuantity(index),
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                       ),
                       Text(
-                        "${item.quantity}",
+                        "sss",
                         style: TextStyle(fontSize: 14),
                       ),
                       IconButton(
                         icon: Icon(Icons.add, size: 16),
-                        onPressed: () => _increaseQuantity(index),
+                        onPressed: () => print("edited"),
+                        // _increaseQuantity(index),
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                       ),

@@ -33,7 +33,7 @@ class ProductsDetailsBody extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(productDetails.title,
+                    Text(productDetails.name,
                         style: Theme.of(context).textTheme.bodyLarge),
                     SizedBox(height: 20),
                     Row(

@@ -66,7 +66,7 @@ class Stores extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: myAppBar("stores".tr),
+      appBar: myAppBar("stores".tr, context),
       body: Column(
         children: [
           // Search and Filter

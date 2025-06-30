@@ -121,9 +121,11 @@ class AuthCubit extends Cubit<AuthState> {
             "customerId": customerId,
           });
 
-          // ✅ جلب بيانات المستخدم الشخصية من API وتخزينها في الجلسة
-          final user = await repository.getUserRepository(customerId!);
-          await UserSession.updateUser(user);
+          // ✅ جلب بيانات المستخدم الشخصية من API باستخدام customerId
+          final userModel = await repository.getUserRepository(customerId!);
+
+          // تحديث الجلسة ببيانات المستخدم الكاملة
+          await UserSession.updateUser(userModel);
 
           emit(AuthAuthenticated());
         } else {

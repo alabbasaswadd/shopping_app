@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/constants/colors.dart';
 
-PreferredSizeWidget myAppBar(String title) {
+PreferredSizeWidget myAppBar(String title, BuildContext context) {
   return AppBar(
     foregroundColor: Colors.white,
-    elevation: 4,
+    elevation: 8,
     shadowColor: Colors.black,
     title: Text(title),
     centerTitle: true,
     flexibleSpace: Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: const [AppColor.kPrimaryColor, AppColor.kSecondColor],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Theme.of(context).colorScheme.onSecondary,
       ),
     ),
   );

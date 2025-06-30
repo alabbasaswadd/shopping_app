@@ -56,7 +56,8 @@ class MyTextFormField extends StatelessWidget {
             filled: true,
             labelText: label,
             labelStyle: TextStyle(
-              color: Colors.black.withOpacity(0.4),
+              color: AppColor.kPrimaryColor,
+              fontFamily: 'SFProText',
               fontSize: 14,
             ),
             border: OutlineInputBorder(

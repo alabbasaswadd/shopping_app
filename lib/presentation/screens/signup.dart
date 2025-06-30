@@ -139,8 +139,8 @@ class _SignUpState extends State<SignUp> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _currentStep >= stepNumber
-                ? AppColor.kPrimaryColor
-                : Colors.grey[300],
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.secondary,
           ),
           child: Center(
             child: Text(
@@ -171,7 +171,7 @@ class _SignUpState extends State<SignUp> {
       width: 50,
       height: 2,
       margin: const EdgeInsets.symmetric(horizontal: 5),
-      color: Colors.grey[300],
+      color: Colors.grey,
     );
   }
 
@@ -488,7 +488,7 @@ class _SignUpState extends State<SignUp> {
             bloc: cubit,
             listener: (context, state) {
               if (state is AuthSignUpSuccess) {
-                Get.offAllNamed(HomeScreen.id);
+                Get.offAllNamed(Login.id);
               } else if (state is AuthError) {
                 MySnackbar.showError(context, state.message);
               }

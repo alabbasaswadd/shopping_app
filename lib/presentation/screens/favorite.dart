@@ -20,7 +20,7 @@ class _FavoriteState extends State<Favorite> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("favorite".tr),
+      appBar: myAppBar("favorite".tr,context),
       body: ProductsBody.productsFavorite.isEmpty
           ? _buildEmptyFavoriteState(theme)
           : _buildFavoriteList(),
@@ -90,7 +90,7 @@ class _FavoriteState extends State<Favorite> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.title,
+                    product.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

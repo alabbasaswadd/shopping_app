@@ -4,5 +4,5 @@ class AppImages {
   static String kBackground = "${kAsset}background.png";
   static String kBackgroundDark = "${kAsset}backgroundDark.png";
   static String kCamera = "${kAsset}camera.png";
-  static String klogo = "${kAsset}logo2.jpeg";
+  static String klogo = "${kAsset}logo.png";
 }

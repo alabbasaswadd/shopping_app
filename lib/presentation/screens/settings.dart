@@ -87,7 +87,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar("settings".tr),
+      appBar: myAppBar("settings".tr,context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

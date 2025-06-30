@@ -12,8 +12,12 @@ class WebServices {
     ),
   );
   Future<List<dynamic>> getData() async {
-    Response response = await dio.get('https://fakestoreapi.com/products');
-    return response.data;
+    Response response = await dio.get("$baseUrl$getAllProducts",
+        options: Options(headers: {
+          "Authorization":
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvdXNzYW1hbWFkZWw1QGdtYWlsLmNvbSIsImp0aSI6IjE5ZjNjODQ0LTJmYWEtNDRmNi05MDQ2LTc0Y2M1NGJlZGJlYyIsInVzZXJJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3ODIxNjAzNzcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0LzUyMjkiLCJhdWQiOiJNdWx0aVZlbmRvck1hcmtldHBsYWNlIn0.QGUE7erIy2bKbtBzou68UoJ83I1oETr5ZOaEOhxiYyw"
+        }));
+    return response.data['data'];
   }
 
   Future<Response?> signUpWebService(Map<String, dynamic> data) async {
