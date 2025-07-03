@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
-import 'package:shopping_app/data/model/products_model.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/screens/payment.dart';
 import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
@@ -109,7 +109,7 @@ class _CartPageState extends State<CardPage> {
     );
   }
 
-  Widget _buildCartItem(ProductsModel item, int index, ThemeData theme) {
+  Widget _buildCartItem(ProductDataModel item, int index, ThemeData theme) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -123,7 +123,7 @@ class _CartPageState extends State<CardPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                item.image,
+                item.image ?? "",
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -137,7 +137,7 @@ class _CartPageState extends State<CardPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.name,
+                    item.name ?? "",
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -146,7 +146,7 @@ class _CartPageState extends State<CardPage> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "\$${item.price.toStringAsFixed(2)}",
+                    "\$${item.price?.toStringAsFixed(2) ?? ""}",
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: AppColor.kPrimaryColor,
                       fontWeight: FontWeight.bold,

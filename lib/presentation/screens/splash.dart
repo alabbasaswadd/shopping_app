@@ -5,7 +5,7 @@ import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
-import 'signup.dart';
+import 'auth/signup.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

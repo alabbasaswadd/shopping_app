@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:shopping_app/core/api/errors/error_model.dart';
 import 'package:shopping_app/core/constants/functions.dart';
-import 'package:shopping_app/data/model/auth_data_model.dart';
-import 'package:shopping_app/data/model/response_model.dart';
-import 'package:shopping_app/data/model/user_model.dart';
+import 'package:shopping_app/data/model/login/login_data_model.dart';
+import 'package:shopping_app/data/model/login/login_response_model.dart';
+import 'package:shopping_app/data/register/register_model.dart';
+import 'package:shopping_app/data/model/user/user_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
@@ -47,9 +49,9 @@ class AuthCubit extends Cubit<AuthState> {
         }
       });
 
-      if (response != null && response.data != null) {
+      if (response.data != null) {
         try {
-          final authResponse = AuthResponse.fromJson(response.data);
+          final authResponse = RegisterResponseModel.fromJson(response.data);
           print("✅ succeeded: ${authResponse.succeeded}");
           if (authResponse.succeeded == true) {
             emit(AuthSignUpSuccess());
@@ -105,53 +107,70 @@ class AuthCubit extends Cubit<AuthState> {
         "email": email,
         "password": password,
       });
+      print(response);
 
-      if (response != null) {
-        final authResponse = AuthResponse.fromJson(response.data);
+      if (response != null && response.statusCode == 200) {
+        final jsonData = response.data;
+        final loginData = LoginDataModel.fromJson(jsonData['data']);
 
-        if (authResponse.succeeded == true && authResponse.data != null) {
-          // ✅ حفظ بيانات تسجيل الدخول البسيطة (token - userName - customerId)
-          final token = authResponse.data!.token;
-          final userName = authResponse.data!.userName;
-          final customerId = authResponse.data!.customerId;
+        // ✅ LoginResponseModel ياخذ الـ json الكامل
+        final loginResponse = LoginResponseModel.fromJson(jsonData);
 
-          await UserPreferencesService.saveUser({
-            "token": token,
-            "userName": userName,
-            "customerId": customerId,
-          });
+        if (loginResponse.succeeded == true && loginResponse.data != null) {
+          final token = loginData.token;
+          final customerId = loginData.customerId;
 
-          // ✅ جلب بيانات المستخدم الشخصية من API باستخدام customerId
-          final userModel = await repository.getUserRepository(customerId!);
-
-          // تحديث الجلسة ببيانات المستخدم الكاملة
+          await UserPreferencesService.saveToken(token ?? "");
+          final userModel =
+              await repository.getUserRepository(customerId ?? "");
           await UserSession.updateUser(userModel);
 
           emit(AuthAuthenticated());
         } else {
-          // ⛔ استخراج أول رسالة خطأ من errors
-          String errorMessage = "البيانات المدخلة غير صحيحة";
-          if (authResponse.errors.isNotEmpty) {
-            final firstKey = authResponse.errors.keys.first;
-            final errorList = authResponse.errors[firstKey];
-            if (errorList is List && errorList.isNotEmpty) {
-              errorMessage = errorList.first.toString();
+          String errorMessage = "حدث خطأ غير معروف";
+
+          if (loginResponse.errors != null &&
+              loginResponse.errors!.errors != null &&
+              loginResponse.errors!.errors!.isNotEmpty) {
+            final firstKey = loginResponse.errors!.errors!.keys.first;
+            final errorList = loginResponse.errors!.errors![firstKey];
+            if (errorList != null && errorList.isNotEmpty) {
+              errorMessage = errorList.first;
             }
           }
           emit(AuthError(errorMessage));
         }
       } else {
-        emit(AuthError("فشل الاتصال بالسيرفر"));
+        emit(AuthError("فشل الاتصال بالسيرفر."));
       }
     } catch (e) {
       if (e is DioException) {
-        final errorData = e.response?.data;
-        final serverMessage =
-            errorData is Map<String, dynamic> && errorData['message'] != null
-                ? errorData['message'].toString()
-                : "خطأ في الاتصال بالسيرفر";
-        emit(AuthError(serverMessage));
+        try {
+          final errorData = e.response?.data;
+          if (errorData != null && errorData is Map<String, dynamic>) {
+            final errorModel = ErrorModel.fromJson(errorData);
+
+            // ✅ استخراج رسالة الخطأ من ErrorModel
+            String errorMessage =
+                errorModel.message ?? "خطأ في الاتصال بالسيرفر";
+
+            if (errorModel.errors != null && errorModel.errors!.isNotEmpty) {
+              final firstKey = errorModel.errors!.keys.first;
+              final errorList = errorModel.errors![firstKey];
+              if (errorList != null && errorList.isNotEmpty) {
+                errorMessage = errorList.first;
+              }
+            }
+
+            emit(AuthError(errorMessage));
+          } else {
+            emit(AuthError("فشل في قراءة رسالة الخطأ من السيرفر"));
+          }
+        } catch (_) {
+          emit(AuthError("خطأ غير متوقع أثناء تحليل رسالة الخطأ"));
+        }
       } else {
+        print(e.toString());
         emit(AuthError("حدث خطأ غير متوقع: ${e.toString()}"));
       }
     }

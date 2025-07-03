@@ -1,21 +1,23 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app/data/model/products_model.dart';
+import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 
 class ProductsDetailsBody extends StatelessWidget {
   const ProductsDetailsBody({super.key});
   @override
   Widget build(BuildContext context) {
-    final ProductsModel productDetails =
-        ModalRoute.of(context)!.settings.arguments as ProductsModel;
+    final ProductDataModel productDetails =
+        ModalRoute.of(context)!.settings.arguments as ProductDataModel;
 
     return SingleChildScrollView(
       child: Column(
         children: [
           CarouselSlider(
             items: [
-              Image.network(productDetails.image),
-              Image.network(productDetails.image),
+              // Image.network(productDetails.image),
+              // Image.network(productDetails.image),
+              Image.asset(AppImages.kCamera)
             ],
             options: CarouselOptions(
               autoPlayInterval: const Duration(seconds: 3),
@@ -33,7 +35,7 @@ class ProductsDetailsBody extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(productDetails.name,
+                    Text(productDetails.name ?? "",
                         style: Theme.of(context).textTheme.bodyLarge),
                     SizedBox(height: 20),
                     Row(

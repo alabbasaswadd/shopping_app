@@ -8,7 +8,7 @@ import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
-import 'package:shopping_app/presentation/screens/signup.dart';
+import 'package:shopping_app/presentation/screens/auth/signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

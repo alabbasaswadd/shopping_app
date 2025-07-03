@@ -1,15 +1,18 @@
-import 'package:get/get.dart' hide Response;
 import 'package:dio/dio.dart';
-import 'package:shopping_app/data/model/products_model.dart';
-import 'package:shopping_app/data/model/user_model.dart';
+import 'package:shopping_app/data/model/category/category_model.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
+import 'package:shopping_app/data/model/shop/shop_data_model.dart';
+import 'package:shopping_app/data/model/user/user_model.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 
 class Repository {
   final WebServices webServices;
   Repository(this.webServices);
-  Future<List<ProductsModel>> getData() async {
+  Future<List<ProductDataModel>> getData() async {
     final products = await webServices.getData();
-    return products.map((product) => ProductsModel.fromJson(product)).toList();
+    return products
+        .map((product) => ProductDataModel.fromJson(product))
+        .toList();
   }
 
   signUpRepository(Map<String, dynamic> data) async {
@@ -53,5 +56,17 @@ class Repository {
 
   Future<void> deleteUserRepository(String userId) {
     return webServices.deleteUserWebServices(userId);
+  }
+
+  Future<List<ShopDataModel>> getShopsRepository() {
+    return webServices.getShopsWebServices();
+  }
+
+  Future<List<ProductDataModel>> getProductsByShopIdRepository(String id) {
+    return webServices.getProductsByShopIdWebServices(id);
+  }
+
+  Future<List<CategoryModel>> getCategoriesRepository() {
+    return webServices.getCategoriesWebServices();
   }
 }

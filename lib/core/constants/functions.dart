@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/data/model/auth_data_model.dart';
-import 'package:shopping_app/data/model/user_model.dart';
+import 'package:shopping_app/data/model/login/login_response_model.dart';
+import 'package:shopping_app/data/model/user/user_model.dart';
 
 class UserPreferencesService {
   static const String _userKey = 'user_data';
@@ -21,6 +21,20 @@ class UserPreferencesService {
     final userString = prefs.getString(_userKey);
     if (userString != null) {
       return jsonDecode(userString);
+    }
+    return null;
+  }
+
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("token", token);
+  }
+
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+    if (token != null) {
+      return token;
     }
     return null;
   }

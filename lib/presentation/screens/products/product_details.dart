@@ -3,9 +3,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
-import 'package:shopping_app/data/model/products_model.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/widget/products/products_details_body.dart';
-import '../widget/products/products_body.dart';
+import '../../widget/products/products_body.dart';
 
 class ProductDetails extends StatelessWidget {
   const ProductDetails({super.key});
@@ -13,8 +13,8 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductsModel productDetails =
-        ModalRoute.of(context)!.settings.arguments as ProductsModel;
+    final ProductDataModel productDetails =
+        ModalRoute.of(context)!.settings.arguments as ProductDataModel;
     return Scaffold(
       appBar: myAppBar("product_details".tr, context),
       body: Container(
@@ -33,14 +33,16 @@ class ProductDetails extends StatelessWidget {
               backgroundColor: AppColor.kRedColor,
             );
           } else {
-            ProductsBody.productsCard.add(ProductsModel(
+            ProductsBody.productsCard.add(ProductDataModel(
                 name: productDetails.name,
                 image: productDetails.image,
                 price: productDetails.price,
                 categoryId: '',
                 currency: '',
                 shopeId: '',
-                description: ''));
+                description: '',
+                id: '',
+                creationDate: ''));
             Fluttertoast.showToast(
               msg: "Added To Favorite",
               backgroundColor: AppColor.kPrimaryColor,

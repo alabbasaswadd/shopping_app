@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders.dart';
-import 'package:shopping_app/presentation/screens/products.dart';
-import 'package:shopping_app/presentation/screens/stores.dart';
+import 'package:shopping_app/presentation/screens/products/products.dart';
+import 'package:shopping_app/presentation/screens/shops/shops.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 2;
   final List<Widget> pages = [
-    Stores(),
+    Shops(),
     const Offers(),
     const Productes(),
     Orders(),

@@ -20,7 +20,7 @@ class _FavoriteState extends State<Favorite> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("favorite".tr,context),
+      appBar: myAppBar("favorite".tr, context),
       body: ProductsBody.productsFavorite.isEmpty
           ? _buildEmptyFavoriteState(theme)
           : _buildFavoriteList(),
@@ -76,7 +76,7 @@ class _FavoriteState extends State<Favorite> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                product.image,
+                product.image ?? "",
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -90,7 +90,7 @@ class _FavoriteState extends State<Favorite> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    product.name ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

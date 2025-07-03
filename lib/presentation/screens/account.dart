@@ -7,10 +7,10 @@ import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
-import 'package:shopping_app/data/model/user_model.dart';
+import 'package:shopping_app/data/model/user/user_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_state.dart';
-import 'package:shopping_app/presentation/screens/login.dart';
+import 'package:shopping_app/presentation/screens/auth/login.dart';
 
 class Account extends StatefulWidget {
   const Account({super.key});

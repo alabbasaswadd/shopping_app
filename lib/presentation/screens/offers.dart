@@ -75,7 +75,7 @@ class Offers extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
-                        product.image,
+                        product.image ?? "",
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
@@ -111,7 +111,7 @@ class Offers extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.name,
+                        product.name ?? "",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -134,7 +134,7 @@ class Offers extends StatelessWidget {
                           ),
                           SizedBox(width: 8),
                           Text(
-                            "${product.price * 1.25} ₺", // السعر قبل الخصم
+                            "${(product.price ?? 0) * 1.25} ₺", // السعر قبل الخصم
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey,

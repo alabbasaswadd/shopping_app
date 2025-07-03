@@ -10,7 +10,7 @@ import 'package:shopping_app/presentation/screens/change_password_screen.dart';
 import 'package:shopping_app/presentation/screens/favorite.dart';
 import 'package:shopping_app/presentation/screens/orders.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';
-import 'package:shopping_app/presentation/screens/signup.dart';
+import 'package:shopping_app/presentation/screens/auth/signup.dart';
 import 'package:shopping_app/presentation/widget/products/products_custom_drawer.dart';
 
 class ProductsDrawer extends StatefulWidget {

@@ -9,7 +9,7 @@ import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_bottom_sheet.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
-import 'package:shopping_app/presentation/screens/login.dart';
+import 'package:shopping_app/presentation/screens/auth/login.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
