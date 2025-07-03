@@ -5,7 +5,7 @@ import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/data/model/login/login_data_model.dart';
 import 'package:shopping_app/data/model/login/login_response_model.dart';
 import 'package:shopping_app/data/register/register_model.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
@@ -185,7 +185,7 @@ class AuthCubit extends Cubit<AuthState> {
 
         if (response != null && response.data != null) {
           final Map<String, dynamic> json = response.data;
-          final user = UserModel.fromJson(json);
+          final user = UserDataModel.fromJson(json);
 
           // ✅ تخزين بيانات المستخدم داخل SharedPreferences
           await UserPreferencesService.saveUser(user.toJson());

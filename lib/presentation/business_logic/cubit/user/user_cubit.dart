@@ -2,7 +2,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/core/constants/functions.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/data/repository/products_repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'user_state.dart';
@@ -23,7 +23,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> updateUser(String userId, UserModel user) async {
+  Future<void> updateUser(String userId, UserDataModel user) async {
     emit(UserLoading());
     try {
       await repository.updateUserRepository(userId, user);

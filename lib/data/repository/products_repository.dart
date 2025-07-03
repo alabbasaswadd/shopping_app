@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:shopping_app/data/model/category/category_model.dart';
+import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 
 class Repository {
@@ -46,11 +46,11 @@ class Repository {
     }
   }
 
-  Future<UserModel> getUserRepository(String userId) {
+  Future<UserDataModel> getUserRepository(String userId) {
     return webServices.getUserWebServices(userId);
   }
 
-  Future<void> updateUserRepository(String userId, UserModel user) {
+  Future<void> updateUserRepository(String userId, UserDataModel user) {
     return webServices.updateUserWebServices(userId, user);
   }
 
@@ -66,7 +66,7 @@ class Repository {
     return webServices.getProductsByShopIdWebServices(id);
   }
 
-  Future<List<CategoryModel>> getCategoriesRepository() {
+  Future<List<CategoryDataModel>> getCategoriesRepository() {
     return webServices.getCategoriesWebServices();
   }
 }

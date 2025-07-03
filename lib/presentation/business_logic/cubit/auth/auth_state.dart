@@ -1,4 +1,4 @@
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 
 abstract class AuthState {}
 

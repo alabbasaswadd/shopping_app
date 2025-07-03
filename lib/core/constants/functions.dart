@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/login/login_response_model.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 
 class UserPreferencesService {
   static const String _userKey = 'user_data';
@@ -61,19 +61,19 @@ class UserPreferencesService {
   }
 
   // استرجاع بيانات المستخدم كنموذج UserModel
-  static Future<UserModel?> getUserModel() async {
+  static Future<UserDataModel?> getUserModel() async {
     final prefs = await SharedPreferences.getInstance();
     final userString = prefs.getString(_userKey);
     if (userString != null) {
       final json = jsonDecode(userString);
-      return UserModel.fromJson(json);
+      return UserDataModel.fromJson(json);
     }
     return null;
   }
 }
 
 class UserSession {
-  static UserModel? _user;
+  static UserDataModel? _user;
 
   /// تحميل بيانات المستخدم من SharedPreferences وتخزينها في الذاكرة
   static Future<void> init() async {
@@ -81,7 +81,7 @@ class UserSession {
   }
 
   /// كل بيانات المستخدم
-  static UserModel? get user => _user;
+  static UserDataModel? get user => _user;
 
   /// خصائص مباشرة من _user
   static String? get id => _user?.id;
@@ -104,7 +104,7 @@ class UserSession {
   static bool get isLoggedIn => _user != null;
 
   /// تحديث بيانات المستخدم
-  static Future<void> updateUser(UserModel userModel) async {
+  static Future<void> updateUser(UserDataModel userModel) async {
     _user = userModel;
     await UserPreferencesService.saveUser(userModel.toJson());
   }

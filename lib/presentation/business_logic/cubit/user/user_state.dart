@@ -1,16 +1,13 @@
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 
-import 'package:shopping_app/data/model/user/user_model.dart';
-
-abstract class UserState  {
-
-}
+abstract class UserState {}
 
 class UserInitial extends UserState {}
 
 class UserLoading extends UserState {}
 
 class UserLoaded extends UserState {
-  final UserModel user;
+  final UserDataModel user;
 
   UserLoaded(this.user);
 }
@@ -23,5 +20,4 @@ class UserError extends UserState {
   final String message;
 
   UserError(this.message);
-
 }

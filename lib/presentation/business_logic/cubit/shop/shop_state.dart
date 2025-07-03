@@ -12,6 +12,7 @@
 //   }) = _Initial;
 // }
 
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_response_model.dart';
 
@@ -31,4 +32,17 @@ class ShopError extends ShopState {
   final String error;
 
   ShopError(this.error);
+}
+
+class ProductsLoading extends ShopState {}
+
+class ProductsSuccess extends ShopState {
+  final List<ProductDataModel> products;
+  final List<ShopDataModel> shops;
+  ProductsSuccess(this.products, this.shops);
+}
+
+class ProductsError extends ShopState {
+  final String error;
+  ProductsError(this.error);
 }

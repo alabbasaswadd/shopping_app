@@ -9,6 +9,7 @@ import 'package:shopping_app/presentation/screens/products/product_details.dart'
 import 'package:shopping_app/presentation/screens/products/products.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';
 import 'package:shopping_app/presentation/screens/shops/shops.dart';
+import 'package:shopping_app/presentation/screens/shops/shops_products.dart';
 import 'presentation/screens/favorite.dart';
 import 'presentation/screens/payment.dart';
 import 'presentation/screens/auth/signup.dart';
@@ -29,6 +30,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   About.id: (context) => About(),
   Settings.id: (context) => Settings(),
   Productes.id: (context) => Productes(),
+  ShopProducts.id: (context) => ShopProducts(shopId: ""),
   Favorite.id: (context) => Favorite(),
   ProductDetails.id: (context) => ProductDetails(),
   CardPage.id: (context) => CardPage(),
