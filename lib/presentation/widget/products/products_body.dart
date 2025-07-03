@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/data/model/products_model.dart';
-import 'package:shopping_app/presentation/screens/produc_details.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
+import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class ProductsBody extends StatefulWidget {
   const ProductsBody({super.key});
-  static List<ProductsModel> productsInside = [];
-  static List<ProductsModel> productsCard = [];
-  static List<ProductsModel> productsFavorite = [];
+  static List<ProductDataModel> productsInside = [];
+  static List<ProductDataModel> productsCard = [];
+  static List<ProductDataModel> productsFavorite = [];
 
   @override
-  State<ProductsBody> createState() =>
-      _CustomContainerProductsState();
+  State<ProductsBody> createState() => _CustomContainerProductsState();
 }
 
 class _CustomContainerProductsState extends State<ProductsBody> {
@@ -38,9 +39,10 @@ class _CustomContainerProductsState extends State<ProductsBody> {
           context.read<SearchingCubit>().setAllProducts(state.products);
           return BlocBuilder<SearchingCubit, SearchingState>(
             builder: (context, searchState) {
-              List<ProductsModel> displayedProducts = searchState is IsSearching
-                  ? searchState.productsSearching
-                  : state.products;
+              List<ProductDataModel> displayedProducts =
+                  searchState is IsSearching
+                      ? searchState.productsSearching
+                      : state.products;
 
               if (displayedProducts.isEmpty) {
                 return const Center(
@@ -54,7 +56,7 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        ProdutDetails.id,
+                        ProductDetails.id,
                         arguments: displayedProducts[i],
                       );
                       ProductsBody.productsInside.clear();
@@ -67,10 +69,10 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                       height: 142,
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(2, 2),
+                              color: Colors.black.withOpacity(0.3),
+                              offset: Offset(0, 2),
                               blurRadius: 3)
                         ],
                         color: Theme.of(context).colorScheme.secondary,
@@ -79,20 +81,27 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          TextButton(
+                              onPressed: () async {
+                                final token =
+                                    await UserPreferencesService.getToken();
+                                print(token);
+                              },
+                              child: Text("data")),
                           SizedBox(
                             height: double.infinity,
                             width: 100,
-                            child: Image.network(
-                              displayedProducts[i].image,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Image.asset(
-                                  'assets/images/loading.gif',
-                                  fit: BoxFit.cover,
-                                );
-                              },
-                            ),
+                            child: Image.asset(AppImages.klogo
+                                // displayedProducts[i].image,
+                                // loadingBuilder:
+                                //     (context, child, loadingProgress) {
+                                //   if (loadingProgress == null) return child;
+                                //   return Image.asset(
+                                //     'assets/images/loading.gif',
+                                //     fit: BoxFit.cover,
+                                //   );
+                                // },
+                                ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -101,7 +110,7 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    displayedProducts[i].title,
+                                    displayedProducts[i].name ?? "",
                                     style:
                                         Theme.of(context).textTheme.bodyLarge,
                                   ),
@@ -123,8 +132,8 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                                   bool isAlreadyAdded = ProductsBody
                                       .productsFavorite
                                       .any((product) =>
-                                          product.title ==
-                                          displayedProducts[i].title);
+                                          product.name ==
+                                          displayedProducts[i].name);
 
                                   if (isAlreadyAdded) {
                                     Fluttertoast.showToast(
@@ -149,8 +158,8 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                                   bool isAlreadyAdded =
                                       ProductsBody.productsCard.any(
                                     (product) =>
-                                        product.title ==
-                                        displayedProducts[i].title,
+                                        product.name ==
+                                        displayedProducts[i].name,
                                   );
 
                                   if (isAlreadyAdded) {

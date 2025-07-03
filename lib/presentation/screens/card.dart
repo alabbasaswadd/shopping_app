@@ -1,165 +1,251 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/screens/payment.dart';
 import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
-  static String id = "card";
+  static String id = "cart";
 
   @override
-  State<CardPage> createState() => _CardPageState();
+  State<CardPage> createState() => _CartPageState();
 }
 
-class _CardPageState extends State<CardPage> {
+class _CartPageState extends State<CardPage> {
   double _totalPrice = 0.0;
 
   @override
   void initState() {
     super.initState();
-    calculateTotalPrice();
+    // _calculateTotalPrice();
   }
 
-  void calculateTotalPrice() {
-    setState(() {
-      _totalPrice = ProductsBody.productsCard
-          .fold(0.0, (sum, item) => sum + ((item.price) * item.quantity));
-    });
-  }
+  // void _calculateTotalPrice() {
+  //   setState(() {
+  //     _totalPrice = ProductsBody.productsCard.fold(
+  //       0.0,
+  //       (sum, item) => sum + (item.price * item.quantity),
+  //     );
+  //   });
+  // }
 
-  void increaseQuantity(int index) {
-    setState(() {
-      ProductsBody.productsCard[index].quantity += 1;
-      calculateTotalPrice();
-    });
-  }
+  // void _increaseQuantity(int index) {
+  //   setState(() {
+  //     ProductsBody.productsCard[index].quantity++;
+  //     _calculateTotalPrice();
+  //   });
+  // }
 
-  void decreaseQuantity(int index) {
-    setState(() {
-      if (ProductsBody.productsCard[index].quantity > 1) {
-        ProductsBody.productsCard[index].quantity--;
-        calculateTotalPrice();
-      }
-    });
-  }
+  // void _decreaseQuantity(int index) {
+  //   setState(() {
+  //     if (ProductsBody.productsCard[index].quantity > 1) {
+  //       ProductsBody.productsCard[index].quantity--;
+  //       _calculateTotalPrice();
+  //     }
+  //   });
+  // }
+
+  // void _removeItem(int index) {
+  //   setState(() {
+  //     ProductsBody.productsCard.removeAt(index);
+  //     _calculateTotalPrice();
+  //     ScaffoldMessenger.of(Get.context!).showSnackBar(
+  //       SnackBar(
+  //         content: Text("removed_from_cart".tr),
+  //         backgroundColor: AppColor.kRedColor,
+  //         behavior: SnackBarBehavior.floating,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("card".tr),
-        centerTitle: true,
-        elevation: 8,
-        shadowColor: Colors.black,
-      ),
+      appBar: myAppBar("card".tr, context),
       body: ProductsBody.productsCard.isEmpty
-          ? Center(child: Text("no_products_in_card".tr))
-          : ListView.builder(
-              itemCount: ProductsBody.productsCard.length,
-              itemBuilder: (context, i) {
-                return Container(
-                  padding: EdgeInsets.all(5),
-                  height: 142,
-                  margin: EdgeInsets.symmetric(vertical: 5),
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.shopping_cart_outlined,
+                      size: 80, color: Colors.grey.withOpacity(0.5)),
+                  SizedBox(height: 20),
+                  Text(
+                    "no_products_in_card".tr,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    padding: EdgeInsets.all(16),
+                    separatorBuilder: (_, __) => SizedBox(height: 12),
+                    itemCount: ProductsBody.productsCard.length,
+                    itemBuilder: (context, index) {
+                      final item = ProductsBody.productsCard[index];
+                      return _buildCartItem(item, index, theme);
+                    },
+                  ),
+                ),
+                _buildCheckoutSection(),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildCartItem(ProductDataModel item, int index, ThemeData theme) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          children: [
+            // Product Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                item.image ?? "",
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(width: 12),
+
+            // Product Info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name ?? "",
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "\$${item.price?.toStringAsFixed(2) ?? ""}",
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppColor.kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Quantity Controls
+            Column(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.close, size: 20),
+                  onPressed: () => print("edited"),
+                  // _removeItem(index),
+                  color: Colors.red,
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                ),
+                SizedBox(height: 8),
+                Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(10)),
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        height: double.infinity,
-                        width: 100,
-                        child: Image.network(
-                          ProductsBody.productsCard[i].image,
-                          fit: BoxFit.fill,
-                        ),
+                      IconButton(
+                        icon: Icon(Icons.remove, size: 16),
+                        onPressed: () => print("edited"),
+                        // _decreaseQuantity(index),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                ProductsBody.productsCard[i].title,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                            ),
-                            Text(
-                              "${ProductsBody.productsCard[i].price} ₺",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(fontSize: 20),
-                            ),
-                          ],
-                        ),
+                      Text(
+                        "sss",
+                        style: TextStyle(fontSize: 14),
                       ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Fluttertoast.showToast(
-                                  msg: "Removed From Card",
-                                  backgroundColor: AppColor.kRedColor);
-                              setState(() {
-                                ProductsBody.productsCard
-                                    .removeAt(i);
-                                calculateTotalPrice(); // تحديث الإجمالي بعد الحذف
-                              });
-                            },
-                            icon: const Icon(Icons.remove_shopping_cart,
-                                color: Colors.red),
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                  onPressed: () => decreaseQuantity(i),
-                                  icon: Icon(Icons.remove)),
-                              Text(
-                                "${ProductsBody.productsCard[i].quantity}",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              IconButton(
-                                  onPressed: () => increaseQuantity(i),
-                                  icon: Icon(Icons.add)),
-                            ],
-                          ),
-                        ],
+                      IconButton(
+                        icon: Icon(Icons.add, size: 16),
+                        onPressed: () => print("edited"),
+                        // _increaseQuantity(index),
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
                       ),
                     ],
                   ),
-                );
-              },
+                ),
+              ],
             ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).colorScheme.secondary,
-        padding: EdgeInsets.all(3),
-        height: 80,
-        child: SingleChildScrollView(
-          child: Column(
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCheckoutSection() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, -5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Center(
-                child: Text(
-                  "total: ${_totalPrice.toStringAsFixed(2)} ₺",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Text(
+                "total".tr,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              MaterialButton(
-                color: AppColor.kPrimaryColor,
-                textColor: Colors.white,
-                onPressed: () {
-                  Get.toNamed(Payment.id);
-                },
-                child: Text("payment".tr),
+              Text(
+                "\$${_totalPrice.toStringAsFixed(2)}",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.kPrimaryColor,
+                ),
               ),
             ],
           ),
-        ),
+          SizedBox(height: 16),
+          MyButton(
+            text: "proceed_to_checkout".tr,
+            onPressed: () => Get.toNamed(Payment.id),
+          ),
+        ],
       ),
     );
   }

@@ -1,0 +1,2 @@
+C:/Users/alabbas/Desktop/shopping_app/android/app/.cxx/RelWithDebInfo/6hj4z3l1/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/alabbas/Desktop/shopping_app/android/app/.cxx/RelWithDebInfo/6hj4z3l1/x86_64/CMakeFiles/rebuild_cache.dir

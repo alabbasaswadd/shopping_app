@@ -1,15 +1,19 @@
+import 'package:json_annotation/json_annotation.dart';
 
-import 'package:shopping_app/core/api/end_ponits.dart';
+part 'error_model.g.dart';
 
+@JsonSerializable()
 class ErrorModel {
-  final int status;
-  final String errorMessage;
+  final String? message;
+  final Map<String, List<String>>? errors;
 
-  ErrorModel({required this.status, required this.errorMessage});
-  factory ErrorModel.fromJson(Map<String, dynamic> jsonData) {
-    return ErrorModel(
-      status: jsonData[ApiKey.status],
-      errorMessage: jsonData[ApiKey.errorMessage],
-    );
-  }
+  ErrorModel({
+    required this.message,
+    required this.errors,
+  });
+
+  factory ErrorModel.fromJson(Map<String, dynamic> json) =>
+      _$ErrorModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ErrorModelToJson(this);
 }

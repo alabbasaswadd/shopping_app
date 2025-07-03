@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders.dart';
-import 'package:shopping_app/presentation/screens/products.dart';
-import 'package:shopping_app/presentation/screens/stores.dart';
-
+import 'package:shopping_app/presentation/screens/products/products.dart';
+import 'package:shopping_app/presentation/screens/shops/shops.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,11 +17,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 2;
   final List<Widget> pages = [
-    const Stores(),
+    Shops(),
     const Offers(),
     const Productes(),
     Orders(),
-    const Account(),
+    Account(),
   ];
 
   @override
@@ -39,11 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Icons.home,
           size: 30,
           color: Colors.white,
-        ), 
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .miniCenterDocked, 
-      body: pages[selectedIndex], 
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterDocked,
+      body: pages[selectedIndex],
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: const [
           Icons.store,
@@ -62,11 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIndex = index;
           });
         },
-        backgroundColor:
-            Theme.of(context).colorScheme.secondary, 
-        activeColor: Theme.of(context).colorScheme.primary, 
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        activeColor: Theme.of(context).colorScheme.primary,
         inactiveColor: Colors.grey,
-      
       ),
     );
   }

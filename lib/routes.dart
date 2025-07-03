@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/card.dart';
+import 'package:shopping_app/presentation/screens/change_password_screen.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders.dart';
-import 'package:shopping_app/presentation/screens/produc_details.dart';
-import 'package:shopping_app/presentation/screens/products.dart';
+import 'package:shopping_app/presentation/screens/products/product_details.dart';
+import 'package:shopping_app/presentation/screens/products/products.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';
-import 'package:shopping_app/presentation/screens/stores.dart';
+import 'package:shopping_app/presentation/screens/shops/shops.dart';
 import 'presentation/screens/favorite.dart';
 import 'presentation/screens/payment.dart';
-import 'presentation/screens/signup.dart';
-import 'presentation/screens/login.dart';
+import 'presentation/screens/auth/signup.dart';
+import 'presentation/screens/auth/login.dart';
 import 'presentation/screens/home_screen.dart';
 import 'presentation/screens/notifications.dart';
 import 'presentation/screens/onboarding.dart';
@@ -19,7 +20,7 @@ import 'presentation/screens/splash.dart';
 
 Map<String, Widget Function(BuildContext)> routes = {
   Login.id: (context) => Login(),
-  Stores.id: (context) => Stores(),
+  Shops.id: (context) => Shops(),
   Offers.id: (context) => Offers(),
   Payment.id: (context) => Payment(),
   SignUp.id: (context) => SignUp(),
@@ -29,10 +30,11 @@ Map<String, Widget Function(BuildContext)> routes = {
   Settings.id: (context) => Settings(),
   Productes.id: (context) => Productes(),
   Favorite.id: (context) => Favorite(),
-  ProdutDetails.id: (context) => ProdutDetails(),
+  ProductDetails.id: (context) => ProductDetails(),
   CardPage.id: (context) => CardPage(),
   Notifications.id: (context) => Notifications(),
   HomeScreen.id: (context) => HomeScreen(),
   Onboarding.id: (context) => Onboarding(),
   Splash.id: (context) => Splash(),
+  ChangePasswordScreen.id: (context) => ChangePasswordScreen(),
 };

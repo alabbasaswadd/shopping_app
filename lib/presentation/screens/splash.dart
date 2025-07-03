@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
-import 'signup.dart';
+import 'auth/signup.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -15,6 +17,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
+  
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
       checkOnboardingStatus();
@@ -26,7 +29,11 @@ class _SplashState extends State<Splash> {
     final bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
     if (hasSeenOnboarding) {
-      Get.offAllNamed(SignUp.id);
+      if (await UserPreferencesService.isLoggedIn()) {
+        Get.offAllNamed(HomeScreen.id);
+      } else {
+        Get.offAllNamed(SignUp.id);
+      }
     } else {
       Get.offAllNamed(Onboarding.id);
     }
