@@ -19,7 +19,8 @@ ProductDataModel _$ProductDataModelFromJson(Map<String, dynamic> json) =>
       creationDate: json['creationDate'] as String?,
       category: json['category'] == null
           ? null
-          : CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
+          : CategoryDataModel.fromJson(
+              json['category'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProductDataModelToJson(ProductDataModel instance) =>

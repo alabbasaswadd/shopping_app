@@ -11,7 +11,7 @@
 //   }) = _CategoryState;
 // }
 
-import 'package:shopping_app/data/model/category/category_model.dart';
+import 'package:shopping_app/data/model/category/category_data_model.dart';
 
 abstract class CategoryState {}
 
@@ -20,7 +20,7 @@ class CategoryInitial extends CategoryState {}
 class CategoryLoading extends CategoryState {}
 
 class CategoryLoaded extends CategoryState {
-  final List<CategoryModel> Categories;
+  final List<CategoryDataModel> Categories;
 
   CategoryLoaded(this.Categories);
 }

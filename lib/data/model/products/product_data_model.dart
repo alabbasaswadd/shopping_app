@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shopping_app/data/model/category/category_model.dart';
+import 'package:shopping_app/data/model/category/category_data_model.dart';
 
 part 'product_data_model.g.dart';
 
@@ -14,7 +14,7 @@ class ProductDataModel {
   final String? shopeId;
   final String? description;
   final String? creationDate;
-  final CategoryModel? category;
+  final CategoryDataModel? category;
 
   ProductDataModel({
      this.id,

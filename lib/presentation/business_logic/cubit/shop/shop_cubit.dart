@@ -13,9 +13,8 @@ class ShopCubit extends Cubit<ShopState> {
 
       print("✅ عدد المتاجر المحملة: ${shops.length}");
       for (var shop in shops) {
-        print("🔸 ${shop.firstName} ${shop.lastName}");
+        print("🔸 ${shop.id} ");
       }
-
       emit(ShopLoaded(shops));
     } catch (e) {
       print("❌ Error: $e");
@@ -24,20 +23,21 @@ class ShopCubit extends Cubit<ShopState> {
   }
 
   void getProductsByShopId(String id) async {
-    emit(ShopLoading());
+    emit(ProductsLoading());
 
     try {
-      final products = await repository.getShopsRepository();
-
-      print("✅ عدد المتاجر المحملة: ${products.length}");
-      for (var shop in products) {
-        print("🔸 ${shop.firstName} ${shop.lastName}");
+      final products = await repository.getProductsByShopIdRepository(id);
+      final shops = await repository.getShopsRepository();
+      print("✅ عدد المنتجات المحملة: ${products.length}");
+      for (var product in products) {
+        print("🔸 ${product.id} ${product.price}");
       }
 
-      emit(ShopLoaded(products));
+      emit(ProductsSuccess(products, shops));
     } catch (e) {
       print("❌ Error: $e");
-      emit(ShopError("حدث خطأ أثناء جلب المتاجر المتاحة: ${e.toString()}"));
+      emit(
+          ProductsError("حدث خطأ أثناء جلب المنتجات المتاحة: ${e.toString()}"));
     }
   }
 }

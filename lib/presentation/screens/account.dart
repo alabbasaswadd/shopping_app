@@ -7,7 +7,8 @@ import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_address_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_state.dart';
 import 'package:shopping_app/presentation/screens/auth/login.dart';
@@ -87,7 +88,7 @@ class _AccountState extends State<Account> {
   }
 
   // دالة لتحديث الكنترولرز حسب بيانات المستخدم
-  void _updateControllers(UserModel user) {
+  void _updateControllers(UserDataModel user) {
     _firstNameController.text = user.firstName ?? "";
     _lastNameController.text = user.lastName ?? "";
     _emailController.text = user.email?.userName ?? "";
@@ -105,7 +106,7 @@ class _AccountState extends State<Account> {
     return BlocProvider(
       create: (_) => cubit,
       child: Scaffold(
-        appBar: myAppBar("تعديل الملف الشخصي",context),
+        appBar: myAppBar("تعديل الملف الشخصي", context),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {
@@ -381,14 +382,14 @@ class _AccountState extends State<Account> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () async {
-              final updatedUser = UserModel(
+              final updatedUser = UserDataModel(
                 id: UserSession.id,
                 firstName: _firstNameController.text,
                 lastName: _lastNameController.text,
                 phone: _phoneController.text,
                 birthDate: _birthDateController.text,
                 gender: _genderController.text == "ذكر" ? 0 : 1,
-                address: AddressModel(
+                address: UserAddressModel(
                   city: _cityController.text,
                   street: _streetController.text,
                   floor: _floorController.text,

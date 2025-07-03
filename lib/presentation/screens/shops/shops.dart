@@ -6,6 +6,7 @@ import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
+import 'package:shopping_app/presentation/screens/shops/shops_products.dart';
 
 class Shops extends StatefulWidget {
   Shops({super.key});
@@ -50,9 +51,14 @@ class _StoresState extends State<Shops> {
                 ),
                 itemCount: shops.length,
                 itemBuilder: (context, index) => Card(
-                  child: ListTile(
-                    title: Text(shops[index].firstName ?? ""),
-                    subtitle: Text(shops[index].id ?? ""),
+                  child: InkWell(
+                    onTap: () {
+                      Get.to(ShopProducts(shopId: state.shops[index].id ?? ""));
+                    },
+                    child: ListTile(
+                      title: Text(shops[index].firstName ?? ""),
+                      subtitle: Text(shops[index].id ?? ""),
+                    ),
                   ),
                 ),
               ),

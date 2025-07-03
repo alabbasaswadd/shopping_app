@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/route.dart';
-import 'package:shopping_app/data/model/category/category_model.dart';
+import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/products/product_response_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_response_model.dart';
-import 'package:shopping_app/data/model/user/user_model.dart';
+import 'package:shopping_app/data/model/user/user_data_model.dart';
 
 class WebServices {
   final Dio dio = Dio(
@@ -82,12 +82,12 @@ class WebServices {
     }
   }
 
-  Future<UserModel> getUserWebServices(String userId) async {
+  Future<UserDataModel> getUserWebServices(String userId) async {
     final response = await dio.get('$baseUrl${getUserRoute(userId)}');
-    return UserModel.fromJson(response.data['data']);
+    return UserDataModel.fromJson(response.data['data']);
   }
 
-  Future<void> updateUserWebServices(String userId, UserModel user) async {
+  Future<void> updateUserWebServices(String userId, UserDataModel user) async {
     await dio.put('$baseUrl${updateUserRoute(userId)}', data: user.toJson());
   }
 
@@ -113,21 +113,22 @@ class WebServices {
     final token = await UserPreferencesService.getToken();
 
     final response = await dio.get(
-      '$baseUrl${getProductsByShopId(id)}',
+      '$baseUrl$getAllProducts',
+      queryParameters: {"shopId": id},
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
-
+    print('$baseUrl${getProductsByShopId(id)}');
     final result = ProductResponseModel.fromJson(response.data);
 
     // إذا كانت data = null نرجع قائمة فاضية
     return result.data ?? [];
   }
 
-  Future<List<CategoryModel>> getCategoriesWebServices() async {
+  Future<List<CategoryDataModel>> getCategoriesWebServices() async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.get('$baseUrl$getCategoyries',
         options: Options(headers: {"Authorization": "Bearer ${token}"}));
     final List<dynamic> dataList = response.data['data'];
-    return dataList.map((json) => CategoryModel.fromJson(json)).toList();
+    return dataList.map((json) => CategoryDataModel.fromJson(json)).toList();
   }
 }
