@@ -30,7 +30,7 @@ class _StoresState extends State<Shops> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: myAppBar("stores".tr, context),
+      appBar: myAppBar(title: "stores".tr, context: context),
       body: BlocBuilder<ShopCubit, ShopState>(
         bloc: cubit,
         builder: (context, state) {

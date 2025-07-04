@@ -108,7 +108,7 @@ class MySnackbar {
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(milliseconds: 700),
         margin: const EdgeInsets.all(20),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

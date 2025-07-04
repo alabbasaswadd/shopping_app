@@ -41,11 +41,11 @@ class _CustomContainerProductsState extends State<ShopProducts> {
           var products = state.products;
           return Scaffold(
             appBar: myAppBar(
-                state.shops
+                title: state.shops
                         .firstWhere((shop) => shop.id == widget.shopId)
                         .firstName ??
                     "",
-                context),
+                context: context),
             body: Padding(
               padding: const EdgeInsets.all(16),
               child: ListView.builder(
@@ -127,7 +127,7 @@ class _CustomContainerProductsState extends State<ShopProducts> {
           );
         } else if (state is ProductsError) {
           return Scaffold(
-            appBar: myAppBar("as", context),
+            appBar: myAppBar(title: "Error", context: context),
             body: Center(
               child: Text(
                 "Error: ${state.error}",

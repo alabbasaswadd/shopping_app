@@ -11,7 +11,7 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar("notifications".tr, context),
+      appBar: myAppBar(title: "notifications".tr, context: context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

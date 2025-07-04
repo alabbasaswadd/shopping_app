@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
-import 'package:shopping_app/data/repository/products_repository.dart';
-import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/widget/products/appbar/products_appbar_actions.dart';
 import 'package:shopping_app/presentation/widget/products/appbar/products_drawer.dart';
 import 'package:shopping_app/presentation/widget/products/appbar/products_appbar_title.dart';

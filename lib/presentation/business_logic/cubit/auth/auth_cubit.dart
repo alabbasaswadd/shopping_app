@@ -6,7 +6,7 @@ import 'package:shopping_app/data/model/login/login_data_model.dart';
 import 'package:shopping_app/data/model/login/login_response_model.dart';
 import 'package:shopping_app/data/register/register_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
-import 'package:shopping_app/data/repository/products_repository.dart';
+import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
 
@@ -48,7 +48,6 @@ class AuthCubit extends Cubit<AuthState> {
           "defaultAddress": defaultAddress,
         }
       });
-
       if (response.data != null) {
         try {
           final authResponse = RegisterResponseModel.fromJson(response.data);
@@ -119,12 +118,12 @@ class AuthCubit extends Cubit<AuthState> {
         if (loginResponse.succeeded == true && loginResponse.data != null) {
           final token = loginData.token;
           final customerId = loginData.customerId;
-
           await UserPreferencesService.saveToken(token ?? "");
           final userModel =
               await repository.getUserRepository(customerId ?? "");
+          var shopping = userModel.firstName;
+          print(shopping);
           await UserSession.updateUser(userModel);
-
           emit(AuthAuthenticated());
         } else {
           String errorMessage = "حدث خطأ غير معروف";

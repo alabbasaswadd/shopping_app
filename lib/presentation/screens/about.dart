@@ -54,7 +54,7 @@ class About extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("about".tr,context),
+      appBar: myAppBar(title: "about".tr, context: context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

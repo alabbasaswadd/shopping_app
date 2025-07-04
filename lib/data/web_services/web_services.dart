@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/route.dart';
+import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
+import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/products/product_response_model.dart';
@@ -18,13 +20,19 @@ class WebServices {
       },
     ),
   );
-  Future<List<dynamic>> getData() async {
-    Response response = await dio.get("$baseUrl$getAllProducts",
-        options: Options(headers: {
-          "Authorization":
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvdXNzYW1hbWFkZWw1QGdtYWlsLmNvbSIsImp0aSI6IjE5ZjNjODQ0LTJmYWEtNDRmNi05MDQ2LTc0Y2M1NGJlZGJlYyIsInVzZXJJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3ODIxNjAzNzcsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0LzUyMjkiLCJhdWQiOiJNdWx0aVZlbmRvck1hcmtldHBsYWNlIn0.QGUE7erIy2bKbtBzou68UoJ83I1oETr5ZOaEOhxiYyw"
-        }));
-    return response.data['data'];
+  Future<List<ProductDataModel>> getDataWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    var response = await dio.get(
+      "$baseUrl$getAllProducts",
+      options: Options(headers: {
+        "Authorization": "Bearer $token",
+      }),
+    );
+
+    final List<dynamic> jsonList = response.data['data'];
+    return jsonList
+        .map((item) => ProductDataModel.fromJson(item as Map<String, dynamic>))
+        .toList();
   }
 
   Future<Response?> signUpWebService(Map<String, dynamic> data) async {
@@ -127,8 +135,55 @@ class WebServices {
   Future<List<CategoryDataModel>> getCategoriesWebServices() async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.get('$baseUrl$getCategoyries',
-        options: Options(headers: {"Authorization": "Bearer ${token}"}));
+        options: Options(headers: {"Authorization": "Bearer $token"}));
     final List<dynamic> dataList = response.data['data'];
     return dataList.map((json) => CategoryDataModel.fromJson(json)).toList();
   }
+
+  Future<List<CartDataModel>> getCartWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    final shoppingCartId = UserSession.shoppingCartId;
+
+    final response = await dio.get(
+      '$baseUrl$getCart',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+      queryParameters: {"id": shoppingCartId},
+    );
+
+    final data = response.data['data'];
+    if (data is List) {
+      return data.map((e) => CartDataModel.fromJson(e)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<Response> addProductToTheCartWebServices(AddToCartRequest data) async {
+    final token = await UserPreferencesService.getToken();
+
+    final response = await dio.post(
+      '$baseUrl$addProductToTheCart',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+      data: data.toJson(),
+    );
+    return response;
+  }
+
+  Future<Response> deleteProductFromCartWebServices(String productId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.delete(
+      '$baseUrl${deleteProductFromCart(productId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+ Future<Response> clearCartWebServices(String userId) async {
+  final token = await UserPreferencesService.getToken();
+  final response = await dio.delete(
+    '$baseUrl${clearCart(userId)}',
+    options: Options(headers: {"Authorization": "Bearer $token"}),
+  );
+  return response;
+}
+
 }

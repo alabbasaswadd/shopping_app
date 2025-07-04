@@ -13,7 +13,7 @@ class Payment extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("payment".tr,context),
+      appBar: myAppBar(title: "payment".tr, context: context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

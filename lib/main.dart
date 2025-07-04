@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/localization/translation.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
-import 'package:shopping_app/data/repository/products_repository.dart';
+import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
