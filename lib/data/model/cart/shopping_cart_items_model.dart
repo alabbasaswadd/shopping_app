@@ -10,7 +10,7 @@ class ShoppingCartItemsModel {
   final String? productName;
   final String? productImage;
   final int? productPrice;
-  final int? quantity;
+   int? quantity;
 
   ShoppingCartItemsModel({
     this.id,

@@ -24,7 +24,6 @@ class _SettingsState extends State<Settings> {
   String _selectedLanguage = Get.locale?.languageCode ?? "en";
   String _phoneNumber = "+9635456124";
 
-
   @override
   void initState() {
     super.initState();
@@ -87,7 +86,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar("settings".tr,context),
+      appBar: myAppBar(title: "settings".tr, context: context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

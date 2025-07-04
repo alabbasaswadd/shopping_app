@@ -93,8 +93,6 @@ class _AccountState extends State<Account> {
     _lastNameController.text = user.lastName ?? "";
     _emailController.text = user.email?.userName ?? "";
     _phoneController.text = user.phone ?? "";
-    _birthDateController.text = user.birthDate ?? "";
-    _genderController.text = (user.gender == 0) ? "ذكر" : "أنثى";
     _cityController.text = user.address?.city ?? "";
     _streetController.text = user.address?.street ?? "";
     _floorController.text = user.address?.floor ?? "";
@@ -106,7 +104,7 @@ class _AccountState extends State<Account> {
     return BlocProvider(
       create: (_) => cubit,
       child: Scaffold(
-        appBar: myAppBar("تعديل الملف الشخصي", context),
+      appBar: myAppBar(title: "تعديل الملف الشخصي".tr, context: context),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {
@@ -387,8 +385,6 @@ class _AccountState extends State<Account> {
                 firstName: _firstNameController.text,
                 lastName: _lastNameController.text,
                 phone: _phoneController.text,
-                birthDate: _birthDateController.text,
-                gender: _genderController.text == "ذكر" ? 0 : 1,
                 address: UserAddressModel(
                   city: _cityController.text,
                   street: _streetController.text,
@@ -397,7 +393,6 @@ class _AccountState extends State<Account> {
                   defaultAddress: true,
                 ),
                 email: UserSession.user?.email,
-                password: '', // لا تغيّره لأنك ما عدّلته
               );
 
               // await cubit.updateUser(UserSession.id!, updatedUser);

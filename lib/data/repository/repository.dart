@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
+import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
@@ -8,11 +10,9 @@ import 'package:shopping_app/data/web_services/web_services.dart';
 class Repository {
   final WebServices webServices;
   Repository(this.webServices);
-  Future<List<ProductDataModel>> getData() async {
-    final products = await webServices.getData();
-    return products
-        .map((product) => ProductDataModel.fromJson(product))
-        .toList();
+  Future<List<ProductDataModel>> getDataRepository() async {
+    final products = await webServices.getDataWebServices();
+    return products;
   }
 
   signUpRepository(Map<String, dynamic> data) async {
@@ -69,4 +69,21 @@ class Repository {
   Future<List<CategoryDataModel>> getCategoriesRepository() {
     return webServices.getCategoriesWebServices();
   }
+
+  Future<List<CartDataModel>> getCartRepository() {
+    return webServices.getCartWebServices();
+  }
+
+  Future<Response> addProductToTheCartRepository(AddToCartRequest data) {
+    return webServices.addProductToTheCartWebServices(data);
+  }
+
+  Future<Response> deleteProductFromCartRepository(String productId) {
+    return webServices.deleteProductFromCartWebServices(productId);
+  }
+
+Future<Response> clearCartRepository(String userId) {
+  return webServices.clearCartWebServices(userId);
+}
+
 }

@@ -9,28 +9,27 @@ class UserDataModel {
   final String? id;
   final String? firstName;
   final String? lastName;
-  final String? birthDate;
   final String? shoppingCartId;
-  final int? gender;
-  final UserEmailModel? email;
+  final String? emailId;
   final String? phone;
-  final String? password;
+  final String? addressId;
+  final UserEmailModel? email;
   final UserAddressModel? address;
 
   UserDataModel({
     this.id,
     this.firstName,
     this.lastName,
-    this.birthDate,
     this.shoppingCartId,
-    this.gender,
-    this.email,
+    this.emailId,
     this.phone,
-    this.password,
+    this.addressId,
+    this.email,
     this.address,
   });
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) =>
       _$UserDataModelFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserDataModelToJson(this);
 }

@@ -85,10 +85,10 @@ class UserSession {
 
   /// خصائص مباشرة من _user
   static String? get id => _user?.id;
+  static String? get shoppingCartId => _user?.shoppingCartId;
   static String? get firstName => _user?.firstName;
   static String? get lastName => _user?.lastName;
   static String? get phone => _user?.phone;
-  static String? get birthDate => _user?.birthDate;
   static String? get city => _user?.address?.city;
   static String? get apartment => _user?.address?.apartment;
   static String? get street => _user?.address?.street;
@@ -98,7 +98,6 @@ class UserSession {
   static String? get email => _user?.email?.userName;
 
   // إذا الجنس عدد صحيح 0 أو 1
-  static int? get gender => _user?.gender;
 
   /// هل المستخدم مسجل دخول؟
   static bool get isLoggedIn => _user != null;

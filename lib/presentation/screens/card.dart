@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
-import 'package:shopping_app/data/model/products/product_data_model.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/core/widgets/my_snackbar.dart';
+import 'package:shopping_app/data/model/cart/shopping_cart_items_model.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/screens/payment.dart';
-import 'package:shopping_app/presentation/widget/products/products_body.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -16,153 +23,149 @@ class CardPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CardPage> {
-  double _totalPrice = 0.0;
+  late CartCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    // _calculateTotalPrice();
+    cubit = CartCubit();
+    cubit.getCart();
   }
-
-  // void _calculateTotalPrice() {
-  //   setState(() {
-  //     _totalPrice = ProductsBody.productsCard.fold(
-  //       0.0,
-  //       (sum, item) => sum + (item.price * item.quantity),
-  //     );
-  //   });
-  // }
-
-  // void _increaseQuantity(int index) {
-  //   setState(() {
-  //     ProductsBody.productsCard[index].quantity++;
-  //     _calculateTotalPrice();
-  //   });
-  // }
-
-  // void _decreaseQuantity(int index) {
-  //   setState(() {
-  //     if (ProductsBody.productsCard[index].quantity > 1) {
-  //       ProductsBody.productsCard[index].quantity--;
-  //       _calculateTotalPrice();
-  //     }
-  //   });
-  // }
-
-  // void _removeItem(int index) {
-  //   setState(() {
-  //     ProductsBody.productsCard.removeAt(index);
-  //     _calculateTotalPrice();
-  //     ScaffoldMessenger.of(Get.context!).showSnackBar(
-  //       SnackBar(
-  //         content: Text("removed_from_cart".tr),
-  //         backgroundColor: AppColor.kRedColor,
-  //         behavior: SnackBarBehavior.floating,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(10),
-  //         ),
-  //       ),
-  //     );
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: myAppBar("card".tr, context),
-      body: ProductsBody.productsCard.isEmpty
-          ? Center(
+    return BlocConsumer<CartCubit, CartState>(
+      bloc: cubit,
+      listener: (context, state) {
+        // يمكنك إضافة منطق الاستماع هنا إذا لزم الأمر
+        // مثال: إظهار Snackbar عند حذف منتج أو حدوث خطأ
+        if (state is ProductDeleted) {
+          MySnackbar.showSuccess(context, "تم حذف المنتج");
+        }
+        if (state is CleanCart) {
+          MySnackbar.showSuccess(context, "تم إفراغ السلة");
+        }
+      },
+      builder: (context, state) {
+        if (state is CartLoading) {
+          return Scaffold(
+            appBar: myAppBar(title: "card".tr, context: context),
+            body: Center(
+              child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
+            ),
+          );
+        } else if (state is EmptyCart) {
+          return Scaffold(
+            appBar: myAppBar(title: "card".tr, context: context),
+            body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.shopping_cart_outlined,
                       size: 80, color: Colors.grey.withOpacity(0.5)),
                   SizedBox(height: 20),
-                  Text(
-                    "no_products_in_card".tr,
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600],
-                    ),
-                  ),
+                  Text("no_products_in_card".tr),
                 ],
               ),
-            )
-          : Column(
+            ),
+          );
+        } else if (state is CartLoaded) {
+          final cart = state.cart;
+          final items = cart.shoppingCartItems;
+
+          return Scaffold(
+            appBar: myAppBar(title: "card".tr, context: context, actions: [
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => MyAlertDialog(
+                            onOk: () {
+                              cubit.clearCart(UserSession.id ?? "");
+                              Get.back();
+                            },
+                            onNo: () {
+                              Get.back();
+                            },
+                            title: "إفراغ السلة",
+                            content: "هل تريد إفراغ السلة"));
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ))
+            ]),
+            body: Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
+                  child: ListView.builder(
                     padding: EdgeInsets.all(16),
-                    separatorBuilder: (_, __) => SizedBox(height: 12),
-                    itemCount: ProductsBody.productsCard.length,
+                    itemCount: items.length,
                     itemBuilder: (context, index) {
-                      final item = ProductsBody.productsCard[index];
-                      return _buildCartItem(item, index, theme);
+                      return _buildCartItem(items[index], index);
                     },
                   ),
                 ),
-                _buildCheckoutSection(),
+                _buildCheckoutSection(items),
               ],
             ),
+          );
+        } else if (state is CartError) {
+          return Scaffold(
+            appBar: myAppBar(title: "card".tr, context: context),
+            body: Center(
+                child:
+                    Text("❌ ${state.error}")), // استخدم state.error بدل message
+          );
+        } else {
+          return Scaffold(
+            body: Center(child: Text("حدث خطأ غير متوقع")),
+          );
+        }
+      },
     );
   }
 
-  Widget _buildCartItem(ProductDataModel item, int index, ThemeData theme) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+  Widget _buildCartItem(ShoppingCartItemsModel item, int index) {
+    return MyCard(
       child: Padding(
         padding: EdgeInsets.all(12),
         child: Row(
           children: [
-            // Product Image
+            // صورة المنتج
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                item.image ?? "",
+                item.productImage ?? "",
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    Icon(Icons.image_not_supported),
               ),
             ),
             SizedBox(width: 12),
 
-            // Product Info
+            // معلومات المنتج
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item.name ?? "",
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(item.productName ?? ''),
                   SizedBox(height: 4),
-                  Text(
-                    "\$${item.price?.toStringAsFixed(2) ?? ""}",
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppColor.kPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text("\$${(item.productPrice ?? 0).toStringAsFixed(2)}"),
                 ],
               ),
             ),
 
-            // Quantity Controls
+            // أدوات التحكم بالكمية
             Column(
               children: [
                 IconButton(
                   icon: Icon(Icons.close, size: 20),
-                  onPressed: () => print("edited"),
-                  // _removeItem(index),
+                  onPressed: () {
+                    cubit.deleteProductFromCart(item.id ?? "");
+                  },
                   color: Colors.red,
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(),
@@ -178,19 +181,22 @@ class _CartPageState extends State<CardPage> {
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove, size: 16),
-                        onPressed: () => print("edited"),
-                        // _decreaseQuantity(index),
+                        onPressed: () {
+                          setState(() {
+                            item.quantity = item.quantity! - 1;
+                          });
+                        },
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                       ),
-                      Text(
-                        "sss",
-                        style: TextStyle(fontSize: 14),
-                      ),
+                      Text("${item.quantity}", style: TextStyle(fontSize: 14)),
                       IconButton(
                         icon: Icon(Icons.add, size: 16),
-                        onPressed: () => print("edited"),
-                        // _increaseQuantity(index),
+                        onPressed: () {
+                          setState(() {
+                            item.quantity = item.quantity! + 1;
+                          });
+                        },
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                       ),
@@ -205,7 +211,12 @@ class _CartPageState extends State<CardPage> {
     );
   }
 
-  Widget _buildCheckoutSection() {
+  Widget _buildCheckoutSection(List<ShoppingCartItemsModel> items) {
+    final totalPrice = items.fold<double>(
+      0.0,
+      (sum, item) => sum + ((item.quantity ?? 0) * (item.productPrice ?? 0)),
+    );
+
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -225,13 +236,10 @@ class _CartPageState extends State<CardPage> {
             children: [
               Text(
                 "total".tr,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                "\$${_totalPrice.toStringAsFixed(2)}",
+                "\$${totalPrice.toStringAsFixed(2)}",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

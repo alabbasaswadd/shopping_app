@@ -5,9 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/data/model/onboarding/onboarding_model.dart';
-import 'package:shopping_app/data/repository/products_repository.dart';
-import 'package:shopping_app/data/web_services/web_services.dart';
-import 'package:shopping_app/presentation/screens/home_screen.dart';
+import 'package:shopping_app/presentation/screens/auth/signup.dart';
 
 // ignore: must_be_immutable
 class Onboarding extends StatefulWidget {
@@ -61,7 +59,7 @@ class _OnboardingState extends State<Onboarding> {
                           onPressed: () async {
                             final prefs = await SharedPreferences.getInstance();
                             await prefs.setBool('hasSeenOnboarding', true);
-                            Get.offAndToNamed(HomeScreen.id);
+                            Get.offAndToNamed(SignUp.id);
                           },
                           child: Text("Go To Honik"),
                         ),

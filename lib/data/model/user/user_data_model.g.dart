@@ -11,14 +11,13 @@ UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
-      birthDate: json['birthDate'] as String?,
       shoppingCartId: json['shoppingCartId'] as String?,
-      gender: (json['gender'] as num?)?.toInt(),
+      emailId: json['emailId'] as String?,
+      phone: json['phone'] as String?,
+      addressId: json['addressId'] as String?,
       email: json['email'] == null
           ? null
           : UserEmailModel.fromJson(json['email'] as Map<String, dynamic>),
-      phone: json['phone'] as String?,
-      password: json['password'] as String?,
       address: json['address'] == null
           ? null
           : UserAddressModel.fromJson(json['address'] as Map<String, dynamic>),
@@ -29,11 +28,10 @@ Map<String, dynamic> _$UserDataModelToJson(UserDataModel instance) =>
       'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
-      'birthDate': instance.birthDate,
       'shoppingCartId': instance.shoppingCartId,
-      'gender': instance.gender,
-      'email': instance.email,
+      'emailId': instance.emailId,
       'phone': instance.phone,
-      'password': instance.password,
+      'addressId': instance.addressId,
+      'email': instance.email,
       'address': instance.address,
     };

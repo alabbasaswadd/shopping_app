@@ -46,7 +46,7 @@ class Orders extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: myAppBar("orders".tr,context),
+      appBar: myAppBar(title: "orders".tr, context: context),
       body: orders.isEmpty
           ? _buildEmptyState(theme)
           : ListView.separated(
