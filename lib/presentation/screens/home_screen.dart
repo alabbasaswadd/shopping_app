@@ -2,7 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
-import 'package:shopping_app/presentation/screens/orders.dart';
+import 'package:shopping_app/presentation/screens/orders/orders.dart';
 import 'package:shopping_app/presentation/screens/products/products.dart';
 import 'package:shopping_app/presentation/screens/shops/shops.dart';
 

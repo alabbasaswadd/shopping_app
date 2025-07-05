@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
-import 'package:shopping_app/presentation/screens/card.dart';
+import 'package:shopping_app/presentation/screens/cart.dart';
 import 'package:shopping_app/presentation/screens/change_password_screen.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
-import 'package:shopping_app/presentation/screens/orders.dart';
+import 'package:shopping_app/presentation/screens/orders/edit_order.dart';
+import 'package:shopping_app/presentation/screens/orders/orders.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 import 'package:shopping_app/presentation/screens/products/products.dart';
 import 'package:shopping_app/presentation/screens/settings.dart';

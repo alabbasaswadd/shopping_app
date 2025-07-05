@@ -3,7 +3,7 @@ import 'package:shopping_app/data/model/order/order_items_model.dart';
 
 part 'order_data_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class OrderDataModel {
   final String? id;
   final String? customerId;

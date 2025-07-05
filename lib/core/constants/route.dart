@@ -6,8 +6,13 @@ const String getShops = "/multi-vendor-api/Shop";
 const String getAllProducts = "/multi-vendor-api/Product";
 const String addProductToTheCart = "/multi-vendor-api/ShoppingCart";
 const String getCart = "/multi-vendor-api/ShoppingCart";
+const String addOrder = "/multi-vendor-api/Order";
 
 String getUserRoute(String id) => "/multi-vendor-api/Customer/$id";
+String updateOrder(String id) => "/multi-vendor-api/Order/$id";
+String getOrders(String customerId) =>
+    "/multi-vendor-api/Order/customer/$customerId";
+String deleteOrder(String id) => "/multi-vendor-api/Order/$id";
 String getProductsByShopId(String id) => "/multi-vendor-api/Product/$id";
 String updateUserRoute(String id) => "/multi-vendor-api/Customer/$id";
 String deleteUserRoute(String id) => "/multi-vendor-api/Customer/$id";
