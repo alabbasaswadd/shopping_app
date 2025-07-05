@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/category/category_data_model.dart';
+import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
@@ -82,8 +83,23 @@ class Repository {
     return webServices.deleteProductFromCartWebServices(productId);
   }
 
-Future<Response> clearCartRepository(String userId) {
-  return webServices.clearCartWebServices(userId);
-}
+  Future<Response> clearCartRepository(String userId) {
+    return webServices.clearCartWebServices(userId);
+  }
 
+  Future<Response> addOrderRepository(OrderDataModel dataOrder) {
+    return webServices.addOrderWebServices(dataOrder);
+  }
+
+  Future<Response> getOrdersRepository() {
+    return webServices.getOrdersWebServices();
+  }
+
+  Future<Response> updateOrderRepository(String orderId) {
+    return webServices.updateOrderWebServices(orderId);
+  }
+
+  Future<Response> deleteOrderRepository(String orderId) {
+    return webServices.deleteOrderWebServices(orderId);
+  }
 }

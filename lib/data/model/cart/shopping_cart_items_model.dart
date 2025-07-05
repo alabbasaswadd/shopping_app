@@ -10,7 +10,8 @@ class ShoppingCartItemsModel {
   final String? productName;
   final String? productImage;
   final int? productPrice;
-   int? quantity;
+  final String? shopId;
+  int? quantity;
 
   ShoppingCartItemsModel({
     this.id,
@@ -19,6 +20,7 @@ class ShoppingCartItemsModel {
     this.productName,
     this.productImage,
     this.productPrice,
+    this.shopId,
     this.quantity,
   });
 

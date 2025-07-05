@@ -15,6 +15,7 @@ ShoppingCartItemsModel _$ShoppingCartItemsModelFromJson(
       productName: json['productName'] as String?,
       productImage: json['productImage'] as String?,
       productPrice: (json['productPrice'] as num?)?.toInt(),
+      shopId: json['shopId'] as String?,
       quantity: (json['quantity'] as num?)?.toInt(),
     );
 
@@ -27,5 +28,6 @@ Map<String, dynamic> _$ShoppingCartItemsModelToJson(
       'productName': instance.productName,
       'productImage': instance.productImage,
       'productPrice': instance.productPrice,
+      'shopId': instance.shopId,
       'quantity': instance.quantity,
     };

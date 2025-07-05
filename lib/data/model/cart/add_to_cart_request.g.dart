@@ -11,6 +11,7 @@ AddToCartRequest _$AddToCartRequestFromJson(Map<String, dynamic> json) =>
       shoppingCartId: json['shoppingCartId'] as String,
       productId: json['productId'] as String,
       quantity: (json['quantity'] as num).toInt(),
+      shopId: json['shopId'] as String,
     );
 
 Map<String, dynamic> _$AddToCartRequestToJson(AddToCartRequest instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$AddToCartRequestToJson(AddToCartRequest instance) =>
       'shoppingCartId': instance.shoppingCartId,
       'productId': instance.productId,
       'quantity': instance.quantity,
+      'shopId': instance.shopId,
     };

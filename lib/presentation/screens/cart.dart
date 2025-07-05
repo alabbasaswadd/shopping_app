@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,9 +11,13 @@ import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/data/model/cart/shopping_cart_items_model.dart';
+import 'package:shopping_app/data/model/order/order_data_model.dart';
+import 'package:shopping_app/data/model/order/order_items_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
-import 'package:shopping_app/presentation/screens/payment.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -24,10 +29,12 @@ class CardPage extends StatefulWidget {
 
 class _CartPageState extends State<CardPage> {
   late CartCubit cubit;
-
+  late OrderCubit orderCubit;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
+    orderCubit = OrderCubit();
     cubit = CartCubit();
     cubit.getCart();
   }
@@ -249,10 +256,61 @@ class _CartPageState extends State<CardPage> {
             ],
           ),
           SizedBox(height: 16),
-          MyButton(
-            text: "proceed_to_checkout".tr,
-            onPressed: () => Get.toNamed(Payment.id),
-          ),
+          BlocConsumer<OrderCubit, OrderState>(
+            bloc: orderCubit,
+            listener: (context, state) {
+              if (state is OrderAdded) {
+                MySnackbar.showSuccess(context, "تم إرسال الطلب بنجاح");
+              } else if (state is OrderError) {
+                MySnackbar.showError(
+                    context, "فشل إرسال الطلب: ${state.error}");
+              }
+            },
+            builder: (context, state) {
+              return MyButton(
+                isLoading: false,
+                text: "إرسال الطلب",
+                onPressed: () {
+                  if (items.isEmpty) {
+                    MySnackbar.showError(context, "السلة فارغة!");
+                    return;
+                  }
+                  // التحقق من أن كل العناصر تتبع نفس المتجر
+                  final firstShopId = items.first.shopId;
+                  final allSameShop =
+                      items.every((item) => item.shopId == firstShopId);
+                  print(firstShopId);
+                  if (!allSameShop) {
+                    MySnackbar.showError(
+                        context, "كل المنتجات يجب أن تكون من نفس المتجر");
+                    return;
+                  }
+
+                  final order = OrderDataModel(
+                    customerId: UserSession.id,
+                    shopId: firstShopId,
+                    orderDate: DateTime.now().toUtc().toIso8601String(),
+                    totalAmount: items.fold<int>(
+                      0,
+                      (sum, item) =>
+                          sum +
+                          ((item.quantity ?? 0) * (item.productPrice ?? 0)),
+                    ),
+                    orderState: "قيد التنفيذ",
+                    orderItems: items.map((item) {
+                      return OrderItemsModel(
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        price: item.productPrice,
+                      );
+                    }).toList(),
+                  );
+
+                  orderCubit.addOrder(order);
+                },
+              );
+            },
+          )
         ],
       ),
     );

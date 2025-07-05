@@ -5,6 +5,7 @@ import 'package:shopping_app/core/constants/route.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/category/category_data_model.dart';
+import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/products/product_response_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
@@ -177,13 +178,51 @@ class WebServices {
     );
     return response;
   }
- Future<Response> clearCartWebServices(String userId) async {
-  final token = await UserPreferencesService.getToken();
-  final response = await dio.delete(
-    '$baseUrl${clearCart(userId)}',
-    options: Options(headers: {"Authorization": "Bearer $token"}),
-  );
-  return response;
-}
 
+  Future<Response> clearCartWebServices(String userId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.delete(
+      '$baseUrl${clearCart(userId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> addOrderWebServices(OrderDataModel dataOrder) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.post(
+      data: dataOrder.toJson(),
+      '$baseUrl$addOrder',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> getOrdersWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    final customerId = UserSession.id ?? '';
+    final response = await dio.get(
+      '$baseUrl${getOrders(customerId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> updateOrderWebServices(String orderId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.put(
+      '$baseUrl${updateOrder(orderId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> deleteOrderWebServices(String orderId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.delete(
+      '$baseUrl${deleteOrder(orderId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
 }

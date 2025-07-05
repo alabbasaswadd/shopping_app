@@ -21,11 +21,11 @@ OrderDataModel _$OrderDataModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$OrderDataModelToJson(OrderDataModel instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'customerId': instance.customerId,
-      'shopId': instance.shopId,
-      'orderDate': instance.orderDate,
-      'totalAmount': instance.totalAmount,
-      'orderState': instance.orderState,
-      'orderItems': instance.orderItems,
+      // if (instance.id case final value?) 'id': value,
+      if (instance.customerId case final value?) 'customerId': value,
+      if (instance.shopId case final value?) 'shopId': value,
+      if (instance.orderDate case final value?) 'orderDate': value,
+      if (instance.totalAmount case final value?) 'totalAmount': value,
+      if (instance.orderState case final value?) 'orderState': value,
+      if (instance.orderItems case final value?) 'orderItems': value,
     };

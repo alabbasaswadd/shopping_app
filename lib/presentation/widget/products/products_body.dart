@@ -110,11 +110,11 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                           IconButton(
                             onPressed: () {
                               final request = AddToCartRequest(
-                                shoppingCartId:
-                                    UserSession.shoppingCartId ?? "",
-                                productId: state.products[i].id ?? "",
-                                quantity: 1,
-                              );
+                                  shoppingCartId:
+                                      UserSession.shoppingCartId ?? "",
+                                  productId: state.products[i].id ?? "",
+                                  quantity: 1,
+                                  shopId: state.products[i].shopeId ?? "");
 
                               cubit.addToCart(request);
                             },
