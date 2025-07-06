@@ -3,9 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/category/category_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/category/category_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
+import 'package:shopping_app/presentation/screens/category_products.dart';
 import 'package:shopping_app/presentation/screens/shops/shops_products.dart';
 
 class Shops extends StatefulWidget {
@@ -13,16 +18,20 @@ class Shops extends StatefulWidget {
   static String id = "stores";
 
   @override
-  State<Shops> createState() => _StoresState();
+  State<Shops> createState() => _ShopsState();
 }
 
-class _StoresState extends State<Shops> {
+class _ShopsState extends State<Shops> {
   late ShopCubit cubit;
+  late CategoryCubit categoryCubit;
+
   @override
   void initState() {
-    cubit = ShopCubit();
-    cubit.getShops();
     super.initState();
+    cubit = ShopCubit();
+    categoryCubit = CategoryCubit();
+    cubit.getShops();
+    categoryCubit.getCategories();
   }
 
   @override
@@ -33,41 +42,120 @@ class _StoresState extends State<Shops> {
       appBar: myAppBar(title: "stores".tr, context: context),
       body: BlocBuilder<ShopCubit, ShopState>(
         bloc: cubit,
-        builder: (context, state) {
-          if (state is ShopLoading) {
+        builder: (context, shopState) {
+          if (shopState is ShopLoading) {
             return Center(
               child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
             );
-          } else if (state is ShopLoaded) {
-            var shops = state.shops;
-            return Padding(
+          } else if (shopState is ShopLoaded) {
+            var shops = shopState.shops;
+
+            return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: size.width > 600 ? 3 : 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: shops.length,
-                itemBuilder: (context, index) => Card(
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(ShopProducts(shopId: state.shops[index].id ?? ""));
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ✅ الفئات بدون height ثابت
+                  BlocBuilder<CategoryCubit, CategoryState>(
+                    bloc: categoryCubit,
+                    builder: (context, categoryState) {
+                      if (categoryState is CategoryLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (categoryState is CategoryLoaded &&
+                          categoryState.categories.isNotEmpty) {
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: 50,
+                            maxHeight: size.height * 0.2, // مرن حسب حجم الشاشة
+                          ),
+                          child: ListView.builder(
+                            itemExtent: 150,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categoryState.categories.length,
+                            itemBuilder: (context, i) => InkWell(
+                              onTap: () {
+                                Get.to(CategoryProducts(
+                                    categoryId:
+                                        categoryState.categories[i].id ?? ""));
+                              },
+                              child: MyCard(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(AppImages.klogo),
+                                            opacity: 0.5)),
+                                    child: Center(
+                                      child: Text(
+                                        categoryState.categories[i].name ?? "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(fontSize: 20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Text("لا توجد تصنيفات");
+                      }
                     },
-                    child: ListTile(
-                      title: Text(shops[index].firstName ?? ""),
-                      subtitle: Text(shops[index].id ?? ""),
-                    ),
                   ),
-                ),
+
+                  const SizedBox(height: 24),
+
+                  // ✅ شبكة المتاجر بدون أبعاد ثابتة
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      int crossAxisCount = size.width > 900
+                          ? 4
+                          : size.width > 600
+                              ? 3
+                              : 2;
+
+                      return GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                        ),
+                        itemCount: shops.length,
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () {
+                            Get.to(ShopProducts(
+                              shopId: shops[index].id ?? "",
+                            ));
+                          },
+                          child: MyCard(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(shops[index].firstName ?? "",
+                                    style: TextStyle(fontSize: 18)),
+                                const SizedBox(height: 8),
+                                Text(shops[index].id ?? "",
+                                    style: TextStyle(fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             );
-          } else if (state is ShopError) {
-            print(state.error);
-            return Text(state.error);
+          } else if (shopState is ShopError) {
+            return Center(child: Text(shopState.error));
           } else {
-            return Text("error");
+            return Center(child: Text("حدث خطأ غير متوقع"));
           }
         },
       ),
