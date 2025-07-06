@@ -114,7 +114,8 @@ class _CustomContainerProductsState extends State<ProductsBody> {
                                       UserSession.shoppingCartId ?? "",
                                   productId: state.products[i].id ?? "",
                                   quantity: 1,
-                                  shopId: state.products[i].shopeId ?? "");
+                                  shopId: state.products[i].shopeId!);
+                              print(state.products[i].shopeId);
 
                               cubit.addToCart(request);
                             },
