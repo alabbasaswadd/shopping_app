@@ -9,6 +9,8 @@ const String getCart = "/multi-vendor-api/ShoppingCart";
 const String addOrder = "/multi-vendor-api/Order";
 
 String getUserRoute(String id) => "/multi-vendor-api/Customer/$id";
+String getProductsByCategoryId(String categoryId) =>
+    "/multi-vendor-api/Product/$categoryId";
 String updateOrder(String id) => "/multi-vendor-api/Order/$id";
 String getOrders(String customerId) =>
     "/multi-vendor-api/Order/customer/$customerId";

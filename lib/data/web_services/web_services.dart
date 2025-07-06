@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/route.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
-import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/products/product_response_model.dart';
@@ -133,12 +131,19 @@ class WebServices {
     return result.data ?? [];
   }
 
-  Future<List<CategoryDataModel>> getCategoriesWebServices() async {
+  Future<Response> getCategoriesWebServices() async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.get('$baseUrl$getCategoyries',
         options: Options(headers: {"Authorization": "Bearer $token"}));
-    final List<dynamic> dataList = response.data['data'];
-    return dataList.map((json) => CategoryDataModel.fromJson(json)).toList();
+    return response;
+  }
+
+  Future<Response> getProductsByCategoryIdWebServices(String categoryId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.get(
+        '$baseUrl${getProductsByCategoryId(categoryId)}',
+        options: Options(headers: {"Authorization": "Bearer $token"}));
+    return response;
   }
 
   Future<List<CartDataModel>> getCartWebServices() async {
