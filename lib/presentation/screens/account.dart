@@ -90,6 +90,7 @@ class _AccountState extends State<Account> {
   // دالة لتحديث الكنترولرز حسب بيانات المستخدم
   void _updateControllers(UserDataModel user) {
     _firstNameController.text = user.firstName ?? "";
+    _birthDateController.text = user.birthDate ?? "";
     _lastNameController.text = user.lastName ?? "";
     _emailController.text = user.email?.userName ?? "";
     _phoneController.text = user.phone ?? "";
@@ -104,7 +105,7 @@ class _AccountState extends State<Account> {
     return BlocProvider(
       create: (_) => cubit,
       child: Scaffold(
-      appBar: myAppBar(title: "تعديل الملف الشخصي".tr, context: context),
+        appBar: myAppBar(title: "تعديل الملف الشخصي".tr, context: context),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {

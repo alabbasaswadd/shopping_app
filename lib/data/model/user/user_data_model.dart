@@ -10,6 +10,7 @@ class UserDataModel {
   final String? firstName;
   final String? lastName;
   final String? shoppingCartId;
+  final String? birthDate;
   final String? emailId;
   final String? phone;
   final String? addressId;
@@ -21,6 +22,7 @@ class UserDataModel {
     this.firstName,
     this.lastName,
     this.shoppingCartId,
+    this.birthDate,
     this.emailId,
     this.phone,
     this.addressId,

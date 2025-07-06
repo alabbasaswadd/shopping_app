@@ -279,6 +279,7 @@ class _CartPageState extends State<CardPage> {
                   final firstShopId = items.first.shopId;
                   final allSameShop =
                       items.every((item) => item.shopId == firstShopId);
+                  print(items.first.toJson());
                   print(firstShopId);
                   if (!allSameShop) {
                     MySnackbar.showError(
@@ -288,7 +289,7 @@ class _CartPageState extends State<CardPage> {
 
                   final order = OrderDataModel(
                     customerId: UserSession.id,
-                    shopId: firstShopId,
+                    shopId: firstShopId ?? "",
                     orderDate: DateTime.now().toUtc().toIso8601String(),
                     totalAmount: items.fold<int>(
                       0,
@@ -305,7 +306,7 @@ class _CartPageState extends State<CardPage> {
                       );
                     }).toList(),
                   );
-
+                  print(order.toJson());
                   orderCubit.addOrder(order);
                 },
               );
