@@ -36,8 +36,8 @@ class ProductsLoading extends CategoryState {}
 
 class ProductsSuccess extends CategoryState {
   final List<ProductDataModel> products;
-  final List<CategoryDataModel> categories;
-  ProductsSuccess(this.products, this.categories);
+
+  ProductsSuccess(this.products);
 }
 
 class ProductsError extends CategoryState {

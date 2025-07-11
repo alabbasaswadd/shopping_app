@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/category/category_cubit.dart';
@@ -72,27 +73,33 @@ class _ShopsState extends State<Shops> {
                             itemExtent: 150,
                             scrollDirection: Axis.horizontal,
                             itemCount: categoryState.categories.length,
-                            itemBuilder: (context, i) => InkWell(
-                              onTap: () {
-                                Get.to(CategoryProducts(
-                                    categoryId:
-                                        categoryState.categories[i].id ?? ""));
-                              },
-                              child: MyCard(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(AppImages.klogo),
-                                            opacity: 0.5)),
-                                    child: Center(
-                                      child: Text(
-                                        categoryState.categories[i].name ?? "",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge!
-                                            .copyWith(fontSize: 20),
+                            itemBuilder: (context, i) => MyAnimation(
+                              child: InkWell(
+                                onTap: () {
+                                  Get.to(() => CategoryProducts(
+                                      categoryName:
+                                          categoryState.categories[i].name ??
+                                              ""));
+                                  print(categoryState.categories[i].name);
+                                },
+                                child: MyCard(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image:
+                                                  AssetImage(AppImages.klogo),
+                                              opacity: 0.5)),
+                                      child: Center(
+                                        child: Text(
+                                          categoryState.categories[i].name ??
+                                              "",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge!
+                                              .copyWith(fontSize: 20),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -127,22 +134,21 @@ class _ShopsState extends State<Shops> {
                           mainAxisSpacing: 5,
                         ),
                         itemCount: shops.length,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            Get.to(ShopProducts(
-                              shopId: shops[index].id ?? "",
-                            ));
-                          },
-                          child: MyCard(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(shops[index].firstName ?? "",
-                                    style: TextStyle(fontSize: 18)),
-                                const SizedBox(height: 8),
-                                Text(shops[index].id ?? "",
-                                    style: TextStyle(fontSize: 14)),
-                              ],
+                        itemBuilder: (context, index) => MyAnimation(
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(ShopProducts(
+                                shopId: shops[index].id ?? "",
+                              ));
+                            },
+                            child: MyCard(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(shops[index].firstName ?? "",
+                                      style: TextStyle(fontSize: 18)),
+                                ],
+                              ),
                             ),
                           ),
                         ),

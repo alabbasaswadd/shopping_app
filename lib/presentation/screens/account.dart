@@ -90,7 +90,7 @@ class _AccountState extends State<Account> {
   // دالة لتحديث الكنترولرز حسب بيانات المستخدم
   void _updateControllers(UserDataModel user) {
     _firstNameController.text = user.firstName ?? "";
-    _birthDateController.text = user.birthDate ?? "";
+    _birthDateController.text = user.dateOfBirth ?? "";
     _lastNameController.text = user.lastName ?? "";
     _emailController.text = user.email?.userName ?? "";
     _phoneController.text = user.phone ?? "";

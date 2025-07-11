@@ -7,10 +7,11 @@ const String getAllProducts = "/multi-vendor-api/Product";
 const String addProductToTheCart = "/multi-vendor-api/ShoppingCart";
 const String getCart = "/multi-vendor-api/ShoppingCart";
 const String addOrder = "/multi-vendor-api/Order";
+const String proca = "/multi-vendor-api/Product";
 
 String getUserRoute(String id) => "/multi-vendor-api/Customer/$id";
-String getProductsByCategoryId(String categoryId) =>
-    "/multi-vendor-api/Product/$categoryId";
+String getProductsByCategory(String categoryName) =>
+    "/multi-vendor-api/Product/$categoryName";
 String updateOrder(String id) => "/multi-vendor-api/Order/$id";
 String getOrders(String customerId) =>
     "/multi-vendor-api/Order/customer/$customerId";

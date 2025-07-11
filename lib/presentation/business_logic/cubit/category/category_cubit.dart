@@ -31,29 +31,25 @@ class CategoryCubit extends Cubit<CategoryState> {
     }
   }
 
-  void getProductsByCategoryId(String categoryId) async {
+  void getProductsByCategory(String categoryName) async {
     try {
       emit(ProductsLoading());
 
       final response =
-          await repository.getProductsByCategoryIdRepository(categoryId);
-
-      final categoriesResponse = await repository.getCategoriesRepository();
+          await repository.getProductsByCategoryRepository(categoryName);
+      print(response.statusCode);
+      print(response.statusMessage);
       print(response.data);
-      print(categoriesResponse.data);
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        final rawProducts = response.data['data'];
-        final rawCategories = categoriesResponse.data['data'];
-        final productsList = rawProducts is List
-            ? rawProducts.map((e) => ProductDataModel.fromJson(e)).toList()
-            : [ProductDataModel.fromJson(rawProducts)];
-        final categoriesList = rawCategories is List
-            ? rawCategories.map((e) => CategoryDataModel.fromJson(e)).toList()
-            : [CategoryDataModel.fromJson(rawCategories)];
-        emit(ProductsSuccess(productsList, categoriesList));
+        final List<dynamic> rawProducts = response.data['data'];
+        final List<ProductDataModel> products =
+            rawProducts.map((item) => ProductDataModel.fromJson(item)).toList();
+
+        emit(ProductsSuccess(products));
       } else {
+        print(response.data);
         emit(ProductsError("المنتجات فارغة أو حصل خطأ"));
       }
     } catch (e) {
