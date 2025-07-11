@@ -34,7 +34,6 @@ class CustomDropdown<T> extends StatelessWidget {
     this.itemAlignment,
   });
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
