@@ -71,8 +71,8 @@ class Repository {
     return webServices.getCategoriesWebServices();
   }
 
-  Future<Response> getProductsByCategoryIdRepository(String categoryId) {
-    return webServices.getProductsByCategoryIdWebServices(categoryId);
+  Future<Response> getProductsByCategoryRepository(String categoryId) {
+    return webServices.getProductsByCategoryWebServices(categoryId);
   }
 
   Future<List<CartDataModel>> getCartRepository() {

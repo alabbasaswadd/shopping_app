@@ -14,18 +14,20 @@ class ProductDataModel {
   final String? shopeId;
   final String? description;
   final String? creationDate;
+  final String? shope;
   final CategoryDataModel? category;
 
   ProductDataModel({
-     this.id,
-     this.name,
-     this.price,
-     this.image,
-     this.categoryId,
-     this.currency,
-     this.shopeId,
-     this.description,
-     this.creationDate,
+    this.id,
+    this.name,
+    this.price,
+    this.image,
+    this.categoryId,
+    this.currency,
+    this.shopeId,
+    this.shope,
+    this.description,
+    this.creationDate,
     this.category,
   });
 

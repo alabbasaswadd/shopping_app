@@ -138,11 +138,11 @@ class WebServices {
     return response;
   }
 
-  Future<Response> getProductsByCategoryIdWebServices(String categoryId) async {
+  Future<Response> getProductsByCategoryWebServices(String categoryName) async {
     final token = await UserPreferencesService.getToken();
-    final response = await dio.get(
-        '$baseUrl${getProductsByCategoryId(categoryId)}',
-        options: Options(headers: {"Authorization": "Bearer $token"}));
+    final response = await dio.get('$baseUrl$proca',
+        options: Options(headers: {"Authorization": "Bearer $token"}),
+        queryParameters: {"category": categoryName});
     return response;
   }
 

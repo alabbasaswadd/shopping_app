@@ -86,7 +86,7 @@ class UserSession {
   /// خصائص مباشرة من _user
   static String? get id => _user?.id;
   static String? get shoppingCartId => _user?.shoppingCartId;
-  static String? get birthDate => _user?.birthDate;
+  static String? get birthDate => _user?.dateOfBirth;
   static String? get firstName => _user?.firstName;
   static String? get lastName => _user?.lastName;
   static String? get phone => _user?.phone;

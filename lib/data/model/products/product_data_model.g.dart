@@ -15,6 +15,7 @@ ProductDataModel _$ProductDataModelFromJson(Map<String, dynamic> json) =>
       categoryId: json['categoryId'] as String?,
       currency: json['currency'] as String?,
       shopeId: json['shopeId'] as String?,
+      shope: json['shope'] as String?,
       description: json['description'] as String?,
       creationDate: json['creationDate'] as String?,
       category: json['category'] == null
@@ -34,5 +35,6 @@ Map<String, dynamic> _$ProductDataModelToJson(ProductDataModel instance) =>
       'shopeId': instance.shopeId,
       'description': instance.description,
       'creationDate': instance.creationDate,
+      'shope': instance.shope,
       'category': instance.category,
     };

@@ -10,9 +10,8 @@ import 'package:shopping_app/presentation/business_logic/cubit/category/category
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class CategoryProducts extends StatefulWidget {
-  const CategoryProducts({super.key, required this.categoryId});
-  static String id = "categoryProducts";
-  final String categoryId;
+  const CategoryProducts({super.key, required this.categoryName});
+  final String categoryName;
   @override
   State<CategoryProducts> createState() => _CustomContainerProductsState();
 }
@@ -22,9 +21,9 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
   @override
   void initState() {
     cubit = CategoryCubit();
-    cubit.getProductsByCategoryId(widget.categoryId);
+    cubit.getProductsByCategory(widget.categoryName);
     super.initState();
-    print(widget.categoryId);
+    print(widget.categoryName);
   }
 
   @override
@@ -41,13 +40,7 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
         } else if (state is ProductsSuccess) {
           var products = state.products;
           return Scaffold(
-            appBar: myAppBar(
-                title: state.categories
-                        .firstWhere(
-                            (category) => category.id == widget.categoryId)
-                        .name ??
-                    "",
-                context: context),
+            appBar: myAppBar(title: widget.categoryName, context: context),
             body: Padding(
               padding: const EdgeInsets.all(16),
               child: ListView.builder(
