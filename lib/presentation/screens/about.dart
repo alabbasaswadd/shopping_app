@@ -3,7 +3,6 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {

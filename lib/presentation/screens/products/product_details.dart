@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
-import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/widget/products/products_details_body.dart';
 
 class ProductDetails extends StatelessWidget {
@@ -11,8 +10,6 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProductDataModel productDetails =
-        ModalRoute.of(context)!.settings.arguments as ProductDataModel;
     return Scaffold(
       appBar: myAppBar(title: "product_details".tr, context: context),
       body: Container(

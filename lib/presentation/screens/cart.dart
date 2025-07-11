@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -17,7 +16,6 @@ import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.d
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});

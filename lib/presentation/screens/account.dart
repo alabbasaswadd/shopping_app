@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -7,7 +5,6 @@ import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
-import 'package:shopping_app/data/model/user/user_address_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_state.dart';
@@ -381,20 +378,6 @@ class _AccountState extends State<Account> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () async {
-              final updatedUser = UserDataModel(
-                id: UserSession.id,
-                firstName: _firstNameController.text,
-                lastName: _lastNameController.text,
-                phone: _phoneController.text,
-                address: UserAddressModel(
-                  city: _cityController.text,
-                  street: _streetController.text,
-                  floor: _floorController.text,
-                  apartment: _apartmentController.text,
-                  defaultAddress: true,
-                ),
-                email: UserSession.user?.email,
-              );
 
               // await cubit.updateUser(UserSession.id!, updatedUser);
               // await UserSession.updateUser(
@@ -453,42 +436,5 @@ class _AccountState extends State<Account> {
     );
   }
 
-  void _showGenderDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("اختر الجنس"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text("ذكر"),
-              onTap: () {
-                setState(() {
-                  _genderController.text = "ذكر";
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("أنثى"),
-              onTap: () {
-                setState(() {
-                  _genderController.text = "أنثى";
-                });
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _saveProfile() {
-    if (_formKey.currentState!.validate()) {
-      // حفظ البيانات
-      Get.back();
-    }
-  }
+ 
 }

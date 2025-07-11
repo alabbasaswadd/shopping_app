@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
-import 'package:shopping_app/data/model/cart/cart_data_model.dart';
-import 'package:shopping_app/data/model/cart/shopping_cart_items_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class ProductsBody extends StatefulWidget {

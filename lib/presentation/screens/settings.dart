@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
-import 'package:shopping_app/core/widgets/my_bottom_sheet.dart';
-import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/auth/login.dart';
 
