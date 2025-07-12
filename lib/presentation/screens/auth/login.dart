@@ -19,7 +19,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool _rememberMe = false;
   bool _obscurePassword = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

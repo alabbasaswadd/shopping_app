@@ -14,7 +14,6 @@
 
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
-import 'package:shopping_app/data/model/shop/shop_response_model.dart';
 
 abstract class ShopState {}
 

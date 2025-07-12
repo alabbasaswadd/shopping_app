@@ -10,38 +10,6 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
-  DateTime _selectedDate = DateTime.now();
-  final List<String> _selectedTypes = [];
-  final List<String> _selectedCategories = [];
-  final List<String> _selectedBrands = [];
-
-  final List<String> _types = [
-    "Image",
-    "Filter",
-    "Slides",
-    "Ramp access",
-    "Cats OK",
-    "Garden",
-    "Smoke-free"
-  ];
-
-  final List<String> _categories = [
-    "Coffee",
-    "Phones",
-    "Laptops",
-    "Tablets",
-    "Cameras",
-    "Game consoles"
-  ];
-
-  final List<String> _brands = [
-    "Dell",
-    "Samsung",
-    "Apple",
-    "Redmi",
-    "Cats OK",
-    "Smoke-free"
-  ];
 
   void showFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(

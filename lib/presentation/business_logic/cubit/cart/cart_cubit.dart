@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';

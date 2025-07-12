@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
-import 'package:shopping_app/data/model/category/category_data_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';

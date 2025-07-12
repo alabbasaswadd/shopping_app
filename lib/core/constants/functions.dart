@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/data/model/login/login_response_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 
 class UserPreferencesService {

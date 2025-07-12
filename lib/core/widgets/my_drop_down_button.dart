@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../constants/colors.dart';
 
@@ -87,7 +86,7 @@ class CustomDropdown<T> extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: itemAlignment ?? MainAxisAlignment.start,
                   children: [
-                    if (item.child != null) item.child!,
+                    item.child,
                   ],
                 ),
               ),

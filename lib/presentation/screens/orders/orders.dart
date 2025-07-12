@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:get/instance_manager.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
@@ -12,7 +11,6 @@ import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
 import 'package:intl/intl.dart';
-import 'package:shopping_app/presentation/screens/orders/edit_order.dart';
 
 class Orders extends StatefulWidget {
   const Orders({super.key});
