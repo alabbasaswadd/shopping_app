@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/functions.dart';
@@ -20,12 +21,12 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   savedLanguage = prefs.getString('language') ?? 'ar';
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => SearchingCubit()),
-        BlocProvider(create: (context) => ProductsCubit()),
-      ],
-      child: const MyApp(),
+    ScreenUtilInit(
+      designSize: const Size(360, 690), // حجم التصميم الأساسي عندك
+      minTextAdapt: true,
+      builder: (context, child) {
+        return MyApp();
+      },
     ),
   );
 }
@@ -44,7 +45,6 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
-          
         ],
         supportedLocales: const [
           Locale('en', ''),

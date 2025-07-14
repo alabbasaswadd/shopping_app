@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 
 class ProductsCustomDrawer extends StatelessWidget {
   const ProductsCustomDrawer({
@@ -16,21 +18,24 @@ class ProductsCustomDrawer extends StatelessWidget {
   final Function() ontap;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: ontap,
-      child: MyCard(
-        child: ListTile(
-          leading: Icon(
-            icon,
-            color: color,
-          ),
-          trailing: Icon(
-            Icons.arrow_forward_ios,
-            color: AppColor.kPrimaryColor,
-          ),
-          title: Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+    return MyAnimation(
+      child: InkWell(
+        onTap: ontap,
+        child: MyCard(
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: Icon(
+              icon,
+              color: color,
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+              color: AppColor.kPrimaryColor,
+            ),
+            title: CairoText(
+              title,
+              fontSize: 11,
+            ),
           ),
         ),
       ),

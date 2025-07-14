@@ -1,26 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/core/constants/cached/cached_image.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 
 class ProductsDetailsBody extends StatelessWidget {
-  const ProductsDetailsBody({super.key});
+  const ProductsDetailsBody({super.key, required this.product});
+  final ProductDataModel product;
   @override
   Widget build(BuildContext context) {
-    final ProductDataModel productDetails =
-        ModalRoute.of(context)!.settings.arguments as ProductDataModel;
-
     return SingleChildScrollView(
       child: Column(
         children: [
           CarouselSlider(
             items: [
-              // Image.network(productDetails.image),
-              // Image.network(productDetails.image),
-              Image.asset(AppImages.kCamera)
+              CachedImageWidget(
+                imageUrl: product.image ?? "",
+                heightRatio: 100,
+                widthRatio: 100,
+              )
             ],
             options: CarouselOptions(
-              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayInterval: const Duration(seconds: 2),
               autoPlay: true,
             ),
           ),
@@ -35,30 +36,22 @@ class ProductsDetailsBody extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(productDetails.name ?? "",
-                        style: Theme.of(context).textTheme.bodyLarge),
-                    SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Text(
-                            productDetails.description ?? "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(color: Colors.grey[600]),
-                            overflow: TextOverflow.fade,
-                            softWrap: true,
-                          ),
+                        CairoText(product.name ?? ""),
+                        CairoText(
+                          "${product.price}\$",
+                          fontSize: 24,
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      "${productDetails.price} ₺",
-                      style: Theme.of(context).textTheme.titleLarge,
+                    CairoText(
+                      product.description ?? "",
+                      maxLines: 100,
+                      color: Colors.black54,
                     ),
-                    SizedBox(height: 20),
                   ],
                 ),
               );

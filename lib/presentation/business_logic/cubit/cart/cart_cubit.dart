@@ -66,6 +66,15 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  bool isProductInCartByProductId(String productId) {
+    if (state is CartLoaded) {
+      final cartState = state as CartLoaded;
+      return cartState.cart.shoppingCartItems
+          .any((item) => item.productId == productId);
+    }
+    return false;
+  }
+
   void clearCart(String userId) async {
     try {
       emit(CartLoading());

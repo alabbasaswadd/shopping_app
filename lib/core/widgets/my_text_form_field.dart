@@ -57,8 +57,8 @@ class MyTextFormField extends StatelessWidget {
             labelText: label,
             labelStyle: TextStyle(
               color: AppColor.kPrimaryColor,
-              fontFamily: 'SFProText',
-              fontSize: 14,
+              fontFamily: 'Cairo-bold',
+              fontSize: 11,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

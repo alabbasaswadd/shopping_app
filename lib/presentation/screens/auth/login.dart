@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
@@ -43,10 +44,10 @@ class _LoginState extends State<Login> {
           SliverAppBar(
             expandedHeight: size.height * 0.25,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("login".tr,
-                  style: TextStyle(
-                      color: Colors.white,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 3)])),
+              title: CairoText(
+                "login".tr,
+                color: Colors.white,
+              ),
               centerTitle: true,
               background: Container(
                 decoration: BoxDecoration(
@@ -80,16 +81,16 @@ class _LoginState extends State<Login> {
                     Center(
                       child: Column(
                         children: [
-                          Text("Welcome_Back".tr,
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.kPrimaryColor,
-                              )),
+                          CairoText(
+                            "Welcome_Back".tr,
+                            color: AppColor.kPrimaryColor,
+                          ),
                           SizedBox(height: 8),
-                          Text("welcome_message".tr,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey[600],
-                              )),
+                          CairoText(
+                            maxLines: 4,
+                            "welcome_message".tr,
+                            color: Colors.grey[600],
+                          ),
                         ],
                       ),
                     ),
@@ -176,15 +177,15 @@ class _LoginState extends State<Login> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("dont_have_an_account".tr,
-                              style: TextStyle(color: Colors.grey[600])),
+                          CairoText("dont_have_an_account".tr,
+                              color: Colors.grey[600]),
                           SizedBox(width: 5),
                           InkWell(
                             onTap: () => Get.offAndToNamed(SignUp.id),
-                            child: Text("SignUp".tr,
-                                style: TextStyle(
-                                    color: AppColor.kPrimaryColor,
-                                    fontWeight: FontWeight.bold)),
+                            child: CairoText(
+                              "SignUp".tr,
+                              color: AppColor.kPrimaryColor,
+                            ),
                           )
                         ],
                       ),
@@ -197,8 +198,8 @@ class _LoginState extends State<Login> {
                         Expanded(child: Divider(color: Colors.grey.shade400)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text("or".tr,
-                              style: TextStyle(color: Colors.grey.shade600)),
+                          child:
+                              CairoText("or".tr, color: Colors.grey.shade600),
                         ),
                         Expanded(child: Divider(color: Colors.grey.shade400)),
                       ],

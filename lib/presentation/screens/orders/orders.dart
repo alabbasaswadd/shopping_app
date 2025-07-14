@@ -8,6 +8,7 @@ import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
 import 'package:intl/intl.dart';
@@ -59,7 +60,7 @@ class _OrdersState extends State<Orders> {
                       Icon(Icons.grid_4x4,
                           size: 80, color: Colors.grey.withOpacity(0.5)),
                       SizedBox(height: 20),
-                      Text("لا يوجد طلبات".tr),
+                      CairoText("لا يوجد طلبات".tr),
                     ],
                   ),
                 ),
@@ -98,13 +99,9 @@ class _OrdersState extends State<Orders> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
+                                        CairoText(
                                           "الطلب #${order.totalAmount}",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black87,
-                                          ),
+                                          color: Colors.black87,
                                         ),
                                         IconButton(
                                             onPressed: () {
@@ -138,20 +135,12 @@ class _OrdersState extends State<Orders> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
+                                              CairoText(
                                                 "المتجر",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.grey[600],
-                                                ),
+                                                color: Colors.grey[600],
                                               ),
-                                              Text(
-                                                order.shopId ?? "غير معروف",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
+                                              CairoText(
+                                                  order.shopId ?? "غير معروف"),
                                             ],
                                           ),
                                         ),
@@ -178,19 +167,12 @@ class _OrdersState extends State<Orders> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
+                                              CairoText(
                                                 "تاريخ الطلب",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.grey[600],
-                                                ),
+                                                color: Colors.grey[600],
                                               ),
-                                              Text(
+                                              CairoText(
                                                 _formatDate(DateTime.now()),
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
                                               ),
                                             ],
                                           ),
@@ -214,21 +196,13 @@ class _OrdersState extends State<Orders> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
+                                        CairoText(
                                           "الإجمالي",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey[600],
-                                          ),
+                                          color: Colors.grey[600],
                                         ),
-                                        Text(
+                                        CairoText(
                                           "${order.totalAmount?.toStringAsFixed(2) ?? "0.00"} ر.س",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
+                                          color: AppColor.kPrimaryColor,
                                         ),
                                         Container(
                                           padding: EdgeInsets.symmetric(
@@ -241,13 +215,10 @@ class _OrdersState extends State<Orders> {
                                             gradient: _getStatusGradient(
                                                 order.orderState),
                                           ),
-                                          child: Text(
+                                          child: CairoText(
                                             order.orderState ?? "غير معروف",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            color: Colors.white,
+                                            fontSize: 11,
                                           ),
                                         ),
                                       ],
@@ -262,10 +233,10 @@ class _OrdersState extends State<Orders> {
                     },
                   ));
             } else if (state is OrderError) {
-              return Text(state.error);
+              return CairoText(state.error);
             } else {
               return Center(
-                child: Text("Error"),
+                child: CairoText("Error"),
               );
             }
           },

@@ -31,7 +31,7 @@ class ProductsAppbarActions extends StatelessWidget {
         // Shopping Cart Button with Badge
         _buildActionButton(
           icon: Icons.shopping_cart_outlined,
-          onPressed: () => Navigator.pushNamed(context, CardPage.id),
+          onPressed: () => Navigator.pushNamed(context, CartPage.id),
           showBadge: true,
           badgeCount: 2, // يمكن تعديل الرقم حسب الحاجة
         ),

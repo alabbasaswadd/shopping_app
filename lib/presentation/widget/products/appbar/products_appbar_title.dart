@@ -24,7 +24,10 @@ class _CustomTitleAppbarProductsState extends State<ProductsAppbarTitle> {
         decoration: InputDecoration(
           filled: true,
           hintText: "search".tr,
-          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          hintStyle: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: "Cairo-Bold",
+              fontSize: 11),
           border: OutlineInputBorder(borderSide: BorderSide.none),
         ),
       ),

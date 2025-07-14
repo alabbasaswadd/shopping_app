@@ -109,6 +109,7 @@ class AppTranslations extends Translations {
           "continue_shopping": "Continue Shopping",
           "select_birth_date": "Select Birth Date",
           "cancel": "Cancel",
+          "skip": "Skip",
           "confirm": "Confirm",
           "no_offers_available": "No offers available",
           "check_back_later": "Check back later",
@@ -225,6 +226,7 @@ class AppTranslations extends Translations {
           "twenty_percent_off": "خصم 20%",
           "hours_left": "متبقي 24 ساعة",
           "back": "رجوع",
+          "skip": "تخطي",
           "next": "التالي",
         },
       };

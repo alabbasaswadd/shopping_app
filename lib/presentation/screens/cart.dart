@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/data/model/cart/shopping_cart_items_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/order/order_items_model.dart';
@@ -16,16 +20,17 @@ import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.d
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 
-class CardPage extends StatefulWidget {
-  const CardPage({super.key});
+class CartPage extends StatefulWidget {
+  const CartPage({super.key});
   static String id = "cart";
 
   @override
-  State<CardPage> createState() => _CartPageState();
+  State<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CardPage> {
+class _CartPageState extends State<CartPage> {
   late CartCubit cubit;
   late OrderCubit orderCubit;
   bool isLoading = false;
@@ -69,7 +74,7 @@ class _CartPageState extends State<CardPage> {
                   Icon(Icons.shopping_cart_outlined,
                       size: 80, color: Colors.grey.withOpacity(0.5)),
                   SizedBox(height: 20),
-                  Text("no_products_in_card".tr),
+                  CairoText("no_products_in_card".tr),
                 ],
               ),
             ),
@@ -80,25 +85,28 @@ class _CartPageState extends State<CardPage> {
 
           return Scaffold(
             appBar: myAppBar(title: "card".tr, context: context, actions: [
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => MyAlertDialog(
-                            onOk: () {
-                              cubit.clearCart(UserSession.id ?? "");
-                              Get.back();
-                            },
-                            onNo: () {
-                              Get.back();
-                            },
-                            title: "إفراغ السلة",
-                            content: "هل تريد إفراغ السلة"));
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ))
+              MyAnimation(
+                scale: 0.7,
+                child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                              onOk: () {
+                                cubit.clearCart(UserSession.id ?? "");
+                                Get.back();
+                              },
+                              onNo: () {
+                                Get.back();
+                              },
+                              title: "إفراغ السلة",
+                              content: "هل تريد إفراغ السلة"));
+                    },
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    )),
+              )
             ]),
             body: Column(
               children: [
@@ -119,12 +127,12 @@ class _CartPageState extends State<CardPage> {
           return Scaffold(
             appBar: myAppBar(title: "card".tr, context: context),
             body: Center(
-                child:
-                    Text("❌ ${state.error}")), // استخدم state.error بدل message
+                child: CairoText(
+                    "❌ ${state.error}")), // استخدم state.error بدل message
           );
         } else {
           return Scaffold(
-            body: Center(child: Text("حدث خطأ غير متوقع")),
+            body: Center(child: CairoText("حدث خطأ غير متوقع")),
           );
         }
       },
@@ -133,85 +141,84 @@ class _CartPageState extends State<CardPage> {
 
   Widget _buildCartItem(ShoppingCartItemsModel item, int index) {
     return MyCard(
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Row(
-          children: [
-            // صورة المنتج
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                item.productImage ?? "",
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    Icon(Icons.image_not_supported),
-              ),
+      padding: EdgeInsets.all(10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // صورة المنتج
+          ClipRRect(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+            child: CachedImageWidget(
+              imageUrl: item.productImage ?? '',
+              heightRatio: 110.h,
+              widthRatio: 100,
+              memCacheHeight: (0.15.sh).toInt(),
+              memCacheWidth: (0.15.sh).toInt(),
             ),
-            SizedBox(width: 12),
-
-            // معلومات المنتج
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.productName ?? ''),
-                  SizedBox(height: 4),
-                  Text("\$${(item.productPrice ?? 0).toStringAsFixed(2)}"),
-                ],
-              ),
-            ),
-
-            // أدوات التحكم بالكمية
-            Column(
+          ),
+          SizedBox(width: 12),
+          // معلومات المنتج
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  icon: Icon(Icons.close, size: 20),
-                  onPressed: () {
-                    cubit.deleteProductFromCart(item.id ?? "");
-                  },
-                  color: Colors.red,
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
+                CairoText(
+                  item.productName ?? '',
+                  fontSize: 14,
                 ),
-                SizedBox(height: 8),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.remove, size: 16),
-                        onPressed: () {
-                          setState(() {
-                            item.quantity = item.quantity! - 1;
-                          });
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                      ),
-                      Text("${item.quantity}", style: TextStyle(fontSize: 14)),
-                      IconButton(
-                        icon: Icon(Icons.add, size: 16),
-                        onPressed: () {
-                          setState(() {
-                            item.quantity = item.quantity! + 1;
-                          });
-                        },
-                        padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                      ),
-                    ],
-                  ),
+                SizedBox(height: 30),
+                CairoText(
+                  "\$${(item.productPrice ?? 0).toStringAsFixed(2)}",
+                  fontSize: 11,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+
+          // أدوات التحكم بالكمية
+          Column(
+            children: [
+              IconButton(
+                icon: Icon(Icons.close, size: 16),
+                onPressed: () {
+                  cubit.deleteProductFromCart(item.id ?? "");
+                },
+                color: Colors.red,
+              ),
+              SizedBox(height: 0.07.sh),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.remove, size: 16),
+                    onPressed: () {
+                      setState(() {
+                        if (item.quantity! > 0) {
+                          item.quantity = item.quantity! - 1;
+                        }
+                      });
+                    },
+                  ),
+                  Container(
+                      width: 30.h,
+                      height: 30.h,
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Center(child: CairoText("${item.quantity}"))),
+                  IconButton(
+                    icon: Icon(Icons.add, size: 16),
+                    onPressed: () {
+                      setState(() {
+                        item.quantity = item.quantity! + 1;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -239,17 +246,9 @@ class _CartPageState extends State<CardPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "total".tr,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
+              CairoText("total".tr),
+              CairoText(
                 "\$${totalPrice.toStringAsFixed(2)}",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.kPrimaryColor,
-                ),
               ),
             ],
           ),
@@ -265,48 +264,62 @@ class _CartPageState extends State<CardPage> {
               }
             },
             builder: (context, state) {
-              return MyButton(
-                isLoading: false,
-                text: "إرسال الطلب",
-                onPressed: () {
-                  if (items.isEmpty) {
-                    MySnackbar.showError(context, "السلة فارغة!");
-                    return;
-                  }
-                  // التحقق من أن كل العناصر تتبع نفس المتجر
-                  final firstShopId = items.first.shopId;
-                  final allSameShop =
-                      items.every((item) => item.shopId == firstShopId);
-                  print(items.first.toJson());
-                  print(firstShopId);
-                  if (!allSameShop) {
-                    MySnackbar.showError(
-                        context, "كل المنتجات يجب أن تكون من نفس المتجر");
-                    return;
-                  }
-
-                  final order = OrderDataModel(
-                    customerId: UserSession.id,
-                    shopId: firstShopId ?? "",
-                    orderDate: DateTime.now().toUtc().toIso8601String(),
-                    totalAmount: items.fold<int>(
-                      0,
-                      (sum, item) =>
-                          sum +
-                          ((item.quantity ?? 0) * (item.productPrice ?? 0)),
-                    ),
-                    orderState: "قيد التنفيذ",
-                    orderItems: items.map((item) {
-                      return OrderItemsModel(
-                        productId: item.productId,
-                        quantity: item.quantity,
-                        price: item.productPrice,
-                      );
-                    }).toList(),
-                  );
-                  print(order.toJson());
-                  orderCubit.addOrder(order);
-                },
+              return MyAnimation(
+                scale: 0.90,
+                child: MyButton(
+                  isLoading: false,
+                  text: "إرسال الطلب",
+                  onPressed: () {
+                    {
+                      showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                              onOk: () async {
+                                // التحقق من أن كل العناصر تتبع نفس المتجر
+                                final firstShopId = items.first.shopId;
+                                final allSameShop = items.every(
+                                    (item) => item.shopId == firstShopId);
+                                print(items.first.toJson());
+                                print(firstShopId);
+                                if (!allSameShop) {
+                                  MySnackbar.showError(context,
+                                      "كل المنتجات يجب أن تكون من نفس المتجر");
+                                  return;
+                                }
+                                final order = OrderDataModel(
+                                  customerId: UserSession.id,
+                                  shopId: firstShopId ?? "",
+                                  orderDate:
+                                      DateTime.now().toUtc().toIso8601String(),
+                                  totalAmount: items.fold<double>(
+                                    0,
+                                    (sum, item) =>
+                                        sum +
+                                        ((item.quantity ?? 0) *
+                                            (item.productPrice ?? 0)),
+                                  ),
+                                  orderState: "قيد التنفيذ",
+                                  orderItems: items.map((item) {
+                                    return OrderItemsModel(
+                                      productId: item.productId,
+                                      quantity: item.quantity,
+                                      price: item.productPrice,
+                                    );
+                                  }).toList(),
+                                );
+                                print(order.toJson());
+                                await orderCubit.addOrder(order);
+                                cubit.getCart();
+                                Get.back();
+                              },
+                              onNo: () {
+                                Get.back();
+                              },
+                              title: "إرسال طلب",
+                              content: "هل تريد إرسال الطلب"));
+                    }
+                  },
+                ),
               );
             },
           )

@@ -12,17 +12,14 @@ class Productes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => ProductsCubit(),
-        child: Scaffold(
-            drawer: ProductsDrawer(),
-            appBar: AppBar(
-              elevation: 8,
-              shadowColor: Colors.black,
-              title: ProductsAppbarTitle(),
-              actions: const [ProductsAppbarActions()],
-            ),
-            body:
-                Container(padding: EdgeInsets.all(20), child: ProductsBody())));
+    return Scaffold(
+        drawer: ProductsDrawer(),
+        appBar: AppBar(
+          elevation: 8,
+          shadowColor: Colors.black,
+          title: ProductsAppbarTitle(),
+          actions: const [ProductsAppbarActions()],
+        ),
+        body: Container(padding: EdgeInsets.all(5), child: ProductsBody()));
   }
 }

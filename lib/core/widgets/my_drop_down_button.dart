@@ -41,7 +41,7 @@ class CustomDropdown<T> extends StatelessWidget {
         color: Theme.of(context).colorScheme.secondary,
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black.withOpacity(0.3),
               offset: Offset(0, 2),
               blurRadius: 4)
         ],
