@@ -31,6 +31,7 @@ class ProductsDetailsBody extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: 1,
             itemBuilder: (context, i) {
+              
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
