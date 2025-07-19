@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_drop_down_button.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_state.dart';
@@ -63,18 +65,15 @@ class _SignUpState extends State<SignUp> {
           SliverAppBar(
             expandedHeight: size.height * 0.25,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text("SignUp".tr,
-                  style: TextStyle(
-                      color: Colors.white,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 3)])),
+              title: CairoText(
+                "SignUp".tr,
+                color: Colors.white,
+              ),
               centerTitle: true,
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: const [
-                      Color(0xff5673cc),
-                      Color(0xff76c6f2),
-                    ],
+                    colors: const [Color(0xff5673cc), Color(0xff76c6f2)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -142,24 +141,17 @@ class _SignUpState extends State<SignUp> {
                 : Theme.of(context).colorScheme.secondary,
           ),
           child: Center(
-            child: Text(
+            child: CairoText(
               "${stepNumber + 1}",
-              style: TextStyle(
-                color: _currentStep >= stepNumber ? Colors.white : Colors.grey,
-                fontWeight: FontWeight.bold,
-              ),
+              color: Colors.white,
             ),
           ),
         ),
         const SizedBox(height: 5),
-        Text(
+        CairoText(
           title,
-          style: TextStyle(
-            color: _currentStep >= stepNumber
-                ? AppColor.kPrimaryColor
-                : Colors.grey,
-            fontSize: 12,
-          ),
+          color: Colors.white,
+          fontSize: 2,
         ),
       ],
     );
@@ -185,113 +177,95 @@ class _SignUpState extends State<SignUp> {
           const SizedBox(height: 10),
 
           // Name Row
-          Row(
-            children: [
-              Expanded(
-                child: MyTextFormField(
-                    controller: firstNameController,
-                    label: "first_name".tr,
-                    icon: Icons.person_outline,
-                    validator: (value) =>
-                        value!.isEmpty ? 'required_filed'.tr : null),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: MyTextFormField(
-                  controller: lastNameController,
-                  label: "last_name".tr,
-                  icon: Icons.person_outline,
-                  validator: (value) =>
-                      value!.isEmpty ? 'required_filed'.tr : null,
-                ),
-              ),
-            ],
+          MyTextFormField(
+              controller: firstNameController,
+              label: "first_name".tr,
+              icon: Icons.person_outline,
+              validator: (value) =>
+                  value!.isEmpty ? 'required_filed'.tr : null),
+          const SizedBox(width: 10),
+          MyTextFormField(
+            controller: lastNameController,
+            label: "last_name".tr,
+            icon: Icons.person_outline,
+            validator: (value) => value!.isEmpty ? 'required_filed'.tr : null,
           ),
-          const SizedBox(height: 15),
-
           // Birth Date and Gender
-          Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: MyTextFormField(
-                  controller: birthDateController,
-                  label: "birth_date".tr,
-                  icon: Icons.calendar_today,
-                  readOnly: true,
-                  onTap: () async {
-                    DateTime? pickedDate = await showDateDialog(context);
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
-                      birthDateController.text = formattedDate;
-                    }
-                  },
-                  validator: (value) =>
-                      value!.isEmpty ? 'required_filed'.tr : null,
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: CustomDropdown<int>(
-                  value: gender,
-                  hintText: 'select_gender'.tr,
-                  prefixIcon: Icons.transgender,
-                  onChanged: (value) {
-                    setState(() {
-                      gender = value!;
-                    });
-                  },
-                  items: [
-                    DropdownMenuItem<int>(
-                      value: 0,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.male,
-                                color: Colors.blue[700], size: 20),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            "male".tr,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DropdownMenuItem<int>(
-                      value: 1,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Colors.pink.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.female,
-                                color: Colors.pink[700], size: 20),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            "female".tr,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          MyTextFormField(
+            controller: birthDateController,
+            label: "birth_date".tr,
+            icon: Icons.calendar_today,
+            readOnly: true,
+            onTap: () async {
+              DateTime? pickedDate = await showDateDialog(context);
+              if (pickedDate != null) {
+                String formattedDate =
+                    "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+                birthDateController.text = formattedDate;
+              }
+            },
+            validator: (value) => value!.isEmpty ? 'required_filed'.tr : null,
           ),
-          const SizedBox(height: 15),
-
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 9, vertical: 12),
+            height: 50.h,
+            child: CustomDropdown<int>(
+              value: gender,
+              hintText: 'select_gender'.tr,
+              prefixIcon: Icons.transgender,
+              onChanged: (value) {
+                setState(() {
+                  gender = value!;
+                });
+              },
+              items: [
+                DropdownMenuItem<int>(
+                  value: 0,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child:
+                            Icon(Icons.male, color: Colors.blue[700], size: 20),
+                      ),
+                      const SizedBox(width: 12),
+                      CairoText(
+                        "male".tr,
+                        color: AppColor.kPrimaryColor,
+                        fontSize: 11,
+                      ),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem<int>(
+                  value: 1,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.pink.withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.female,
+                            color: Colors.pink[700], size: 20),
+                      ),
+                      const SizedBox(width: 12),
+                      CairoText(
+                        "female".tr,
+                        color: AppColor.kPrimaryColor,
+                        fontSize: 11,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           MyTextFormField(
             controller: phoneController,
             label: "phone".tr,
@@ -552,15 +526,17 @@ class _SignUpState extends State<SignUp> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("do_you_have_an_account ? ".tr,
-            style: TextStyle(color: Colors.grey[600])),
+        CairoText(
+          "do_you_have_an_account ? ".tr,
+          color: Colors.grey,
+        ),
         const SizedBox(width: 5),
         InkWell(
-          onTap: () => Get.offAndToNamed(Login.id),
-          child: Text("login".tr,
-              style: TextStyle(
-                  color: AppColor.kPrimaryColor, fontWeight: FontWeight.bold)),
-        )
+            onTap: () => Get.offAndToNamed(Login.id),
+            child: CairoText(
+              "login".tr,
+              color: AppColor.kPrimaryColor,
+            ))
       ],
     );
   }
@@ -589,13 +565,9 @@ class _SignUpState extends State<SignUp> {
   }
 
   Widget buildSectionHeader(String title) {
-    return Text(
+    return CairoText(
       title,
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: AppColor.kPrimaryColor,
-      ),
+      color: AppColor.kPrimaryColor,
     );
   }
 }

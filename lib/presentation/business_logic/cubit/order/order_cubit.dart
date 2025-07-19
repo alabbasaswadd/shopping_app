@@ -9,7 +9,7 @@ class OrderCubit extends Cubit<OrderState> {
   OrderCubit() : super(OrderLoading());
   Repository repository = Repository(WebServices());
 
-  void addOrder(OrderDataModel dataOrder) async {
+  Future<void> addOrder(OrderDataModel dataOrder) async {
     try {
       emit(OrderLoading());
 

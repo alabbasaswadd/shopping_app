@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/presentation/screens/chat.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/cart.dart';
@@ -31,10 +32,11 @@ Map<String, Widget Function(BuildContext)> routes = {
   Productes.id: (context) => Productes(),
   Favorite.id: (context) => Favorite(),
   ProductDetails.id: (context) => ProductDetails(),
-  CardPage.id: (context) => CardPage(),
+  CartPage.id: (context) => CartPage(),
   Notifications.id: (context) => Notifications(),
   HomeScreen.id: (context) => HomeScreen(),
   Onboarding.id: (context) => Onboarding(),
+  ChatScreen.id: (context) => ChatScreen(),
   Splash.id: (context) => Splash(),
   ChangePasswordScreen.id: (context) => ChangePasswordScreen(),
 };

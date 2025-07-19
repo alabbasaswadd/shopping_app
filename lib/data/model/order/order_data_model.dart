@@ -9,7 +9,7 @@ class OrderDataModel {
   final String? customerId;
   final String? shopId;
   final String? orderDate;
-  final int? totalAmount;
+  final double? totalAmount;
   final String? orderState;
   final List<OrderItemsModel>? orderItems;
 

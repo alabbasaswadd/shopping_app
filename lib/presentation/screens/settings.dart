@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/presentation/screens/auth/login.dart';
 
@@ -52,32 +53,14 @@ class _SettingsState extends State<Settings> {
       required ValueChanged<String> onSave}) {
     final controller = TextEditingController(text: initialValue);
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: MyTextFormField(
-          controller: controller,
-          label: title,
-          icon: null,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text("cancel".tr),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              onSave(controller.text);
-              Navigator.pop(context);
+        context: context,
+        builder: (context) => MyAlertDialog(
+            onOk: () {},
+            onNo: () {
+              Get.back();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.kPrimaryColor,
-            ),
-            child: Text("save".tr),
-          ),
-        ],
-      ),
-    );
+            title: "title",
+            content: "content"));
   }
 
   @override
@@ -157,19 +140,9 @@ class _SettingsState extends State<Settings> {
   }
 
   Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey[600],
-          ),
-        ),
-      ),
+    return CairoText(
+      title,
+      color: Colors.grey[600],
     );
   }
 
@@ -190,8 +163,11 @@ class _SettingsState extends State<Settings> {
       ),
       child: ListTile(
         leading: Icon(icon, color: color ?? AppColor.kPrimaryColor),
-        title: Text(title),
-        subtitle: value != null ? Text(value) : null,
+        title: CairoText(
+          title,
+          fontSize: 11,
+        ),
+        subtitle: value != null ? CairoText(value, fontSize: 11) : null,
         trailing: trailing ?? Icon(Icons.arrow_forward_ios, size: 16),
         onTap: onTap,
       ),
@@ -209,35 +185,31 @@ class _SettingsState extends State<Settings> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            CairoText(
               "select_language".tr,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
             ),
             const SizedBox(height: 16),
             RadioListTile(
-              title: Text("arabic".tr),
+              title: CairoText("arabic".tr),
               value: "ar",
               groupValue: _selectedLanguage,
               onChanged: (value) async {
                 await _saveSetting('language', "ar");
                 Get.updateLocale(const Locale("ar"));
                 setState(() => _selectedLanguage = "ar");
-                Navigator.pop(context);
+                Get.back();
               },
               activeColor: AppColor.kPrimaryColor,
             ),
             RadioListTile(
-              title: Text("english".tr),
+              title: CairoText("english".tr),
               value: "en",
               groupValue: _selectedLanguage,
               onChanged: (value) async {
                 await _saveSetting('language', "en");
                 Get.updateLocale(const Locale("en"));
                 setState(() => _selectedLanguage = "en");
-                Navigator.pop(context);
+                Get.back();
               },
               activeColor: AppColor.kPrimaryColor,
             ),

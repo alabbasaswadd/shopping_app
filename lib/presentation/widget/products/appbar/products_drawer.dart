@@ -4,6 +4,7 @@ import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/auth/auth_cubit.dart';
+import 'package:shopping_app/presentation/screens/chat.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/change_password_screen.dart';
@@ -61,6 +62,13 @@ class _ProductsDrawerState extends State<ProductsDrawer> {
             title: "change_password".tr,
             ontap: () {
               Get.toNamed(ChangePasswordScreen.id);
+            },
+          ),
+          ProductsCustomDrawer(
+            icon: Icons.chat,
+            title: "دردشة".tr,
+            ontap: () {
+              Get.toNamed(ChatScreen.id);
             },
           ),
           ProductsCustomDrawer(

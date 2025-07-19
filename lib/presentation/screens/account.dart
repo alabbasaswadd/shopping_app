@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
@@ -106,7 +111,11 @@ class _AccountState extends State<Account> {
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Scaffold(
+                body: Center(
+                  child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
+                ),
+              );
             } else if (state is UserLoaded) {
               // حدث الكنترولرز عند جلب البيانات
               _updateControllers(state.user);
@@ -142,10 +151,10 @@ class _AccountState extends State<Account> {
                 ),
               );
             } else if (state is UserError) {
-              return Center(child: Text("حدث خطأ: ${state.message}"));
+              return Center(child: CairoText("حدث خطأ: ${state.message}"));
             }
             // الحالة الافتراضية قبل تحميل البيانات
-            return const Center(child: Text("يرجى الانتظار..."));
+            return const Center(child: CairoText("يرجى الانتظار..."));
           },
         ),
       ),
@@ -178,14 +187,7 @@ class _AccountState extends State<Account> {
           children: [
             // Header with arrow icon
             ListTile(
-              title: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              ),
+              title: CairoText(title, color: AppColor.kPrimaryColor),
               trailing: Icon(
                 expanded ? Icons.expand_less : Icons.expand_more,
                 color: Colors.grey[600],
@@ -263,22 +265,20 @@ class _AccountState extends State<Account> {
           ),
           const SizedBox(height: 8),
           AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 300),
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Text(
+            duration: Duration(milliseconds: 300),
+            style: TextStyle(),
+            child: CairoText(
+                color: AppColor.kPrimaryColor,
+                fontSize: 18,
                 "${_firstNameController.text} ${_lastNameController.text}"),
           ),
           AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
-            style: TextStyle(
-              fontSize: 14,
+            style: TextStyle(),
+            child: CairoText(
+              _emailController.text,
               color: Colors.grey[600],
             ),
-            child: Text(_emailController.text),
           ),
         ],
       ),
@@ -373,68 +373,33 @@ class _AccountState extends State<Account> {
   Widget _buildActionButtons() {
     return Column(
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () async {
-
-              // await cubit.updateUser(UserSession.id!, updatedUser);
-              // await UserSession.updateUser(
-              //     updatedUser); // 👈 لتحديث الجلسة أيضًا
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.kPrimaryColor,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text("حفظ التغييرات"),
-          ),
-        ),
+        MyAnimation(child: MyButton(text: "حفظ التغييرات", onPressed: () {})),
         const SizedBox(height: 12),
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 300),
-          opacity: 1.0,
+        MyAnimation(
+          scale: 0.85,
           child: TextButton(
             onPressed: () {
               showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("حذف الحساب"),
-                  content: const Text(
-                      "هل أنت متأكد أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء."),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text("إلغاء"),
-                    ),
-                    TextButton(
-                      onPressed: () async {
+                  context: context,
+                  builder: (context) => MyAlertDialog(
+                      onOk: () async {
                         await cubit.deleteUser(UserSession.id!); // ✅
                         await UserSession.clear(); // 🧹 حذف بيانات الجلسة
                         Get.offAllNamed(Login.id); // 🔁 العودة لصفحة الدخول
                       },
-                      child: const Text(
-                        "حذف",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                      onNo: () {
+                        Get.back();
+                      },
+                      title: "حذف الحساب",
+                      content: "هل تريد حذف الحساب"));
             },
-            child: const Text(
+            child: const CairoText(
               "حذف الحساب",
-              style: TextStyle(color: Colors.red),
+              color: Colors.red,
             ),
           ),
         ),
       ],
     );
   }
-
- 
 }

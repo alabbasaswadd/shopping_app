@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 
 class MySnackbar {
   static void showError(BuildContext context, String message) {
@@ -79,19 +80,14 @@ class MySnackbar {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    CairoText(
                       _getTitle(type),
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        color: textColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
+                    const SizedBox(height: 15),
+                    CairoText(
                       message,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: textColor.withOpacity(0.9),
-                      ),
+                      color: Colors.white54,
                     ),
                   ],
                 ),

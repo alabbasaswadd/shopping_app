@@ -11,7 +11,7 @@ class ProductDataModel {
   final String? image;
   final String? categoryId;
   final String? currency;
-  final String? shopeId;
+  final String? shopId;
   final String? description;
   final String? creationDate;
   final String? shope;
@@ -24,7 +24,7 @@ class ProductDataModel {
     this.image,
     this.categoryId,
     this.currency,
-    this.shopeId,
+    this.shopId,
     this.shope,
     this.description,
     this.creationDate,

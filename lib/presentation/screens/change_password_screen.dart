@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
@@ -32,12 +35,9 @@ class ChangePasswordScreen extends StatelessWidget {
                 color: AppColor.kPrimaryColor,
               ),
               const SizedBox(height: 16),
-              Text(
+              CairoText(
                 "قم بتغيير كلمة المرور الخاصة بك",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+                color: Colors.grey[600],
               ),
               const SizedBox(height: 32),
 
@@ -105,36 +105,25 @@ class ChangePasswordScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               // Save Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // تغيير كلمة المرور
-                      Get.back();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.kPrimaryColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text("حفظ التغييرات"),
+              MyAnimation(
+                child: MyButton(
+                  text: "حفظ التغييرات",
+                  onPressed: () {},
                 ),
               ),
               const SizedBox(height: 16),
 
               // Forgot Password
-              TextButton(
-                onPressed: () {
-                  // الانتقال لصفحة استعادة كلمة المرور
-                },
-                child: const Text(
-                  "نسيت كلمة المرور؟",
-                  style: TextStyle(color: Colors.blue),
+              MyAnimation(
+                scale: 0.85,
+                child: TextButton(
+                  onPressed: () {
+                    // الانتقال لصفحة استعادة كلمة المرور
+                  },
+                  child: CairoText(
+                    "نسيت كلمة المرور؟",
+                    color: AppColor.kPrimaryColor,
+                  ),
                 ),
               ),
             ],

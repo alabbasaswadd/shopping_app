@@ -19,19 +19,23 @@ class WebServices {
       },
     ),
   );
-  Future<List<ProductDataModel>> getDataWebServices() async {
+  Future<Response> getProductsWebServices(
+      {String? shopId,
+      String? category,
+      double? minPrice,
+      double? maxPrice}) async {
     final token = await UserPreferencesService.getToken();
-    var response = await dio.get(
-      "$baseUrl$getAllProducts",
-      options: Options(headers: {
-        "Authorization": "Bearer $token",
-      }),
-    );
-
-    final List<dynamic> jsonList = response.data['data'];
-    return jsonList
-        .map((item) => ProductDataModel.fromJson(item as Map<String, dynamic>))
-        .toList();
+    var response = await dio.get("$baseUrl$getAllProducts",
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+        }),
+        queryParameters: {
+          "shopId": shopId,
+          "category": category,
+          "minPrice": minPrice,
+          "maxPrice": maxPrice,
+        });
+    return response;
   }
 
   Future<Response?> signUpWebService(Map<String, dynamic> data) async {
