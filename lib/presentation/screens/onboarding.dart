@@ -27,28 +27,32 @@ class _OnboardingState extends State<Onboarding> {
 
   List<OnboardingModel> model = [
     OnboardingModel(
-      title: "Welcome to the world of easy shopping!",
+      title: "welcome_to_the_world_of_easy_shopping".tr,
       image: "assets/images/onboarding1.gif",
       body:
-          "Enjoy a convenient and fast shopping experience with the best products and special offers.",
+          "enjoy_a_convenient_and_fast_shopping_experience_with_the_best_products_and_special_offers"
+              .tr,
     ),
     OnboardingModel(
-      title: "Everything you need in one place!",
+      title: "everything_you_need_in_one_place".tr,
       image: "assets/images/onboarding2.gif",
       body:
-          "Discover a wide range of products that meet all your needs, easily and from anywhere.",
+          "discover_a_wide_range_of_products_that_meet_all_your_needs_easily_and_from_anywhere"
+              .tr,
     ),
     OnboardingModel(
-      title: "Shop with confidence and security!",
+      title: "shop_with_confidence_and_security".tr,
       image: "assets/images/onboarding3.gif",
       body:
-          "We guarantee you a safe shopping experience with multiple payment options and reliable delivery service.",
+          "we_guarantee_you_a_safe_shopping_experience_with_multiple_payment_options_and_reliable_delivery_service"
+              .tr,
     ),
     OnboardingModel(
-      title: "Start your shopping journey!",
+      title: "start_your_shopping_journey".tr,
       image: "assets/images/onboarding4.gif",
       body:
-          "Create your account or log in to discover everything new and special.",
+          "create_your_account_or_log_in_to_discover_everything_new_and_special"
+              .tr,
     ),
   ];
 
@@ -194,7 +198,7 @@ class _OnboardingState extends State<Onboarding> {
                                       AppColor.kPrimaryColor.withOpacity(0.3),
                                 ),
                                 child: CairoText(
-                                  'Get Started',
+                                  'get_started'.tr,
                                   color: Colors.white,
                                 ),
                               )
@@ -288,32 +292,6 @@ class OnboardingPage extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          const SizedBox(height: 32),
-
-          // زر البدء (يظهر فقط في الصفحة الأخيرة)
-          if (isLastPage)
-            AnimatedOpacity(
-              opacity: isLastPage ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onGetStarted,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.kPrimaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    elevation: 4,
-                  ),
-                  child: CairoText(
-                    'Get Started',
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );

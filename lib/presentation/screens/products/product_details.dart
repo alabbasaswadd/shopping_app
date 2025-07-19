@@ -27,7 +27,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   void initState() {
     cubit = ProductsCubit();
-    cubit.getData();
+    cubit.getProducts();
     super.initState();
   }
 

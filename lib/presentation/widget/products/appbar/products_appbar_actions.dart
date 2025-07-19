@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/presentation/screens/cart.dart';
+import 'package:shopping_app/presentation/screens/chat.dart';
 import 'package:shopping_app/presentation/screens/filter.dart';
 import 'package:shopping_app/presentation/screens/notifications.dart';
 
@@ -14,9 +16,9 @@ class ProductsAppbarActions extends StatelessWidget {
       children: [
         // Filter Button with Badge
         _buildActionButton(
-          icon: Icons.filter_alt_outlined,
-          onPressed: () => _showFilterBottomSheet(context),
-          showBadge: true,
+          icon: Icons.chat,
+          onPressed: () => Get.toNamed(ChatScreen.id),
+          showBadge: false,
           badgeCount: 3, // يمكن تعديل الرقم حسب الحاجة
         ),
 

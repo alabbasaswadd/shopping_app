@@ -11,12 +11,28 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   ProductsCubit() : super(ProductsLoading());
 
-  void getData() async {
+  void getProducts(
+      {String? shopId,
+      String? category,
+      double? minPrice,
+      double? maxPrice}) async {
     emit(ProductsLoading());
 
-    final products = await repository.getDataRepository();
-    if (products.isNotEmpty) {
-      emit(ProductsLoaded(products));
+    final response = await repository.getProductsRepository();
+    if (response.statusCode == 200 &&
+        response.data != null &&
+        response.data['succeeded'] == true) {
+      final productsJson = response.data['data'];
+
+      if (productsJson is List) {
+        final products = productsJson
+            .map((e) => ProductDataModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+
+        emit(ProductsLoaded(products));
+      } else {
+        emit(ProductsError("البيانات غير متوقعة"));
+      }
     } else {
       emit(ProductsError("لا يوجد منتجات"));
     }
@@ -29,7 +45,8 @@ class ProductsCubit extends Cubit<ProductsState> {
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        final products = await repository.getDataRepository();
+        final dataProducts = await repository.getProductsRepository();
+        final products = dataProducts.data['data'];
         // جلب المنتجات السابقة إن وجدت
         emit(ProductsAdded());
         emit(ProductsLoaded(products));
@@ -38,8 +55,8 @@ class ProductsCubit extends Cubit<ProductsState> {
       } else {
         print(response);
         print("❌ خطأ أثناء الإضافة إلى السلة: ++++++");
-        final products = await repository.getDataRepository();
-
+        final dataProducts = await repository.getProductsRepository();
+        final products = dataProducts.data['data'];
         emit(ProductsFeildAdd("فشل في إضافة المنتج إلى السلة."));
         emit(ProductsLoaded(products));
       }

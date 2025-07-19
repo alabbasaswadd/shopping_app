@@ -34,7 +34,6 @@ class MyTextFormField extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Card(
-        elevation: 4,
         child: TextFormField(
           onTap: onTap,
           readOnly: readOnly ?? false,
@@ -57,11 +56,11 @@ class MyTextFormField extends StatelessWidget {
             labelText: label,
             labelStyle: TextStyle(
               color: AppColor.kPrimaryColor,
-              fontFamily: 'Cairo-bold',
+              fontFamily: 'Cairo-Bold',
               fontSize: 11,
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(6),
               borderSide: BorderSide.none,
             ),
             contentPadding: const EdgeInsets.symmetric(

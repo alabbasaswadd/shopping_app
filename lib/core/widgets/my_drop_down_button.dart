@@ -39,12 +39,6 @@ class CustomDropdown<T> extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              offset: Offset(0, 2),
-              blurRadius: 4)
-        ],
         borderRadius: BorderRadius.circular(15),
       ),
       padding:

@@ -10,9 +10,14 @@ import 'package:shopping_app/data/web_services/web_services.dart';
 class Repository {
   final WebServices webServices;
   Repository(this.webServices);
-  Future<List<ProductDataModel>> getDataRepository() async {
-    final products = await webServices.getDataWebServices();
-    return products;
+  Future<Response> getProductsRepository(
+      {String? shopId,
+      String? category,
+      double? minPrice,
+      double? maxPrice}) async {
+    final response = await webServices.getProductsWebServices(
+        shopId: shopId, category: category);
+    return response;
   }
 
   signUpRepository(Map<String, dynamic> data) async {

@@ -73,10 +73,7 @@ class _SignUpState extends State<SignUp> {
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: const [
-                      Color(0xff5673cc),
-                      Color(0xff76c6f2),
-                    ],
+                    colors: const [Color(0xff5673cc), Color(0xff76c6f2)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),

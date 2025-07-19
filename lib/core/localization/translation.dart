@@ -103,6 +103,7 @@ class AppTranslations extends Translations {
           "card_number": "Card Number",
           "expiry_date": "Expiry Date",
           "CVV": "CVV",
+          "account_info": "Account Info",
           "cardholder_name": "Cardholder Name",
           "payment_successful": "Payment Successful",
           "thank_you_for_your_purchase": "Thank you for your purchase",
@@ -110,11 +111,27 @@ class AppTranslations extends Translations {
           "select_birth_date": "Select Birth Date",
           "cancel": "Cancel",
           "skip": "Skip",
+          "get_started": "Get Started",
           "confirm": "Confirm",
           "no_offers_available": "No offers available",
           "check_back_later": "Check back later",
           "twenty_percent_off": "20% OFF",
-          "hours_left": "24h left"
+          "hours_left": "24h left",
+          "welcome_to_the_world_of_easy_shopping":
+              "Welcome to the world of easy shopping!",
+          "enjoy_a_convenient_and_fast_shopping_experience_with_the_best_products_and_special_offers":
+              "Enjoy a convenient and fast shopping experience with the best products and special offers.",
+          "everything_you_need_in_one_place":
+              "Everything you need in one place!",
+          "discover_a_wide_range_of_products_that_meet_all_your_needs_easily_and_from_anywhere":
+              "Discover a wide range of products that meet all your needs, easily and from anywhere.",
+          "shop_with_confidence_and_security":
+              "Shop with confidence and security!",
+          "we_guarantee_you_a_safe_shopping_experience_with_multiple_payment_options_and_reliable_delivery_service":
+              "We guarantee you a safe shopping experience with multiple payment options and reliable delivery service.",
+          "start_your_shopping_journey": "Start your shopping journey!",
+          "create_your_account_or_log_in_to_discover_everything_new_and_special":
+              "Create your account or log in to discover everything new and special.",
         },
         'ar': {
           "account": "الحساب",
@@ -185,6 +202,7 @@ class AppTranslations extends Translations {
           "or": "أو",
           "yes": "نعم",
           "no": "لا",
+          "account_info": "معلومات الحساب",
           "app_settings": "إعدادات التطبيق",
           "app_language": "لغة التطبيق",
           "account_settings": "إعدادات الحساب",
@@ -228,6 +246,20 @@ class AppTranslations extends Translations {
           "back": "رجوع",
           "skip": "تخطي",
           "next": "التالي",
-        },
+          "get_started": "لنبدأ",
+          "welcome_to_the_world_of_easy_shopping":
+              "مرحبًا بك في عالم التسوق السهل!",
+          "enjoy_a_convenient_and_fast_shopping_experience_with_the_best_products_and_special_offers":
+              "استمتع بتجربة تسوق مريحة وسريعة مع أفضل المنتجات والعروض الخاصة.",
+          "everything_you_need_in_one_place": "كل ما تحتاجه في مكان واحد!",
+          "discover_a_wide_range_of_products_that_meet_all_your_needs_easily_and_from_anywhere":
+              "اكتشف مجموعة واسعة من المنتجات التي تلبي جميع احتياجاتك بسهولة ومن أي مكان.",
+          "shop_with_confidence_and_security": "تسوق بثقة وأمان!",
+          "we_guarantee_you_a_safe_shopping_experience_with_multiple_payment_options_and_reliable_delivery_service":
+              "نضمن لك تجربة تسوق آمنة مع خيارات دفع متعددة وخدمة توصيل موثوقة.",
+          "start_your_shopping_journey": "ابدأ رحلة التسوق الخاصة بك!",
+          "create_your_account_or_log_in_to_discover_everything_new_and_special":
+              "أنشئ حسابك أو سجّل الدخول لاكتشاف كل جديد ومميز.",
+        }
       };
 }
