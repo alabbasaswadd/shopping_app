@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:get/get.dart';
-import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
@@ -12,7 +10,6 @@ class ShopCubit extends Cubit<ShopState> {
   void getShops() async {
     emit(ShopLoading());
     final response = await repository.getShopsRepository();
-    print(response);
     try {
       if (response.statusCode == 200 &&
           response.data != null &&
@@ -25,7 +22,6 @@ class ShopCubit extends Cubit<ShopState> {
         emit(ShopError("لا يوجد متاجر"));
       }
     } catch (e) {
-      print(e);
       emit(ShopError("حدث خطأ أثناء جلب المتاجر المتاحة: ${e.toString()}"));
     }
   }
@@ -51,7 +47,6 @@ class ShopCubit extends Cubit<ShopState> {
         emit(ShopProductsError("لا يوجد منتجات في هذا المتجر"));
       }
     } catch (e) {
-      print("❌ Error: $e");
       emit(ShopProductsError(
           "حدث خطأ أثناء جلب المنتجات المتاحة: ${e.toString()}"));
     }

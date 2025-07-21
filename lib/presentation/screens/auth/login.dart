@@ -35,7 +35,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -131,9 +130,7 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
-                          onPressed: () {
-                            // TODO: Implement forgot password
-                          },
+                          onPressed: () {},
                           child: Text("forgot_password".tr,
                               style: TextStyle(color: AppColor.kPrimaryColor)),
                         ),

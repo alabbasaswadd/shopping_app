@@ -15,7 +15,7 @@ import 'package:shopping_app/presentation/screens/category_products.dart';
 import 'package:shopping_app/presentation/screens/shops/shops_products.dart';
 
 class Shops extends StatefulWidget {
-  Shops({super.key});
+  const Shops({super.key});
   static String id = "stores";
 
   @override
@@ -79,7 +79,6 @@ class _ShopsState extends State<Shops> {
                                       categoryName:
                                           categoryState.categories[i].name ??
                                               ""));
-                                  print(categoryState.categories[i].name);
                                 },
                                 child: MyCard(
                                   child: Padding(

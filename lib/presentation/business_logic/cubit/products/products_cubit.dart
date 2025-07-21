@@ -59,13 +59,9 @@ class ProductsCubit extends Cubit<ProductsState> {
   void addToCart(AddToCartRequest data) async {
     try {
       final response = await repository.addProductToTheCartRepository(data);
-      print(response.data);
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        final dataProducts = await repository.getProductsRepository();
-        final products = dataProducts.data['data'];
-        // جلب المنتجات السابقة إن وجدت
         emit(ProductsAdded());
       } else {
         final dataProducts = await repository.getProductsRepository();
@@ -73,8 +69,7 @@ class ProductsCubit extends Cubit<ProductsState> {
         emit(ProductsFeildAdd("فشل في إضافة المنتج إلى السلة."));
         emit(ProductsLoaded(products));
       }
-    } catch (e, stackTrace) {
-      print(stackTrace);
+    } catch (e) {
       emit(ProductsFeildAdd("حدث خطأ غير متوقع أثناء الإضافة."));
     }
   }

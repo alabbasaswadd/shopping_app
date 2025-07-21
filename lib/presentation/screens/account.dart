@@ -10,9 +10,7 @@ import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
-import 'package:shopping_app/data/model/user/user_address_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
-import 'package:shopping_app/data/model/user/user_email_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_state.dart';
 import 'package:shopping_app/presentation/screens/auth/login.dart';
@@ -66,13 +64,10 @@ class _AccountState extends State<Account> {
     _floorController = TextEditingController();
     _apartmentController = TextEditingController();
     setState(() {});
-    // جلب بيانات المستخدم حسب الـ id من الـ UserSession
     final userId = UserSession.id;
     if (userId != null && userId.isNotEmpty) {
       cubit.getUser(userId);
     } else {
-      // مثلا توجه لتسجيل الدخول لو ما في id
-      print("لا يوجد معرف مستخدم");
     }
   }
 

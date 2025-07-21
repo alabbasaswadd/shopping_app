@@ -4,7 +4,7 @@ import 'package:shopping_app/data/model/order/order_data_model.dart';
 class EditOrderPage extends StatelessWidget {
   final OrderDataModel order;
 
-  const EditOrderPage({Key? key, required this.order}) : super(key: key);
+  const EditOrderPage({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {

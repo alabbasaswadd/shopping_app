@@ -20,7 +20,6 @@ import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.d
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -279,8 +278,6 @@ class _CartPageState extends State<CartPage> {
                                 final firstShopId = items.first.shopId;
                                 final allSameShop = items.every(
                                     (item) => item.shopId == firstShopId);
-                                print(items.first.toJson());
-                                print(firstShopId);
                                 if (!allSameShop) {
                                   MySnackbar.showError(context,
                                       "كل المنتجات يجب أن تكون من نفس المتجر");
@@ -307,7 +304,6 @@ class _CartPageState extends State<CartPage> {
                                     );
                                   }).toList(),
                                 );
-                                print(order.toJson());
                                 await orderCubit.addOrder(order);
                                 cubit.getCart();
                                 Get.back();

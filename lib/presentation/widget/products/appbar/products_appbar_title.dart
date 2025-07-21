@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 
