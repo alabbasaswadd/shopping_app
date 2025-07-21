@@ -1,14 +1,11 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/localization/translation.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 import 'package:shopping_app/core/constants/theme.dart';
 import 'package:shopping_app/presentation/screens/splash.dart';
 import 'routes.dart';

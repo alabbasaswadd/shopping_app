@@ -128,7 +128,6 @@ class _OnboardingState extends State<Onboarding> {
                           const BouncingScrollPhysics(), // تأثير ارتداد عند النهاية
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        final double scale = _currentPage == index ? 1.0 : 0.9;
 
                         return AnimatedBuilder(
                           animation: _pageController,

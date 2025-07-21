@@ -13,7 +13,6 @@ import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
-import 'package:shopping_app/presentation/screens/settings.dart';
 
 class ProductsDetailsBody extends StatefulWidget {
   const ProductsDetailsBody({super.key, required this.product});

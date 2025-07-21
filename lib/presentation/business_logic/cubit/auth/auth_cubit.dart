@@ -51,11 +51,8 @@ class AuthCubit extends Cubit<AuthState> {
       if (response.data != null) {
         try {
           final authResponse = RegisterResponseModel.fromJson(response.data);
-          print("✅ succeeded: ${authResponse.succeeded}");
           if (authResponse.succeeded == true) {
             emit(AuthSignUpSuccess());
-            print("✅ تم التسجيل بنجاح");
-            print("🧾 Response Data: ${response.data}");
           } else {
             final errorMessage = _extractFirstError(authResponse.errors) ??
                 authResponse.message ??
@@ -63,15 +60,12 @@ class AuthCubit extends Cubit<AuthState> {
             emit(AuthError(errorMessage));
           }
         } catch (e) {
-          print("🧾 Response Data: ${response.data}");
-          print("❌ Error parsing response: $e");
           emit(AuthError("فشل في تحليل استجابة السيرفر"));
         }
       } else {
         emit(AuthError("فشل الاتصال بالسيرفر"));
       }
     } catch (e) {
-      print("❌ Exception: $e");
       if (e is DioException) {
         final errorData = e.response?.data;
         final message = errorData?['message']?.toString() ??
@@ -107,7 +101,6 @@ class AuthCubit extends Cubit<AuthState> {
         final jsonData = response.data;
         final loginData = LoginDataModel.fromJson(jsonData['data']);
 
-        // ✅ LoginResponseModel ياخذ الـ json الكامل
         final loginResponse = LoginResponseModel.fromJson(jsonData);
 
         if (loginResponse.succeeded == true && loginResponse.data != null) {
@@ -166,7 +159,6 @@ class AuthCubit extends Cubit<AuthState> {
           emit(AuthError("خطأ غير متوقع أثناء تحليل رسالة الخطأ"));
         }
       } else {
-        print(e.toString());
         emit(AuthError("حدث خطأ غير متوقع: ${e.toString()}"));
       }
     }
@@ -179,13 +171,12 @@ class AuthCubit extends Cubit<AuthState> {
       if (userId != null) {
         final response = await repository.getUserDataRepository(userId);
 
-        if (response != null && response.data != null) {
+        if (response.data != null) {
           final Map<String, dynamic> json = response.data;
           final user = UserDataModel.fromJson(json);
 
           // ✅ تخزين بيانات المستخدم داخل SharedPreferences
           await UserPreferencesService.saveUser(user.toJson());
-          print("🧾 User Data: ${user.toJson()}");
         } else {
           emit(AuthError("فشل في استرجاع بيانات المستخدم"));
         }
@@ -193,7 +184,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthError("لم يتم العثور على معرف المستخدم"));
       }
     } catch (e) {
-      print("❌ Exception: $e");
       emit(AuthError("حدث خطأ أثناء استرجاع بيانات المستخدم"));
     }
   }

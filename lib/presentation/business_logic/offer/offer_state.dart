@@ -1,6 +1,4 @@
-import 'package:shopping_app/data/model/offer/offer_data_model.dart';
 import 'package:shopping_app/data/model/offer/offer_response_model.dart';
-import 'package:shopping_app/data/model/order/order_data_model.dart';
 
 abstract class OfferState {}
 
