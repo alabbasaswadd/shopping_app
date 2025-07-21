@@ -15,9 +15,15 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getUser(String userId) async {
     emit(UserLoading());
     try {
-      final user = await repository.getUserRepository(userId);
-      await UserSession.updateUser(user);
-      emit(UserLoaded(user));
+      final response = await repository.getUserRepository(userId);
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        final user = response.data['data'];
+        final userData = UserDataModel.fromJson(user);
+        await UserSession.updateUser(userData);
+        emit(UserLoaded(userData));
+      }
     } catch (e) {
       emit(UserError("حدث خطأ أثناء جلب بيانات المستخدم: ${e.toString()}"));
     }
@@ -25,11 +31,18 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> updateUser(String userId, UserDataModel user) async {
     emit(UserLoading());
+    final response = await repository.updateUserRepository(userId, user);
     try {
-      await repository.updateUserRepository(userId, user);
-      await UserSession.updateUser(user);
-      emit(UserUpdated());
+      print(response);
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        final userData = response.data['data'];
+        await UserSession.updateUser(UserDataModel.fromJson(userData));
+        emit(UserUpdated());
+      }
     } catch (e) {
+      print(response);
       emit(UserError("حدث خطأ أثناء تعديل بيانات المستخدم: ${e.toString()}"));
     }
   }
@@ -37,9 +50,13 @@ class UserCubit extends Cubit<UserState> {
   Future<void> deleteUser(String userId) async {
     emit(UserLoading());
     try {
-      await repository.deleteUserRepository(userId);
-      await UserSession.clear();
-      emit(UserDeleted());
+      final response = await repository.deleteUserRepository(userId);
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        await UserSession.clear();
+        emit(UserDeleted());
+      }
     } catch (e) {
       emit(UserError("حدث خطأ أثناء حذف المستخدم: ${e.toString()}"));
     }

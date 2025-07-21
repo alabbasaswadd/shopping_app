@@ -33,7 +33,7 @@ class CategoryCubit extends Cubit<CategoryState> {
 
   void getProductsByCategory(String categoryName) async {
     try {
-      emit(ProductsLoading());
+      emit(CategoryProductsLoading());
 
       final response =
           await repository.getProductsByCategoryRepository(categoryName);
@@ -47,13 +47,13 @@ class CategoryCubit extends Cubit<CategoryState> {
         final List<ProductDataModel> products =
             rawProducts.map((item) => ProductDataModel.fromJson(item)).toList();
 
-        emit(ProductsSuccess(products));
+        emit(CategoryProductsSuccess(products));
       } else {
         print(response.data);
-        emit(ProductsError("المنتجات فارغة أو حصل خطأ"));
+        emit(CategoryProductsError("المنتجات فارغة أو حصل خطأ"));
       }
     } catch (e) {
-      emit(ProductsError("حدث خطأ: $e"));
+      emit(CategoryProductsError("حدث خطأ: $e"));
     }
   }
 }

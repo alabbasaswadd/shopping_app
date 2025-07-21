@@ -1,4 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
@@ -8,31 +11,49 @@ class ShopCubit extends Cubit<ShopState> {
   ShopCubit() : super(ShopInitial());
   void getShops() async {
     emit(ShopLoading());
+    final response = await repository.getShopsRepository();
+    print(response);
     try {
-      final shops = await repository.getShopsRepository();
-
-      print("✅ عدد المتاجر المحملة: ${shops.length}");
-      for (var shop in shops) {
-        print("🔸 ${shop.id} ");
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        final shopsJsonList = response.data['data'] as List;
+        final shops =
+            shopsJsonList.map((json) => ShopDataModel.fromJson(json)).toList();
+        emit(ShopLoaded(shops));
+      } else {
+        emit(ShopError("لا يوجد متاجر"));
       }
-      emit(ShopLoaded(shops));
     } catch (e) {
-      print("❌ Error: $e");
+      print(e);
       emit(ShopError("حدث خطأ أثناء جلب المتاجر المتاحة: ${e.toString()}"));
     }
   }
 
   void getProductsByShopId(String id) async {
-    emit(ProductsLoading());
+    emit(ShopProductsLoading());
 
     try {
-      final products = await repository.getProductsByShopIdRepository(id);
-      final shops = await repository.getShopsRepository();
-      emit(ProductsSuccess(products, shops));
+      final response = await repository.getProductsByShopIdRepository(id);
+
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        final shopsJsonList = response.data['data'] as List;
+        final shops =
+            shopsJsonList.map((json) => ShopDataModel.fromJson(json)).toList();
+
+        // افترض أن getProductsRepository تُرجع Future<List<ProductModel>>
+        final products = await repository.getProductsRepository(shopId: id);
+
+        emit(ShopProductsLoaded(products, shops));
+      } else {
+        emit(ShopProductsError("لا يوجد منتجات في هذا المتجر"));
+      }
     } catch (e) {
       print("❌ Error: $e");
-      emit(
-          ProductsError("حدث خطأ أثناء جلب المنتجات المتاحة: ${e.toString()}"));
+      emit(ShopProductsError(
+          "حدث خطأ أثناء جلب المنتجات المتاحة: ${e.toString()}"));
     }
   }
 }

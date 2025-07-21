@@ -19,94 +19,78 @@ class WebServices {
       },
     ),
   );
-  Future<Response> getProductsWebServices(
-      {String? shopId,
-      String? category,
-      double? minPrice,
-      double? maxPrice}) async {
+  Future<Response> getProductsWebServices({
+    String? shopId,
+    String? category,
+    double? minPrice,
+    double? maxPrice,
+  }) async {
     final token = await UserPreferencesService.getToken();
-    var response = await dio.get("$baseUrl$getAllProducts",
-        options: Options(headers: {
-          "Authorization": "Bearer $token",
-        }),
-        queryParameters: {
-          "shopId": shopId,
-          "category": category,
-          "minPrice": minPrice,
-          "maxPrice": maxPrice,
-        });
+
+    return await dio.get(
+      "$baseUrl$getAllProducts",
+      options: Options(headers: {
+        "Authorization": "Bearer $token",
+      }),
+      queryParameters: {
+        if (shopId != null) "shopId": shopId,
+        if (category != null) "category": category,
+        if (minPrice != null) "minPrice": minPrice,
+        if (maxPrice != null) "maxPrice": maxPrice,
+      },
+    );
+  }
+
+  Future<Response> signUpWebService(Map<String, dynamic> data) async {
+    final response = await dio.post(
+      "$baseUrl$signUp",
+      data: data,
+    );
     return response;
   }
 
-  Future<Response?> signUpWebService(Map<String, dynamic> data) async {
-    try {
-      final response = await dio.post(
-        "$baseUrl$signUp",
-        data: data,
-      );
-      return response;
-    } catch (e) {
-      if (e is DioException) {
-        print('📛 Dio Error Data: ${e.response?.data}');
-      }
-      print('Error during sign up: $e');
-      return null;
-    }
+  Future<Response> loginWebServices(String email, String password) async {
+    final response = await dio.post(
+      "$baseUrl$login",
+      data: {
+        'email': email,
+        'password': password,
+      },
+    );
+    return response;
   }
 
-  Future<Response?> loginWebServices(Map<String, dynamic> data) async {
-    try {
-      final response = await dio.post(
-        "$baseUrl$login",
-        data: data,
-      );
-      print('✅ تم الاتصال بالسيرفر: ${response.statusCode}');
-      return response;
-    } catch (e) {
-      if (e is DioException) {
-        print('📛 DioException: ${e.message}');
-        print('📛 النوع: ${e.type}');
-        print('📛 البيانات القادمة من السيرفر: ${e.response?.data}');
-        print('📛 كود الحالة: ${e.response?.statusCode}');
-      } else {
-        print('📛 خطأ عام: $e');
-      }
-      return null;
-    }
+  Future<Response> getUserWebServices(String userId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.get(
+      '$baseUrl${getUserRoute(userId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
   }
 
-  Future<Response?> getUserDataWebServices(String userId) async {
-    try {
-      final response = await dio.get(
-        "$baseUrl/customer/1c991b31-334b-4fcf-70e3-08ddb0d9e9db",
-      );
-      return response;
-    } catch (e) {
-      if (e is DioException) {
-        print('📛 DioException: ${e.message}');
-        print('📛 البيانات القادمة من السيرفر: ${e.response?.data}');
-        print('📛 كود الحالة: ${e.response?.statusCode}');
-      } else {
-        print('📛 خطأ عام: $e');
-      }
-      return null;
-    }
+  Future<Response> updateUserWebServices(
+      String userId, UserDataModel user) async {
+    final token = await UserPreferencesService.getToken();
+    var response = await dio.put(
+      '$baseUrl${updateUserRoute(userId)}',
+      data: user.toJson(),
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
   }
 
-  Future<UserDataModel> getUserWebServices(String userId) async {
-    final response = await dio.get('$baseUrl${getUserRoute(userId)}');
-    return UserDataModel.fromJson(response.data['data']);
+  Future<Response> deleteUserWebServices(String userId) async {
+    final token = await UserPreferencesService.getToken();
+
+    final response = await dio.delete(
+      '$baseUrl${deleteUserRoute(userId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
   }
 
-  Future<void> updateUserWebServices(String userId, UserDataModel user) async {
-    await dio.put('$baseUrl${updateUserRoute(userId)}', data: user.toJson());
-  }
-
-  Future<void> deleteUserWebServices(String userId) async {
-    await dio.delete('$baseUrl${deleteUserRoute(userId)}');
-  }
-
-  Future<List<ShopDataModel>> getShopsWebServices() async {
+  Future<Response> getShopsWebServices() async {
     final token = await UserPreferencesService.getToken();
 
     final response = await dio.get(
@@ -114,13 +98,10 @@ class WebServices {
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
 
-    final result = ShopResponseModel.fromJson(response.data);
-
-    return result.data ?? []; // في حال data = null، نرجع قائمة فاضية
+    return response;
   }
 
-  Future<List<ProductDataModel>> getProductsByShopIdWebServices(
-      String id) async {
+  Future<Response> getProductsByShopIdWebServices(String id) async {
     final token = await UserPreferencesService.getToken();
 
     final response = await dio.get(
@@ -128,11 +109,8 @@ class WebServices {
       queryParameters: {"shopId": id},
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
-    print('$baseUrl${getProductsByShopId(id)}');
-    final result = ProductResponseModel.fromJson(response.data);
 
-    // إذا كانت data = null نرجع قائمة فاضية
-    return result.data ?? [];
+    return response;
   }
 
   Future<Response> getCategoriesWebServices() async {
@@ -212,6 +190,15 @@ class WebServices {
     final customerId = UserSession.id ?? '';
     final response = await dio.get(
       '$baseUrl${getOrders(customerId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> getOffersWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.get(
+      '$baseUrl$offer',
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     return response;

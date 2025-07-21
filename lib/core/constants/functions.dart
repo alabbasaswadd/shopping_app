@@ -89,6 +89,8 @@ class UserSession {
   static String? get firstName => _user?.firstName;
   static String? get lastName => _user?.lastName;
   static String? get phone => _user?.phone;
+  static String? get emailId => _user?.emailId;
+  static String? get addressId => _user?.addressId;
   static String? get city => _user?.address?.city;
   static String? get apartment => _user?.address?.apartment;
   static String? get street => _user?.address?.street;

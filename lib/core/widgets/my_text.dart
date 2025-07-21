@@ -50,7 +50,7 @@ class CairoText extends StatelessWidget {
   Widget build(BuildContext context) {
     final defaultStyle = TextStyle(
       overflow: overflow ?? TextOverflow.ellipsis,
-      color: color ?? Colors.black,
+      color: Theme.of(context).colorScheme.onSurface,
       fontWeight: fontWeight ?? FontWeight.bold,
       fontSize: fontSize ?? 16,
       height: height ?? 1.5,

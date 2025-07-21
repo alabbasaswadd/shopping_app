@@ -10,7 +10,9 @@ import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_text_form_field.dart';
+import 'package:shopping_app/data/model/user/user_address_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
+import 'package:shopping_app/data/model/user/user_email_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/user/user_state.dart';
 import 'package:shopping_app/presentation/screens/auth/login.dart';
@@ -151,7 +153,11 @@ class _AccountState extends State<Account> {
                 ),
               );
             } else if (state is UserError) {
-              return Center(child: CairoText("حدث خطأ: ${state.message}"));
+              return Center(
+                  child: CairoText(
+                "حدث خطأ: ${state.message}",
+                maxLines: 5,
+              ));
             }
             // الحالة الافتراضية قبل تحميل البيانات
             return const Center(child: CairoText("يرجى الانتظار..."));
@@ -373,7 +379,20 @@ class _AccountState extends State<Account> {
   Widget _buildActionButtons() {
     return Column(
       children: [
-        MyAnimation(child: MyButton(text: "حفظ التغييرات", onPressed: () {})),
+        MyAnimation(
+            child: MyButton(
+                text: "حفظ التغييرات",
+                onPressed: () {
+                  cubit.updateUser(
+                      UserSession.id ?? "",
+                      UserDataModel(
+                          firstName: "Alabbas",
+                          lastName: "Aswad",
+                          dateOfBirth: UserSession.birthDate,
+                          emailId: UserSession.emailId,
+                          phone: UserSession.phone,
+                          addressId: UserSession.addressId));
+                })),
         const SizedBox(height: 12),
         MyAnimation(
           scale: 0.85,

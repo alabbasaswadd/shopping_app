@@ -41,7 +41,7 @@ class MyAlertDialog extends StatelessWidget {
       title: CairoText(title),
       content: CairoText(
         content,
-        color: Colors.black54,
+        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
       ),
     );
   }

@@ -213,10 +213,17 @@ class _LoginState extends State<Login> {
                           text: TextSpan(
                             style: TextStyle(color: Colors.grey[600]),
                             children: [
-                              TextSpan(text: "browse_no_account_part1".tr),
+                              TextSpan(
+                                  text: "browse_no_account_part1".tr,
+                                  style: TextStyle(
+                                    fontFamily: "Cairo-Bold",
+                                    fontSize: 11,
+                                  )),
                               TextSpan(
                                 text: "browse_no_account_part2".tr,
                                 style: TextStyle(
+                                  fontFamily: "Cairo-Bold",
+                                  fontSize: 11,
                                   color: AppColor.kPrimaryColor,
                                   fontWeight: FontWeight.bold,
                                 ),

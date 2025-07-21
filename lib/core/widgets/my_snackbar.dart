@@ -83,11 +83,13 @@ class MySnackbar {
                     CairoText(
                       _getTitle(type),
                       color: Colors.white,
+                      maxLines: 5,
                     ),
                     const SizedBox(height: 15),
                     CairoText(
                       message,
                       color: Colors.white54,
+                      maxLines: 5,
                     ),
                   ],
                 ),

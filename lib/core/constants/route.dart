@@ -8,6 +8,7 @@ const String addProductToTheCart = "/multi-vendor-api/ShoppingCart";
 const String getCart = "/multi-vendor-api/ShoppingCart";
 const String addOrder = "/multi-vendor-api/Order";
 const String proca = "/multi-vendor-api/Product";
+const String offer = "/multi-vendor-api/Offer";
 
 String getUserRoute(String id) => "/multi-vendor-api/Customer/$id";
 String getProductsByCategory(String categoryName) =>

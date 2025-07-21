@@ -32,15 +32,15 @@ class CategoryError extends CategoryState {
   CategoryError(this.error);
 }
 
-class ProductsLoading extends CategoryState {}
+class CategoryProductsLoading extends CategoryState {}
 
-class ProductsSuccess extends CategoryState {
+class CategoryProductsSuccess extends CategoryState {
   final List<ProductDataModel> products;
 
-  ProductsSuccess(this.products);
+  CategoryProductsSuccess(this.products);
 }
 
-class ProductsError extends CategoryState {
+class CategoryProductsError extends CategoryState {
   final String error;
-  ProductsError(this.error);
+  CategoryProductsError(this.error);
 }
