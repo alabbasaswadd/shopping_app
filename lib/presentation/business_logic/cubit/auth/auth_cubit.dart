@@ -95,20 +95,15 @@ class AuthCubit extends Cubit<AuthState> {
     return null;
   }
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
 
     try {
-      final response = await repository.loginRepository({
-        "email": email,
-        "password": password,
-      });
-      print(response);
+      final response = await repository.loginRepository(email, password);
 
-      if (response != null && response.statusCode == 200) {
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
         final jsonData = response.data;
         final loginData = LoginDataModel.fromJson(jsonData['data']);
 
@@ -119,10 +114,12 @@ class AuthCubit extends Cubit<AuthState> {
           final token = loginData.token;
           final customerId = loginData.customerId;
           await UserPreferencesService.saveToken(token ?? "");
-          final userModel =
+          final responseDataModel =
               await repository.getUserRepository(customerId ?? "");
-          var shopping = userModel.firstName;
-          print(shopping);
+          final userModel =
+              UserDataModel.fromJson(responseDataModel.data['data']);
+          // var shopping = userModel.data['data'];
+
           await UserSession.updateUser(userModel);
           emit(AuthAuthenticated());
         } else {

@@ -31,13 +31,13 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
     return BlocBuilder<CategoryCubit, CategoryState>(
       bloc: cubit,
       builder: (context, state) {
-        if (state is ProductsLoading) {
+        if (state is CategoryProductsLoading) {
           return const Scaffold(
             body: Center(
               child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
             ),
           );
-        } else if (state is ProductsSuccess) {
+        } else if (state is CategoryProductsSuccess) {
           var products = state.products;
           return Scaffold(
             appBar: myAppBar(title: widget.categoryName, context: context),
@@ -120,7 +120,7 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
               ),
             ),
           );
-        } else if (state is ProductsError) {
+        } else if (state is CategoryProductsError) {
           return Scaffold(
             appBar: myAppBar(title: "Error", context: context),
             body: Center(

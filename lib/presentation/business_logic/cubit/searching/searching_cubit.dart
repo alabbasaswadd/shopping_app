@@ -17,9 +17,8 @@ class SearchingCubit extends Cubit<SearchingState> {
       emit(NotSearching(allProducts)); // إظهار جميع المنتجات عند مسح البحث
     } else {
       filteredProducts = allProducts
-          .where((product) => (product.name ?? "")
-              .toLowerCase()
-              .startsWith(query.toLowerCase()))
+          .where((product) =>
+              (product.name ?? "").toLowerCase().contains(query.toLowerCase()))
           .toList();
       emit(IsSearching(filteredProducts)); // تحديث القائمة عند البحث
     }

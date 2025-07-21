@@ -50,7 +50,6 @@ class _ShopsState extends State<Shops> {
             );
           } else if (shopState is ShopLoaded) {
             var shops = shopState.shops;
-
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(

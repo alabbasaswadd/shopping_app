@@ -10,7 +10,11 @@ import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/category/category_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/category/category_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class ProductsBody extends StatefulWidget {
@@ -22,15 +26,33 @@ class ProductsBody extends StatefulWidget {
 
 class _ProductsBodyState extends State<ProductsBody> {
   late ProductsCubit cubit;
+  late CategoryCubit categoryCubit;
+  late ShopCubit shopCubit;
+
   String selectedCategory = "";
   String? selectedStore;
+  String? selectedStoreId;
   RangeValues priceRange = const RangeValues(0, 1000);
 
   @override
   void initState() {
     super.initState();
     cubit = ProductsCubit();
+    categoryCubit = CategoryCubit();
+    shopCubit = ShopCubit();
+
     cubit.getProducts();
+    categoryCubit.getCategories();
+    shopCubit.getShops();
+  }
+
+  void _fetchProducts() {
+    cubit.getProducts(
+      shopId: selectedStoreId,
+      category: selectedCategory.isEmpty ? null : selectedCategory,
+      minPrice: priceRange.start,
+      maxPrice: priceRange.end,
+    );
   }
 
   @override
@@ -54,18 +76,30 @@ class _ProductsBodyState extends State<ProductsBody> {
             children: [
               _buildFilterSection(),
               Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: state.products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.5.h,
-                  ),
-                  itemBuilder: (context, i) {
-                    final product = state.products[i];
-                    return _buildProductCard(product);
-                  },
-                ),
+                child: state.products.isEmpty
+                    ? Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            _buildNoProductsMessage(),
+                            style: const TextStyle(
+                                fontSize: 16, color: Colors.black54),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : GridView.builder(
+                        padding: const EdgeInsets.only(top: 10),
+                        itemCount: state.products.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.65.sh / 1000,
+                        ),
+                        itemBuilder: (context, i) {
+                          final product = state.products[i];
+                          return _buildProductCard(product);
+                        },
+                      ),
               ),
             ],
           );
@@ -81,6 +115,22 @@ class _ProductsBodyState extends State<ProductsBody> {
         }
       },
     );
+  }
+
+  String _buildNoProductsMessage() {
+    String message = "لا يوجد منتجات";
+    if (selectedCategory.isNotEmpty) {
+      message += ' في فئة "$selectedCategory"';
+    }
+    if (selectedStore != null) {
+      message +=
+          selectedCategory.isNotEmpty ? " و" : " في متجر \"$selectedStore\"";
+    }
+    if (priceRange.start > 0 || priceRange.end < 1000) {
+      message +=
+          " في نطاق السعر من ${priceRange.start.round()} إلى ${priceRange.end.round()} \$";
+    }
+    return message;
   }
 
   Widget _buildFilterSection() {
@@ -102,7 +152,7 @@ class _ProductsBodyState extends State<ProductsBody> {
             children: [
               _buildCategoryFilter(),
               const SizedBox(width: 8),
-              _buildStoreFilter(),
+              _buildStoreFilter(), //
               const SizedBox(width: 8),
               _buildPriceFilter(),
             ],
@@ -115,19 +165,36 @@ class _ProductsBodyState extends State<ProductsBody> {
                   if (selectedCategory.isNotEmpty)
                     _buildActiveFilterChip(
                       label: selectedCategory,
-                      onDeleted: () => _clearFilter('category'),
+                      onDeleted: () {
+                        setState(() => selectedCategory = "");
+                        _fetchProducts();
+                      },
                     ),
                   if (selectedStore != null)
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: _buildActiveFilterChip(
                         label: selectedStore!,
-                        onDeleted: () => _clearFilter('store'),
+                        onDeleted: () {
+                          setState(() {
+                            selectedStore = null;
+                            selectedStoreId = null;
+                          });
+                          _fetchProducts();
+                        },
                       ),
                     ),
                   const Spacer(),
                   TextButton(
-                    onPressed: _clearAllFilters,
+                    onPressed: () {
+                      setState(() {
+                        selectedCategory = "";
+                        selectedStore = null;
+                        selectedStoreId = null;
+                        priceRange = const RangeValues(0, 1000);
+                      });
+                      _fetchProducts();
+                    },
                     child: const Text(
                       'مسح الكل',
                       style: TextStyle(color: Colors.red),
@@ -143,81 +210,113 @@ class _ProductsBodyState extends State<ProductsBody> {
 
   Widget _buildCategoryFilter() {
     return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: selectedCategory.isNotEmpty ? selectedCategory : null,
-              hint: const CairoText(
-                "الفئة",
-                fontSize: 11,
+      child: BlocBuilder<CategoryCubit, CategoryState>(
+        bloc: categoryCubit,
+        builder: (context, state) {
+          if (state is CategoryLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CategoryLoaded) {
+            final categories = state.categories;
+
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-              isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down),
-              style: TextStyle(
-                fontSize: 13.sp,
-                fontFamily: "Cairo-Bold",
-              ),
-              items: [
-                const DropdownMenuItem(
-                  value: "",
-                  child: CairoText(
-                    "الكل",
-                    fontSize: 11,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value:
+                        selectedCategory.isNotEmpty ? selectedCategory : null,
+                    hint: const CairoText("الفئة", fontSize: 11),
+                    isExpanded: true,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    style: TextStyle(fontSize: 13.sp, fontFamily: "Cairo-Bold"),
+                    items: [
+                      const DropdownMenuItem(
+                        value: "",
+                        child: CairoText("الكل", fontSize: 11),
+                      ),
+                      ...categories.map((category) {
+                        return DropdownMenuItem(
+                          value: category.name,
+                          child: CairoText(category.name ?? "", fontSize: 11),
+                        );
+                      }),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => selectedCategory = value);
+                        _fetchProducts();
+                      }
+                    },
                   ),
                 ),
-                ...["إلكترونيات", "ملابس", "عطور", "مستلزمات منزلية"]
-                    .map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: CairoText(
-                      category,
-                      fontSize: 11,
-                    ),
-                  );
-                }),
-              ],
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() => selectedCategory = value);
-                  cubit.getProducts(category: value.isEmpty ? null : value);
-                }
-              },
-            ),
-          ),
-        ),
+              ),
+            );
+          } else {
+            return const Text("فشل تحميل الفئات");
+          }
+        },
       ),
     );
   }
 
   Widget _buildStoreFilter() {
-    return GestureDetector(
-      onTap: _showStoreFilterBottomSheet,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.store, size: 20, color: AppColor.kPrimaryColor),
-            const SizedBox(width: 4),
-            Text(
-              selectedStore ?? "المتجر",
-              style: TextStyle(
-                fontSize: 13.sp,
-                color: selectedStore != null ? Colors.black : Colors.grey,
+    return Expanded(
+      child: BlocBuilder<ShopCubit, ShopState>(
+        bloc: shopCubit,
+        builder: (context, state) {
+          if (state is ShopLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ShopLoaded) {
+            final shops = state.shops;
+
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-            ),
-          ],
-        ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: selectedStoreId,
+                    hint: const CairoText("المتجر", fontSize: 11),
+                    isExpanded: true,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    style: TextStyle(fontSize: 13.sp, fontFamily: "Cairo-Bold"),
+                    items: [
+                      const DropdownMenuItem(
+                        value: null,
+                        child: CairoText("الكل", fontSize: 11),
+                      ),
+                      ...shops.map((shop) {
+                        final label = "${shop.firstName} ${shop.lastName}";
+                        return DropdownMenuItem<String>(
+                          value: shop.id,
+                          child: CairoText(label, fontSize: 11),
+                        );
+                      }),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedStoreId = value;
+                        selectedStore = value != null
+                            ? "${shops.firstWhere((shop) => shop.id == value).firstName} ${shops.firstWhere((shop) => shop.id == value).lastName}"
+                            : null;
+                      });
+                      _fetchProducts();
+                    },
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const Text("فشل تحميل المتاجر");
+          }
+        },
       ),
     );
   }
@@ -293,8 +392,11 @@ class _ProductsBodyState extends State<ProductsBody> {
                         SizedBox(height: 10.h),
                         CairoText(
                           product.description ?? "",
-                          maxLines: 2,
-                          color: Colors.black54,
+                          maxLines: 4,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
                           fontSize: 11.sp,
                         ),
                       ],
@@ -303,7 +405,7 @@ class _ProductsBodyState extends State<ProductsBody> {
                   const Spacer(),
                   Padding(
                     padding:
-                        const EdgeInsets.only(bottom: 9, left: 10, right: 10),
+                        const EdgeInsets.only(bottom: 12, left: 15, right: 15),
                     child: CairoText(
                       textAlign: TextAlign.end,
                       "${product.price}\$",
@@ -328,57 +430,6 @@ class _ProductsBodyState extends State<ProductsBody> {
     );
   }
 
-  void _showStoreFilterBottomSheet() {
-    final stores = ["متجر إدلب", "متجر حلب", "متجر دمشق", "متجر اللاذقية"];
-
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "اختر المتجر",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              ...stores.map((store) {
-                return ListTile(
-                  title: Text(store),
-                  trailing: selectedStore == store
-                      ? const Icon(Icons.check, color: AppColor.kPrimaryColor)
-                      : null,
-                  onTap: () {
-                    setState(() => selectedStore = store);
-                    cubit.getProducts(shopId: store);
-                    Navigator.pop(context);
-                  },
-                );
-              }),
-              const SizedBox(height: 8),
-              TextButton(
-                onPressed: () {
-                  setState(() => selectedStore = null);
-                  cubit.getProducts(shopId: null);
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  "إلغاء التحديد",
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> _showPriceFilterDialog() async {
     final result = await showDialog<RangeValues>(
       context: context,
@@ -387,32 +438,8 @@ class _ProductsBodyState extends State<ProductsBody> {
 
     if (result != null) {
       setState(() => priceRange = result);
-      cubit.getProducts(
-        minPrice: result.start,
-        maxPrice: result.end,
-      );
+      _fetchProducts();
     }
-  }
-
-  void _clearFilter(String type) {
-    setState(() {
-      if (type == 'category') {
-        selectedCategory = "";
-      } else if (type == 'store') {
-        selectedStore = null;
-      }
-    });
-    cubit.getProducts();
-  }
-
-  void _clearAllFilters() {
-    setState(() {
-      selectedCategory = "";
-      selectedStore = null;
-
-      priceRange = const RangeValues(0, 1000);
-    });
-    cubit.getProducts();
   }
 }
 

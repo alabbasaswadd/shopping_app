@@ -35,6 +35,10 @@ class MyTextFormField extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Card(
         child: TextFormField(
+          style: TextStyle(
+              fontFamily: 'Cairo-Bold',
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurface),
           onTap: onTap,
           readOnly: readOnly ?? false,
           keyboardType: keyboardType,

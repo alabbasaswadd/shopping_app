@@ -325,6 +325,7 @@ class _SignUpState extends State<SignUp> {
                   controller: apartmentController,
                   label: "apartment".tr,
                   icon: Icons.home_outlined,
+                  keyboardType: TextInputType.number,
                   validator: (value) =>
                       value!.isEmpty ? 'required_filed'.tr : null,
                 ),
@@ -549,10 +550,17 @@ class _SignUpState extends State<SignUp> {
           text: TextSpan(
             style: TextStyle(color: Colors.grey[600]),
             children: [
-              TextSpan(text: "browse_no_account_part1".tr),
+              TextSpan(
+                  text: "browse_no_account_part1".tr,
+                  style: TextStyle(
+                      fontFamily: "Cairo-Bold",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11)),
               TextSpan(
                 text: "browse_no_account_part2".tr,
                 style: TextStyle(
+                  fontFamily: "Cairo-Bold",
+                  fontSize: 11,
                   color: AppColor.kPrimaryColor,
                   fontWeight: FontWeight.bold,
                 ),

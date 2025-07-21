@@ -4,8 +4,8 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/searching/searching_cubit.dart';
 
 class ProductsAppbarTitle extends StatefulWidget {
-  const ProductsAppbarTitle({super.key});
-  static TextEditingController controller = TextEditingController();
+  final SearchingCubit cubit;
+  const ProductsAppbarTitle({required this.cubit, super.key});
 
   @override
   State<ProductsAppbarTitle> createState() => _CustomTitleAppbarProductsState();
@@ -17,17 +17,12 @@ class _CustomTitleAppbarProductsState extends State<ProductsAppbarTitle> {
     return SizedBox(
       height: 50,
       child: TextFormField(
-        controller: ProductsAppbarTitle.controller,
         onChanged: (query) {
-          BlocProvider.of<SearchingCubit>(context).searchProducts(query);
+          widget.cubit.searchProducts(query);
         },
         decoration: InputDecoration(
           filled: true,
           hintText: "search".tr,
-          hintStyle: TextStyle(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontFamily: "Cairo-Bold",
-              fontSize: 11),
           border: OutlineInputBorder(borderSide: BorderSide.none),
         ),
       ),

@@ -136,6 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               child: CairoText(
                 _exampleMessages[index],
+                maxLines: 5,
                 fontSize: 14,
                 color: Colors.black87,
               ),
@@ -178,6 +179,7 @@ class ChatMessage extends StatelessWidget {
           text,
           color: isUser ? Colors.white : Colors.black87,
           fontSize: 15,
+          maxLines: 5,
         ),
       ),
     );

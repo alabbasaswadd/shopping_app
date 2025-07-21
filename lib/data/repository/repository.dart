@@ -1,23 +1,28 @@
 import 'package:dio/dio.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
+import 'package:shopping_app/data/model/offer/offer_data_model.dart';
+import 'package:shopping_app/data/model/offer/offer_response_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
-import 'package:shopping_app/data/model/products/product_data_model.dart';
-import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 
 class Repository {
   final WebServices webServices;
   Repository(this.webServices);
-  Future<Response> getProductsRepository(
-      {String? shopId,
-      String? category,
-      double? minPrice,
-      double? maxPrice}) async {
-    final response = await webServices.getProductsWebServices(
-        shopId: shopId, category: category);
-    return response;
+
+  Future getProductsRepository({
+    String? shopId,
+    String? category,
+    double? minPrice,
+    double? maxPrice,
+  }) async {
+    return await webServices.getProductsWebServices(
+      shopId: shopId,
+      category: category,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+    );
   }
 
   signUpRepository(Map<String, dynamic> data) async {
@@ -30,44 +35,33 @@ class Repository {
     }
   }
 
-  Future<Response?> loginRepository(Map<String, dynamic> data) async {
-    try {
-      final Response? response = await webServices.loginWebServices(data);
-      return response;
-    } catch (e) {
-      print('خطأ في المستودع (Repository): $e');
-      return null;
-    }
+  Future<Response> loginRepository(String email, String password) async {
+    final response = await webServices.loginWebServices(email, password);
+    return response;
   }
 
-  Future<Response?> getUserDataRepository(String userId) async {
-    try {
-      final Response? response =
-          await webServices.getUserDataWebServices(userId);
-      return response;
-    } catch (e) {
-      print('خطأ في المستودع (Repository): $e');
-      return null;
-    }
+  Future<Response> getUserDataRepository(String userId) async {
+    final response = await webServices.getUserWebServices(userId);
+    return response;
   }
 
-  Future<UserDataModel> getUserRepository(String userId) {
+  Future<Response> getUserRepository(String userId) {
     return webServices.getUserWebServices(userId);
   }
 
-  Future<void> updateUserRepository(String userId, UserDataModel user) {
+  Future<Response> updateUserRepository(String userId, UserDataModel user) {
     return webServices.updateUserWebServices(userId, user);
   }
 
-  Future<void> deleteUserRepository(String userId) {
+  Future<Response> deleteUserRepository(String userId) {
     return webServices.deleteUserWebServices(userId);
   }
 
-  Future<List<ShopDataModel>> getShopsRepository() {
+  Future<Response> getShopsRepository() {
     return webServices.getShopsWebServices();
   }
 
-  Future<List<ProductDataModel>> getProductsByShopIdRepository(String id) {
+  Future<Response> getProductsByShopIdRepository(String id) {
     return webServices.getProductsByShopIdWebServices(id);
   }
 
@@ -101,6 +95,19 @@ class Repository {
 
   Future<Response> getOrdersRepository() {
     return webServices.getOrdersWebServices();
+  }
+
+  Future<OfferResponseModel?> getOffersRepository() async {
+    final response = await webServices.getOffersWebServices();
+
+    if (response.statusCode == 200 &&
+        response.data != null &&
+        response.data['succeeded'] == true) {
+      return OfferResponseModel.fromJson(response.data);
+    }
+
+    // في حال الفشل، نرجع null
+    return null;
   }
 
   Future<Response> updateOrderRepository(String orderId) {

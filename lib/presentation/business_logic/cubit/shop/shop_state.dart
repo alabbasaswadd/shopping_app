@@ -23,25 +23,23 @@ class ShopLoading extends ShopState {}
 
 class ShopLoaded extends ShopState {
   final List<ShopDataModel> shops;
-
   ShopLoaded(this.shops);
 }
 
 class ShopError extends ShopState {
   final String error;
-
   ShopError(this.error);
 }
 
-class ProductsLoading extends ShopState {}
+class ShopProductsLoading extends ShopState {}
 
-class ProductsSuccess extends ShopState {
+class ShopProductsLoaded extends ShopState {
   final List<ProductDataModel> products;
   final List<ShopDataModel> shops;
-  ProductsSuccess(this.products, this.shops);
+  ShopProductsLoaded(this.products, this.shops);
 }
 
-class ProductsError extends ShopState {
+class ShopProductsError extends ShopState {
   final String error;
-  ProductsError(this.error);
+  ShopProductsError(this.error);
 }

@@ -14,7 +14,7 @@ import 'package:shopping_app/presentation/widget/products/products_details_body.
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({super.key});
-  static String id = "product_details";
+  static String id = "productDetails";
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -36,29 +36,31 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       appBar: myAppBar(title: product.name ?? "", context: context),
       body: BlocConsumer<ProductsCubit, ProductsState>(
-        bloc: cubit,
-        listener: (context, state) {
-          if (state is ProductsFeildAdd) {
-            MySnackbar.showError(context, "Error: ${state.error}");
-          } else if (state is ProductsAdded) {
-            MySnackbar.showSuccess(context, "تمت الإضافة");
-          }
-        },
-        builder: (context, state) {
-          if (state is ProductsLoading) {
-            return const Center(
-              child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
-            );
-          } else if (state is ProductsLoaded) {
-            return Padding(
-              padding: const EdgeInsets.all(15),
-              child: ProductsDetailsBody(product: product), // 👈 تمرير المنتج
-            );
-          } else {
-            return const Center(child: CairoText("Error"));
-          }
-        },
-      ),
+          bloc: cubit,
+          listener: (context, state) {
+            if (state is ProductsFeildAdd) {
+              MySnackbar.showError(context, "Error: ${state.error}");
+            } else if (state is ProductsAdded) {
+              MySnackbar.showSuccess(context, "تمت الإضافة");
+            }
+          },
+          builder: (context, state) {
+            if (state is ProductsLoading) {
+              return const Center(
+                child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
+              );
+            } else if (state is ProductsLoaded ||
+                state is ProductsAdded ||
+                state is ProductsFeildAdd) {
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: ProductsDetailsBody(
+                    product: product), // 👈 تمرير المنتج نفسه
+              );
+            } else {
+              return const Center(child: CairoText("Error"));
+            }
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final request = AddToCartRequest(

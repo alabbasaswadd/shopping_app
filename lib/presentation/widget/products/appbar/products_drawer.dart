@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
@@ -106,6 +108,20 @@ class _ProductsDrawerState extends State<ProductsDrawer> {
                 ),
               );
             },
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: Align(
+              alignment: Alignment.center,
+              child: QrImageView(
+                data: "Ahmad",
+                version: QrVersions.auto,
+                size: 150.0,
+                backgroundColor: Colors.white,
+                foregroundColor: AppColor.kPrimaryColor,
+              ),
+            ),
           ),
         ],
       ),

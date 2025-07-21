@@ -31,13 +31,13 @@ class _CustomContainerProductsState extends State<ShopProducts> {
     return BlocBuilder<ShopCubit, ShopState>(
       bloc: cubit,
       builder: (context, state) {
-        if (state is ProductsLoading) {
+        if (state is ShopProductsLoading) {
           return const Scaffold(
             body: Center(
               child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
             ),
           );
-        } else if (state is ProductsSuccess) {
+        } else if (state is ShopProductsLoaded) {
           var products = state.products;
           return Scaffold(
             appBar: myAppBar(
@@ -125,7 +125,7 @@ class _CustomContainerProductsState extends State<ShopProducts> {
               ),
             ),
           );
-        } else if (state is ProductsError) {
+        } else if (state is ShopProductsError) {
           return Scaffold(
             appBar: myAppBar(title: "Error", context: context),
             body: Center(

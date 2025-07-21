@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shopping_app/data/model/category/category_data_model.dart';
+import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 
 part 'product_data_model.g.dart';
 
@@ -14,7 +15,7 @@ class ProductDataModel {
   final String? shopId;
   final String? description;
   final String? creationDate;
-  final String? shope;
+  final ShopDataModel? shop;
   final CategoryDataModel? category;
 
   ProductDataModel({
@@ -25,12 +26,11 @@ class ProductDataModel {
     this.categoryId,
     this.currency,
     this.shopId,
-    this.shope,
+    this.shop,
     this.description,
     this.creationDate,
     this.category,
   });
-
   factory ProductDataModel.fromJson(Map<String, dynamic> json) =>
       _$ProductDataModelFromJson(json);
 
