@@ -14,6 +14,7 @@ ShopDataModel _$ShopDataModelFromJson(Map<String, dynamic> json) =>
       phone: json['phone'] as String?,
       addressId: json['addressId'] as String?,
       email: json['email'] as String?,
+      shopState: ShopDataModel._shopStateEnumFromJson(json['shopState']),
       address: json['address'],
     );
 
@@ -25,5 +26,6 @@ Map<String, dynamic> _$ShopDataModelToJson(ShopDataModel instance) =>
       'phone': instance.phone,
       'addressId': instance.addressId,
       'email': instance.email,
+      'shopState': ShopDataModel._shopStateEnumToJson(instance.shopState),
       'address': instance.address,
     };

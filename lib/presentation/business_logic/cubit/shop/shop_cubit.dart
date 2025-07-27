@@ -51,4 +51,21 @@ class ShopCubit extends Cubit<ShopState> {
           "حدث خطأ أثناء جلب المنتجات المتاحة: ${e.toString()}"));
     }
   }
+
+  void getShopById(String id) async {
+    try {
+      final response = await repository.getShopsByIdRepository(id);
+
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        final shop = ShopDataModel.fromJson(response.data['data']);
+        emit(ShopByIdLoaded(shop));
+      } else {
+        emit(ShopProductsError("هذا المتجر غير موجود "));
+      }
+    } catch (e) {
+      emit(ShopProductsError("حدث خطأ أثناء جلب المتجر: ${e.toString()}"));
+    }
+  }
 }

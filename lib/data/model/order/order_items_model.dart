@@ -4,13 +4,9 @@ part 'order_items_model.g.dart';
 
 @JsonSerializable(includeIfNull: false)
 class OrderItemsModel {
-  @JsonKey(ignore: true)
   final String? id;
-  @JsonKey(ignore: true)
   final String? productName;
-  @JsonKey(ignore: true)
   final String? orderId;
-
   final String? productId;
   final int? quantity;
   final int? price;

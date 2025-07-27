@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/colors.dart';
-import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/category/category_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/category/category_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
@@ -81,25 +83,32 @@ class _ShopsState extends State<Shops> {
                                               ""));
                                 },
                                 child: MyCard(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image:
-                                                  AssetImage(AppImages.klogo),
-                                              opacity: 0.5)),
-                                      child: Center(
-                                        child: Text(
-                                          categoryState.categories[i].name ??
+                                  padding: EdgeInsets.zero,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      // الصورة في الخلفية
+                                      Positioned.fill(
+                                        child: CachedImageWidget(
+                                          heightRatio: 178,
+                                          widthRatio: 200,
+                                          imageUrl: categoryState
+                                                  .categories[i].image ??
                                               "",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge!
-                                              .copyWith(fontSize: 20),
+                                          memCacheHeight: (0.25.sh).toInt(),
+                                          memCacheWidth: (0.25.sh).toInt(),
                                         ),
                                       ),
-                                    ),
+
+                                      // النص في المنتصف فوق الصورة
+                                      Center(
+                                        child: CairoText(
+                                          categoryState.categories[i].name ??
+                                              "",
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -124,32 +133,64 @@ class _ShopsState extends State<Shops> {
                               : 2;
 
                       return GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 12.w,
+                          mainAxisSpacing: 12.h,
+                          childAspectRatio: 1.2, // اضبط حسب الشكل المطلوب
                         ),
                         itemCount: shops.length,
-                        itemBuilder: (context, index) => MyAnimation(
-                          child: InkWell(
-                            onTap: () {
-                              Get.to(ShopProducts(
-                                shopId: shops[index].id ?? "",
-                              ));
-                            },
-                            child: MyCard(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(shops[index].firstName ?? "",
-                                      style: TextStyle(fontSize: 18)),
-                                ],
+                        itemBuilder: (context, index) {
+                          final shop = shops[index];
+                          return MyAnimation(
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(ShopProducts(
+                                  shopId: shop.id ?? "",
+                                ));
+                              },
+                              child: MyCard(
+                                padding: EdgeInsets.zero,
+                                borderRadius: BorderRadius.circular(16.r),
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Positioned.fill(
+                                      child: CachedImageWidget(
+                                        heightRatio: double.infinity,
+                                        widthRatio: double.infinity,
+                                        imageUrl: "",
+                                        memCacheHeight: (0.25.sh).toInt(),
+                                        memCacheWidth: (0.25.sw).toInt(),
+                                        // يمكنك تعديل الصورة حسب الحاجة
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.black
+                                            .withOpacity(0.3), // تظليل للصورة
+                                        borderRadius:
+                                            BorderRadius.circular(16.r),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: CairoText(
+                                        shop.firstName ?? "",
+                                        color: Colors.white,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
                     },
                   ),
