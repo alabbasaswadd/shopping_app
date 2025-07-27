@@ -97,6 +97,17 @@ class WebServices {
     return response;
   }
 
+  Future<Response> getShopByIdWebServices(String id) async {
+    final token = await UserPreferencesService.getToken();
+
+    final response = await dio.get(
+      '$baseUrl${getShopById(id)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+
+    return response;
+  }
+
   Future<Response> getProductsByShopIdWebServices(String id) async {
     final token = await UserPreferencesService.getToken();
 
@@ -191,6 +202,15 @@ class WebServices {
     return response;
   }
 
+  Future<Response> getOrderByIdWebServices(String orderId) async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.get(
+      '$baseUrl${getOrderById(orderId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
   Future<Response> getOffersWebServices() async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.get(
@@ -200,10 +220,12 @@ class WebServices {
     return response;
   }
 
-  Future<Response> updateOrderWebServices(String orderId) async {
+  Future<Response> updateOrderWebServices(
+      String orderId, OrderDataModel data) async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.put(
       '$baseUrl${updateOrder(orderId)}',
+      data: data.toJson(),
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     return response;
@@ -213,6 +235,15 @@ class WebServices {
     final token = await UserPreferencesService.getToken();
     final response = await dio.delete(
       '$baseUrl${deleteOrder(orderId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> getDeliveryCompaniesWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    final response = await dio.get(
+      '$baseUrl$getDeliveryCompanies',
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     return response;

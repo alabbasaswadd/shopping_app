@@ -8,6 +8,11 @@ class OrderEmpty extends OrderState {}
 
 class OrderDeleted extends OrderState {}
 
+class OrderUpdated extends OrderState {
+  final OrderDataModel orderData;
+  OrderUpdated(this.orderData);
+}
+
 class OrderAdded extends OrderState {}
 
 class OrderLoaded extends OrderState {

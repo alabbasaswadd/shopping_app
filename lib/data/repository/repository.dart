@@ -60,6 +60,10 @@ class Repository {
     return webServices.getShopsWebServices();
   }
 
+  Future<Response> getShopsByIdRepository(String id) {
+    return webServices.getShopByIdWebServices(id);
+  }
+
   Future<Response> getProductsByShopIdRepository(String id) {
     return webServices.getProductsByShopIdWebServices(id);
   }
@@ -96,6 +100,10 @@ class Repository {
     return webServices.getOrdersWebServices();
   }
 
+  Future<Response> getOrderByIdRepository(String orderId) {
+    return webServices.getOrderByIdWebServices(orderId);
+  }
+
   Future<OfferResponseModel?> getOffersRepository() async {
     final response = await webServices.getOffersWebServices();
 
@@ -109,11 +117,15 @@ class Repository {
     return null;
   }
 
-  Future<Response> updateOrderRepository(String orderId) {
-    return webServices.updateOrderWebServices(orderId);
+  Future<Response> updateOrderRepository(String orderId, OrderDataModel data) {
+    return webServices.updateOrderWebServices(orderId, data);
   }
 
   Future<Response> deleteOrderRepository(String orderId) {
     return webServices.deleteOrderWebServices(orderId);
+  }
+
+  Future<Response> getDeliveryCompaniesRepository() {
+    return webServices.getDeliveryCompaniesWebServices();
   }
 }

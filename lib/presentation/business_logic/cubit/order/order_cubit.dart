@@ -1,5 +1,6 @@
-import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
@@ -7,49 +8,69 @@ import 'package:shopping_app/presentation/business_logic/cubit/order/order_state
 
 class OrderCubit extends Cubit<OrderState> {
   OrderCubit() : super(OrderLoading());
+
   Repository repository = Repository(WebServices());
 
-  Future<void> addOrder(OrderDataModel dataOrder) async {
+  Timer? _watchTimer;
+  List<OrderDataModel> _lastOrders = [];
+
+  void startWatchingOrders({Duration interval = const Duration(seconds: 10)}) {
+    _watchTimer?.cancel();
+    _watchTimer = Timer.periodic(interval, (_) async {
+      await _checkOrdersUpdate();
+    });
+  }
+
+  void stopWatchingOrders() {
+    _watchTimer?.cancel();
+    _watchTimer = null;
+  }
+
+  Future<void> _checkOrdersUpdate() async {
     try {
-      emit(OrderLoading());
-
-      final response = await repository.addOrderRepository(dataOrder);
-
-      print("📦 StatusCode: ${response.statusCode}");
-      print("📦 Data: ${response.data}");
-      print("📦 StatusMessage: ${response.statusMessage}");
-      print("📦 Extra: ${response.extra}");
-
+      final response = await repository.getOrdersRepository();
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        print("object");
-        emit(OrderAdded());
-      } else {
-        emit(OrderError("فشل إرسال الطلب. الكود: ${response.statusCode}"));
+        final ordersJson = response.data['data'] as List<dynamic>;
+        final currentOrders = ordersJson
+            .map((orderJson) => OrderDataModel.fromJson(orderJson))
+            .toList();
+
+        bool hasChanged = false;
+
+        if (_lastOrders.length != currentOrders.length) {
+          hasChanged = true;
+        } else {
+          // نقارن حالة كل طلب بناءً على الـ id و orderState
+          for (int i = 0; i < currentOrders.length; i++) {
+            final oldOrder = _lastOrders.firstWhere(
+              (o) => o.id == currentOrders[i].id,
+              orElse: () => OrderDataModel(id: null), // طلب جديد
+            );
+            if (oldOrder.id == null ||
+                oldOrder.orderState != currentOrders[i].orderState) {
+              hasChanged = true;
+              break;
+            }
+          }
+        }
+
+        if (hasChanged) {
+          _lastOrders = currentOrders;
+          emit(OrderLoaded(currentOrders));
+        }
       }
     } catch (e) {
-      print("❌ استثناء أثناء إرسال الطلب: $e");
-
-      // إذا كنت تستخدم Dio، فمن الأفضل فحص الخطأ بشكل دقيق
-      if (e is DioException) {
-        print("❌ DioException:");
-        print("📥 Message: ${e.message}");
-        print("📥 Response: ${e.response?.data}");
-        emit(OrderError(
-            "خطأ في الاتصال بالسيرفر: ${e.response?.data ?? e.message}"));
-      } else {
-        emit(OrderError("حدث خطأ غير متوقع أثناء إرسال الطلب"));
-      }
+      emit(OrderError("فشل التحقق من الطلبات: $e"));
     }
   }
 
+  /// للحصول على جميع الطلبات
   void getOrders() async {
     try {
       emit(OrderLoading());
       final response = await repository.getOrdersRepository();
-      print(response.statusCode);
-      print(response.data);
 
       if (response.statusCode == 200 &&
           response.data != null &&
@@ -62,55 +83,71 @@ class OrderCubit extends Cubit<OrderState> {
         if (orders.isEmpty) {
           emit(OrderEmpty());
         } else {
-          emit(OrderLoaded(
-              orders)); // هذا يتطلب أن OrderLoaded تستقبل List<OrderDataModel>
+          emit(OrderLoaded(orders));
         }
       } else {
         emit(OrderEmpty());
       }
     } catch (e) {
-      emit(OrderError("العذر من الباك: $e"));
+      emit(OrderError("فشل تحميل الطلبات: $e"));
     }
   }
 
-  void updateOrder(String odrderId) async {
+  /// تحديث الطلب - لاحظ أنه الآن يقبل بيانات الطلب
+  void updateOrder(String orderId, OrderDataModel updatedData) async {
     try {
       emit(OrderLoading());
-      final response = await repository.updateOrderRepository(odrderId);
+      final response =
+          await repository.updateOrderRepository(orderId, updatedData);
+
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        emit(OrderLoaded(response.data));
+        emit(OrderUpdated(updatedData));
+        getOrders(); // يمكن تحديث القائمة
       } else {
-        emit(OrderEmpty());
+        emit(OrderError('فشل تحديث الطلب. الكود: ${response.statusCode}'));
       }
     } catch (e) {
-      emit(OrderError(" $eالعذر من الباك"));
+      emit(OrderError("حدث خطأ أثناء تحديث الطلب: $e"));
     }
   }
 
-  void deleteOrder(String orderId) async {
+  /// إضافة طلب
+  Future<void> addOrder(OrderDataModel dataOrder) async {
     try {
       emit(OrderLoading());
 
-      final response = await repository.deleteOrderRepository(orderId);
+      final response = await repository.addOrderRepository(dataOrder);
 
-      print("📥 StatusCode: ${response.statusCode}");
-      print("📥 StatusMessage: ${response.statusMessage}");
-      print("📥 نوع الاستجابة: ${response.data.runtimeType}");
-      print("📥 الاستجابة: ${response.data}");
+      if (response.statusCode == 200 &&
+          response.data != null &&
+          response.data['succeeded'] == true) {
+        emit(OrderAdded());
+      } else {
+        emit(OrderError("فشل إرسال الطلب. الكود: ${response.statusCode}"));
+      }
+    } catch (e) {
+      emit(OrderError("حدث خطأ غير متوقع أثناء إرسال الطلب: $e"));
+    }
+  }
+
+  /// حذف طلب
+  void deleteOrder(String orderId) async {
+    try {
+      emit(OrderLoading());
+      final response = await repository.deleteOrderRepository(orderId);
 
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
         emit(OrderDeleted());
-        getOrders(); // أو أي دالة عندك تجيب الطلبات من جديد
+        getOrders();
       } else {
         emit(OrderError('فشل حذف الطلب. الكود: ${response.statusCode}'));
       }
     } catch (e) {
-      print("❌ خطأ أثناء الحذف: $e");
-      emit(OrderError('حدث خطأ أثناء حذف الطلب'));
+      emit(OrderError('حدث خطأ أثناء حذف الطلب: $e'));
     }
   }
 }

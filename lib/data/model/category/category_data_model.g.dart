@@ -10,10 +10,12 @@ CategoryDataModel _$CategoryDataModelFromJson(Map<String, dynamic> json) =>
     CategoryDataModel(
       id: json['id'] as String?,
       name: json['name'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$CategoryDataModelToJson(CategoryDataModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'image': instance.image,
     };

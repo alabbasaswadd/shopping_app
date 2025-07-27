@@ -26,6 +26,11 @@ class ShopLoaded extends ShopState {
   ShopLoaded(this.shops);
 }
 
+class ShopByIdLoaded extends ShopState {
+  final ShopDataModel shop;
+  ShopByIdLoaded(this.shop);
+}
+
 class ShopError extends ShopState {
   final String error;
   ShopError(this.error);

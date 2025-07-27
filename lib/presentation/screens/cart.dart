@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/colors.dart';
+import 'package:shopping_app/core/constants/const.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/core/widgets/my_animation.dart';
@@ -20,6 +21,8 @@ import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.d
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
+import 'package:shopping_app/presentation/screens/delivery_company.dart';
+import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -139,95 +142,117 @@ class _CartPageState extends State<CartPage> {
   }
 
   Widget _buildCartItem(ShoppingCartItemsModel item, int index) {
-    return MyCard(
-      padding: EdgeInsets.all(10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // صورة المنتج
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-            child: CachedImageWidget(
-              imageUrl: item.productImage ?? '',
-              heightRatio: 110.h,
-              widthRatio: 100,
-              memCacheHeight: (0.15.sh).toInt(),
-              memCacheWidth: (0.15.sh).toInt(),
-            ),
+    return Dismissible(
+      key: ValueKey(item.id), // يجب أن يكون فريدًا
+      direction: DismissDirection.startToEnd, // السحب من اليمين لليسار
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.redAccent,
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      confirmDismiss: (direction) async {
+        // تأكيد الحذف إذا أردت
+        bool confirm = false;
+        await showDialog(
+          context: context,
+          builder: (_) => MyAlertDialog(
+            title: "إزالة من السلة",
+            content: "هل تريد إزالة المنتج من السلة؟",
+            onOk: () {
+              confirm = true;
+              Get.back();
+            },
+            onNo: Get.back,
           ),
-          SizedBox(width: 12),
-          // معلومات المنتج
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CairoText(
-                  item.productName ?? '',
-                  fontSize: 14,
-                ),
-                SizedBox(height: 30),
-                CairoText(
-                  "\$${(item.productPrice ?? 0).toStringAsFixed(2)}",
-                  fontSize: 11,
-                ),
-              ],
-            ),
-          ),
-
-          // أدوات التحكم بالكمية
-          Column(
-            children: [
-              IconButton(
-                icon: Icon(Icons.close, size: 16),
-                onPressed: () {
-                  cubit.deleteProductFromCart(item.id ?? "");
-                },
-                color: Colors.red,
+        );
+        return confirm;
+      },
+      onDismissed: (_) {
+        cubit.deleteProductFromCart(item.id ?? "");
+      },
+      child: MyCard(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // صورة المنتج
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.r),
+              child: CachedImageWidget(
+                imageUrl: item.productImage ?? '',
+                heightRatio: 178,
+                widthRatio: 178,
+                memCacheHeight: (0.15.sh).toInt(),
+                memCacheWidth: (0.15.sh).toInt(),
               ),
-              SizedBox(height: 0.07.sh),
-              Row(
+            ),
+            SizedBox(width: 12.w),
+
+            // معلومات المنتج
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.remove, size: 16),
-                    onPressed: () {
-                      setState(() {
-                        if (item.quantity! > 0) {
-                          item.quantity = item.quantity! - 1;
-                        }
-                      });
-                    },
+                  CairoText(
+                    item.productName ?? '',
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Container(
-                      width: 30.h,
-                      height: 30.h,
-                      padding: EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(child: CairoText("${item.quantity}"))),
-                  IconButton(
-                    icon: Icon(Icons.add, size: 16),
-                    onPressed: () {
-                      setState(() {
-                        item.quantity = item.quantity! + 1;
-                      });
-                    },
-                  ),
+                  SizedBox(height: 4.h),
+                  CairoText("\$${(item.productPrice ?? 0).toStringAsFixed(2)}",
+                      fontSize: 13.sp, color: AppColor.kPrimaryColor),
+                  SizedBox(height: 12.h),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove, size: 18),
+                        onPressed: () {
+                          setState(() {
+                            if (item.quantity! > 1) {
+                              item.quantity = item.quantity! - 1;
+                            }
+                          });
+                        },
+                      ),
+                      Container(
+                        width: 40.w,
+                        height: 30.h,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: CairoText("${item.quantity}"),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add, size: 18),
+                        onPressed: () {
+                          setState(() {
+                            item.quantity = item.quantity! + 1;
+                          });
+                        },
+                      ),
+                      Spacer(),
+                      // زر الحذف اليدوي (اختياري)
+                    ],
+                  )
                 ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildCheckoutSection(List<ShoppingCartItemsModel> items) {
     final totalPrice = items.fold<double>(
-      0.0,
+      0,
       (sum, item) => sum + ((item.quantity ?? 0) * (item.productPrice ?? 0)),
     );
-
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -274,6 +299,7 @@ class _CartPageState extends State<CartPage> {
                           context: context,
                           builder: (context) => MyAlertDialog(
                               onOk: () async {
+                                print(totalPrice);
                                 // التحقق من أن كل العناصر تتبع نفس المتجر
                                 final firstShopId = items.first.shopId;
                                 final allSameShop = items.every(
@@ -288,14 +314,8 @@ class _CartPageState extends State<CartPage> {
                                   shopId: firstShopId ?? "",
                                   orderDate:
                                       DateTime.now().toUtc().toIso8601String(),
-                                  totalAmount: items.fold<double>(
-                                    0,
-                                    (sum, item) =>
-                                        sum +
-                                        ((item.quantity ?? 0) *
-                                            (item.productPrice ?? 0)),
-                                  ),
-                                  orderState: "قيد التنفيذ",
+                                  totalAmount: totalPrice,
+                                  orderState: OrderStateEnum.pending,
                                   orderItems: items.map((item) {
                                     return OrderItemsModel(
                                       productId: item.productId,
@@ -318,7 +338,13 @@ class _CartPageState extends State<CartPage> {
                 ),
               );
             },
-          )
+          ),
+          MyButton(
+              color: Colors.green,
+              text: "إختيار شركة توصيل",
+              onPressed: () {
+                Get.toNamed(DeliveryCompanySelection.id);
+              })
         ],
       ),
     );
