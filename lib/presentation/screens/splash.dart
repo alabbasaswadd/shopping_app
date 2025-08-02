@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/images.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/onboarding.dart';
 import 'auth/signup.dart';
@@ -104,19 +105,12 @@ class _NoInternetConnection extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(Icons.wifi_off, size: 80, color: Colors.red),
           SizedBox(height: 20),
-          Text(
-            'لا يوجد اتصال بالإنترنت',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          CairoText("no_internet_connection".tr),
           SizedBox(height: 10),
-          Text(
-            'جاري محاولة الاتصال تلقائياً...',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
-          ),
+          CairoText("retrying_connection_automatically".tr),
           SizedBox(height: 30),
           CircularProgressIndicator(),
         ],

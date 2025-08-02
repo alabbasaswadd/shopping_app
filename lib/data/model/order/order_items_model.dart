@@ -9,7 +9,7 @@ class OrderItemsModel {
   final String? orderId;
   final String? productId;
   final int? quantity;
-  final int? price;
+  final double? price;
 
   OrderItemsModel({
     this.id,

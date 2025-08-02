@@ -13,7 +13,6 @@
 // }
 
 import 'package:shopping_app/data/model/delivery/delivery_data_model.dart';
-import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 
 abstract class DeliveryState {}
 

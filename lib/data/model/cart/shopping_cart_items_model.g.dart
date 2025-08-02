@@ -14,7 +14,7 @@ ShoppingCartItemsModel _$ShoppingCartItemsModelFromJson(
       productId: json['productId'] as String?,
       productName: json['productName'] as String?,
       productImage: json['productImage'] as String?,
-      productPrice: (json['productPrice'] as num?)?.toInt(),
+      productPrice: (json['productPrice'] as num?)?.toDouble(),
       shopId: json['shopId'] as String?,
       quantity: (json['quantity'] as num?)?.toInt(),
     );

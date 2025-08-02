@@ -116,7 +116,7 @@ class _ShopsState extends State<Shops> {
                           ),
                         );
                       } else {
-                        return Text("لا توجد تصنيفات");
+                        return CairoText("no_categories".tr);
                       }
                     },
                   ),
@@ -131,7 +131,6 @@ class _ShopsState extends State<Shops> {
                           : size.width > 600
                               ? 3
                               : 2;
-
                       return GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -179,10 +178,6 @@ class _ShopsState extends State<Shops> {
                                       child: CairoText(
                                         shop.firstName ?? "",
                                         color: Colors.white,
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ],
@@ -198,9 +193,9 @@ class _ShopsState extends State<Shops> {
               ),
             );
           } else if (shopState is ShopError) {
-            return Center(child: Text(shopState.error));
+            return Center(child: CairoText(shopState.error));
           } else {
-            return Center(child: Text("حدث خطأ غير متوقع"));
+            return Center(child: CairoText("unexpected_error".tr));
           }
         },
       ),

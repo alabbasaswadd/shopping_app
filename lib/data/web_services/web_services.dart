@@ -4,6 +4,7 @@ import 'package:shopping_app/core/constants/route.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
+import 'package:shopping_app/data/model/order/order_request_data_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 
 class WebServices {
@@ -182,7 +183,7 @@ class WebServices {
     return response;
   }
 
-  Future<Response> addOrderWebServices(OrderDataModel dataOrder) async {
+  Future<Response> addOrderWebServices(OrderRequestDataModel dataOrder) async {
     final token = await UserPreferencesService.getToken();
     final response = await dio.post(
       data: dataOrder.toJson(),

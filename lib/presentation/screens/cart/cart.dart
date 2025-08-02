@@ -20,9 +20,7 @@ import 'package:shopping_app/data/model/order/order_items_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
-import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
-import 'package:shopping_app/presentation/screens/delivery_company.dart';
-import 'package:shopping_app/presentation/screens/products/product_details.dart';
+import 'package:shopping_app/presentation/screens/cart/order_details_cart.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -49,26 +47,24 @@ class _CartPageState extends State<CartPage> {
     return BlocConsumer<CartCubit, CartState>(
       bloc: cubit,
       listener: (context, state) {
-        // يمكنك إضافة منطق الاستماع هنا إذا لزم الأمر
-        // مثال: إظهار Snackbar عند حذف منتج أو حدوث خطأ
         if (state is ProductDeleted) {
-          MySnackbar.showSuccess(context, "تم حذف المنتج");
+          MySnackbar.showSuccess(context, "product_deleted".tr);
         }
         if (state is CleanCart) {
-          MySnackbar.showSuccess(context, "تم إفراغ السلة");
+          MySnackbar.showSuccess(context, "cart_cleared".tr);
         }
       },
       builder: (context, state) {
         if (state is CartLoading) {
           return Scaffold(
-            appBar: myAppBar(title: "card".tr, context: context),
+            appBar: myAppBar(title: "cart".tr, context: context),
             body: Center(
               child: SpinKitChasingDots(color: AppColor.kPrimaryColor),
             ),
           );
         } else if (state is EmptyCart) {
           return Scaffold(
-            appBar: myAppBar(title: "card".tr, context: context),
+            appBar: myAppBar(title: "cart".tr, context: context),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +82,7 @@ class _CartPageState extends State<CartPage> {
           final items = cart.shoppingCartItems;
 
           return Scaffold(
-            appBar: myAppBar(title: "card".tr, context: context, actions: [
+            appBar: myAppBar(title: "cart".tr, context: context, actions: [
               MyAnimation(
                 scale: 0.7,
                 child: IconButton(
@@ -101,8 +97,8 @@ class _CartPageState extends State<CartPage> {
                               onNo: () {
                                 Get.back();
                               },
-                              title: "إفراغ السلة",
-                              content: "هل تريد إفراغ السلة"));
+                              title: "cart_cleared".tr,
+                              content: "product_deleted".tr));
                     },
                     icon: Icon(
                       Icons.delete,
@@ -127,14 +123,14 @@ class _CartPageState extends State<CartPage> {
           );
         } else if (state is CartError) {
           return Scaffold(
-            appBar: myAppBar(title: "card".tr, context: context),
+            appBar: myAppBar(title: "cart".tr, context: context),
             body: Center(
                 child: CairoText(
                     "❌ ${state.error}")), // استخدم state.error بدل message
           );
         } else {
           return Scaffold(
-            body: Center(child: CairoText("حدث خطأ غير متوقع")),
+            body: Center(child: CairoText("unexpected_error".tr)),
           );
         }
       },
@@ -157,8 +153,8 @@ class _CartPageState extends State<CartPage> {
         await showDialog(
           context: context,
           builder: (_) => MyAlertDialog(
-            title: "إزالة من السلة",
-            content: "هل تريد إزالة المنتج من السلة؟",
+            title: "remove_from_cart".tr,
+            content: "remove_product_confirm".tr,
             onOk: () {
               confirm = true;
               Get.back();
@@ -277,74 +273,117 @@ class _CartPageState extends State<CartPage> {
             ],
           ),
           SizedBox(height: 16),
-          BlocConsumer<OrderCubit, OrderState>(
-            bloc: orderCubit,
-            listener: (context, state) {
-              if (state is OrderAdded) {
-                MySnackbar.showSuccess(context, "تم إرسال الطلب بنجاح");
-              } else if (state is OrderError) {
-                MySnackbar.showError(
-                    context, "فشل إرسال الطلب: ${state.error}");
-              }
-            },
-            builder: (context, state) {
-              return MyAnimation(
-                scale: 0.90,
-                child: MyButton(
-                  isLoading: false,
-                  text: "إرسال الطلب",
-                  onPressed: () {
-                    {
-                      showDialog(
-                          context: context,
-                          builder: (context) => MyAlertDialog(
-                              onOk: () async {
-                                print(totalPrice);
-                                // التحقق من أن كل العناصر تتبع نفس المتجر
-                                final firstShopId = items.first.shopId;
-                                final allSameShop = items.every(
-                                    (item) => item.shopId == firstShopId);
-                                if (!allSameShop) {
-                                  MySnackbar.showError(context,
-                                      "كل المنتجات يجب أن تكون من نفس المتجر");
-                                  return;
-                                }
-                                final order = OrderDataModel(
-                                  customerId: UserSession.id,
-                                  shopId: firstShopId ?? "",
-                                  orderDate:
-                                      DateTime.now().toUtc().toIso8601String(),
-                                  totalAmount: totalPrice,
-                                  orderState: OrderStateEnum.pending,
-                                  orderItems: items.map((item) {
-                                    return OrderItemsModel(
-                                      productId: item.productId,
-                                      quantity: item.quantity,
-                                      price: item.productPrice,
-                                    );
-                                  }).toList(),
-                                );
-                                await orderCubit.addOrder(order);
-                                cubit.getCart();
-                                Get.back();
-                              },
-                              onNo: () {
-                                Get.back();
-                              },
-                              title: "إرسال طلب",
-                              content: "هل تريد إرسال الطلب"));
-                    }
-                  },
-                ),
-              );
-            },
-          ),
-          MyButton(
-              color: Colors.green,
-              text: "إختيار شركة توصيل",
+          MyAnimation(
+            scale: 0.90,
+            child: MyButton(
+              isLoading: false,
+              text: "continue_order_title".tr,
               onPressed: () {
-                Get.toNamed(DeliveryCompanySelection.id);
-              })
+                {
+                  showDialog(
+                      context: context,
+                      builder: (context) => MyAlertDialog(
+                          onOk: () {
+                            final firstShopId = items.first.shopId;
+                            final order = OrderDataModel(
+                              customerId: UserSession.id,
+                              shopId: firstShopId ?? "",
+                              orderDate:
+                                  DateTime.now().toUtc().toIso8601String(),
+                              totalAmount: totalPrice,
+                              orderState: OrderStateEnum.pending,
+                              noteDelivery: "as",
+                              deliveryCompanyId: "",
+                              orderItems: items.map((item) {
+                                return OrderItemsModel(
+                                  id: "",
+                                  orderId: "",
+                                  productName: item.productName,
+                                  productId: item.productId,
+                                  quantity: item.quantity,
+                                  price: item.productPrice ?? 0,
+                                );
+                              }).toList(),
+                            );
+                            Get.back();
+                            Get.to(OrderDetailsCart(order: order));
+                          },
+                          onNo: () {
+                            Get.back();
+                          },
+                          title: "continue_order_title".tr,
+                          content: "continue_order_content".tr));
+                }
+              },
+            ),
+          ),
+          // BlocConsumer<OrderCubit, OrderState>(
+          //   bloc: orderCubit,
+          //   listener: (context, state) {
+          //     if (state is OrderAdded) {
+          //       MySnackbar.showSuccess(context, "تم إرسال الطلب بنجاح");
+          //     } else if (state is OrderError) {
+          //       MySnackbar.showError(
+          //           context, "فشل إرسال الطلب: ${state.error}");
+          //     }
+          //   },
+          //   builder: (context, state) {
+          //     return MyAnimation(
+          //       scale: 0.90,
+          //       child: MyButton(
+          //         isLoading: false,
+          //         text: "إرسال الطلب",
+          //         onPressed: () {
+          //           {
+          //             showDialog(
+          //                 context: context,
+          //                 builder: (context) => MyAlertDialog(
+          //                     onOk: () async {
+          //                       print(totalPrice);
+          //                       // التحقق من أن كل العناصر تتبع نفس المتجر
+          //                       final firstShopId = items.first.shopId;
+          //                       final allSameShop = items.every(
+          //                           (item) => item.shopId == firstShopId);
+          //                       if (!allSameShop) {
+          //                         MySnackbar.showError(context,
+          //                             "كل المنتجات يجب أن تكون من نفس المتجر");
+          //                         return;
+          //                       }
+          //                       final order = OrderDataModel(
+          //                         id: "",
+          //                         shop: ShopDataModel(),
+          //                         noteDelivery: "جيبهن عالبيت",
+          //                         deliveryCompanyId:
+          //                             "c572a3c6-2ab7-49cb-56ed-08ddcd14c82e",
+          //                         customerId: UserSession.id,
+          //                         shopId: firstShopId ?? "",
+          //                         orderDate:
+          //                             DateTime.now().toUtc().toIso8601String(),
+          //                         totalAmount: totalPrice,
+          //                         orderState: OrderStateEnum.pending,
+          //                         orderItems: items.map((item) {
+          //                           return OrderItemsModel(
+          //                             productId: item.productId,
+          //                             quantity: item.quantity,
+          //                             price: item.productPrice,
+          //                           );
+          //                         }).toList(),
+          //                       );
+          //                       await orderCubit.addOrder(order);
+          //                       cubit.getCart();
+          //                       Get.back();
+          //                     },
+          //                     onNo: () {
+          //                       Get.back();
+          //                     },
+          //                     title: "إرسال طلب",
+          //                     content: "هل تريد إرسال الطلب"));
+          //           }
+          //         },
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

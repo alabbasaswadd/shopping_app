@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
@@ -122,17 +123,17 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
           );
         } else if (state is CategoryProductsError) {
           return Scaffold(
-            appBar: myAppBar(title: "Error", context: context),
+            appBar: myAppBar(title: "error".tr, context: context),
             body: Center(
               child: Text(
-                "Error: ${state.error}",
+                "${"error".tr}: ${state.error}",
                 style: const TextStyle(color: Colors.red),
               ),
             ),
           );
         } else {
-          return const Scaffold(
-            body: Center(child: Text("Unexpected state")),
+          return Scaffold(
+            body: Center(child: Text("unexpected_error".tr)),
           );
         }
       },

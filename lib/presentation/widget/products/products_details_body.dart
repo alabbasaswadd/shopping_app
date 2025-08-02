@@ -8,11 +8,13 @@ import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/products/products_cubit.dart';
 import 'package:shopping_app/presentation/screens/home_screen.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
+import 'package:flutter/services.dart';
 
 class ProductsDetailsBody extends StatefulWidget {
   const ProductsDetailsBody({super.key, required this.product});
@@ -76,6 +78,20 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
                   color:
                       Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
                 ),
+                IconButton(
+                  icon: Icon(
+                    Icons.copy,
+                    color: Colors.grey,
+                    size: 15,
+                  ),
+                  tooltip: "copy_text".tr,
+                  onPressed: () {
+                    final text = widget.product.description ?? '';
+                    Clipboard.setData(ClipboardData(text: text));
+                    MySnackbar.showSuccess(
+                        context, "text_copied_successfully".tr);
+                  },
+                ),
               ],
             ),
           ),
@@ -85,7 +101,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: CairoText(
-              "منتجات مشابهة",
+              "similar_products".tr,
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -103,7 +119,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
                 if (similarProducts.isEmpty) {
                   return Center(
                       child: CairoText(
-                    "لا توجد منتجات مشابهة",
+                    "no_similar_products".tr,
                     color: AppColor.kPrimaryColor,
                   ));
                 }
@@ -203,7 +219,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
               } else if (state is ProductsLoading) {
                 return SpinKitChasingDots(color: AppColor.kPrimaryColor);
               } else {
-                return CairoText("حدث خطأ أثناء تحميل المنتجات المشابهة");
+                return CairoText("similar_products_loading_error".tr);
               }
             },
           ),
@@ -214,7 +230,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w),
             child: CairoText(
-              "جميع المنتجات",
+              "all_products".tr,
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -236,7 +252,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
                   itemCount: allProducts.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.65.sh / 1000,
+                    childAspectRatio: (ScreenUtil().screenWidth / 2) / 350.h,
                   ),
                   itemBuilder: (context, i) {
                     final product = allProducts[i];
@@ -282,7 +298,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
                                     SizedBox(height: 10.h),
                                     CairoText(
                                       product.description ?? "",
-                                      maxLines: 2,
+                                      maxLines: 3,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onSurface
@@ -311,7 +327,7 @@ class _ProductsDetailsBodyState extends State<ProductsDetailsBody> {
                   },
                 );
               } else {
-                return CairoText("تعذر تحميل المنتجات");
+                return CairoText("products_loading_error".tr);
               }
             },
           ),

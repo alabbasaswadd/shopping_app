@@ -41,7 +41,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             if (state is ProductsFeildAdd) {
               MySnackbar.showError(context, "Error: ${state.error}");
             } else if (state is ProductsAdded) {
-              MySnackbar.showSuccess(context, "تمت الإضافة");
+              MySnackbar.showSuccess(context, "added".tr);
             }
           },
           builder: (context, state) {
@@ -58,7 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     product: product), // 👈 تمرير المنتج نفسه
               );
             } else {
-              return const Center(child: CairoText("Error"));
+              return  Center(child: CairoText("error".tr));
             }
           }),
       floatingActionButton: FloatingActionButton(

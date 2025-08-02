@@ -45,8 +45,6 @@ class _AccountState extends State<Account> {
   void initState() {
     super.initState();
     cubit = UserCubit();
-
-    // تهيئة الكنترولرز بدون قيمة مبدئية
     loadData();
   }
 
@@ -67,8 +65,7 @@ class _AccountState extends State<Account> {
     final userId = UserSession.id;
     if (userId != null && userId.isNotEmpty) {
       cubit.getUser(userId);
-    } else {
-    }
+    } else {}
   }
 
   @override
@@ -104,7 +101,7 @@ class _AccountState extends State<Account> {
     return BlocProvider(
       create: (_) => cubit,
       child: Scaffold(
-        appBar: myAppBar(title: "تعديل الملف الشخصي".tr, context: context),
+        appBar: myAppBar(title: "edit_profile_page", context: context),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {
@@ -127,7 +124,7 @@ class _AccountState extends State<Account> {
                       _buildProfileHeader(),
                       const SizedBox(height: 24),
                       _buildAnimatedSection(
-                        title: "المعلومات الشخصية",
+                        title: "personal_info".tr,
                         expanded: _personalInfoExpanded,
                         onTap: () => setState(() =>
                             _personalInfoExpanded = !_personalInfoExpanded),
@@ -135,7 +132,7 @@ class _AccountState extends State<Account> {
                       ),
                       const SizedBox(height: 16),
                       _buildAnimatedSection(
-                        title: "العنوان",
+                        title: "address".tr,
                         expanded: _addressInfoExpanded,
                         onTap: () => setState(
                             () => _addressInfoExpanded = !_addressInfoExpanded),
@@ -150,12 +147,12 @@ class _AccountState extends State<Account> {
             } else if (state is UserError) {
               return Center(
                   child: CairoText(
-                "حدث خطأ: ${state.message}",
+                "${"error_occurred".tr} ${state.message}",
                 maxLines: 5,
               ));
             }
             // الحالة الافتراضية قبل تحميل البيانات
-            return const Center(child: CairoText("يرجى الانتظار..."));
+            return Center(child: CairoText("please_wait".tr));
           },
         ),
       ),
@@ -376,7 +373,7 @@ class _AccountState extends State<Account> {
       children: [
         MyAnimation(
             child: MyButton(
-                text: "حفظ التغييرات",
+                text: "save_changes".tr,
                 onPressed: () {
                   cubit.updateUser(
                       UserSession.id ?? "",
@@ -404,13 +401,10 @@ class _AccountState extends State<Account> {
                       onNo: () {
                         Get.back();
                       },
-                      title: "حذف الحساب",
-                      content: "هل تريد حذف الحساب"));
+                      title: "delete_account".tr,
+                      content: "delete_account_confirmation_content".tr));
             },
-            child: const CairoText(
-              "حذف الحساب",
-              color: Colors.red,
-            ),
+            child: CairoText("delete_account".tr, color: Colors.red),
           ),
         ),
       ],

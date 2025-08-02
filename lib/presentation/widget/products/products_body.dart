@@ -16,6 +16,7 @@ import 'package:shopping_app/presentation/business_logic/cubit/products/products
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
+import 'package:flutter/foundation.dart'; // مهم!
 
 class ProductsBody extends StatefulWidget {
   const ProductsBody({super.key});
@@ -40,10 +41,33 @@ class _ProductsBodyState extends State<ProductsBody> {
     cubit = ProductsCubit();
     categoryCubit = CategoryCubit();
     shopCubit = ShopCubit();
-
     cubit.getProducts();
     categoryCubit.getCategories();
     shopCubit.getShops();
+    print(1.sh);
+    print(1.sw);
+  }
+
+  double getChildAspectRatio(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    if (kIsWeb) {
+      // احسب عرض العنصر وارتفاعه كنسبة من أبعاد الشاشة
+      final itemWidth = screenWidth / 2;
+      final itemHeight = screenHeight * 1.5; // 40% من الشاشة مثلاً
+      return itemWidth / itemHeight;
+    } else {
+      return (ScreenUtil().screenWidth / 2) / 350.h; // للهواتف والأجهزة الأخرى
+    }
+  }
+
+  int getCrossAxisCount() {
+    if (kIsWeb) {
+      return 3;
+    } else {
+      return 2;
+    }
   }
 
   void _fetchProducts() {
@@ -61,9 +85,9 @@ class _ProductsBodyState extends State<ProductsBody> {
       bloc: cubit,
       listener: (context, state) {
         if (state is ProductsFeildAdd) {
-          MySnackbar.showError(context, "Error: ${state.error}");
+          MySnackbar.showError(context, "${"error".tr}: ${state.error}");
         } else if (state is ProductsAdded) {
-          MySnackbar.showSuccess(context, "تمت الإضافة");
+          MySnackbar.showSuccess(context, "added".tr);
         }
       },
       builder: (context, state) {
@@ -92,8 +116,8 @@ class _ProductsBodyState extends State<ProductsBody> {
                         padding: const EdgeInsets.only(top: 10),
                         itemCount: state.products.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.65.sh / 1000,
+                          crossAxisCount: getCrossAxisCount(),
+                          childAspectRatio: getChildAspectRatio(context),
                         ),
                         itemBuilder: (context, i) {
                           final product = state.products[i];
@@ -105,30 +129,31 @@ class _ProductsBodyState extends State<ProductsBody> {
           );
         } else if (state is ProductsError) {
           return Center(
-            child: Text(
-              "Error: ${state.error}",
+            child: CairoText(
+              "${"error".tr}: ${state.error}",
               style: const TextStyle(color: Colors.red),
             ),
           );
         } else {
-          return const Center(child: Text("Unexpected state"));
+          return Center(child: CairoText("unexpected_error".tr));
         }
       },
     );
   }
 
   String _buildNoProductsMessage() {
-    String message = "لا يوجد منتجات";
+    String message = "no_products".tr;
     if (selectedCategory.isNotEmpty) {
-      message += ' في فئة "$selectedCategory"';
+      message += '${"in_category".tr} "$selectedCategory"';
     }
     if (selectedStore != null) {
-      message +=
-          selectedCategory.isNotEmpty ? " و" : " في متجر \"$selectedStore\"";
+      message += selectedCategory.isNotEmpty
+          ? " و"
+          : " ${"in_store".tr}\"$selectedStore\"";
     }
     if (priceRange.start > 0 || priceRange.end < 1000) {
       message +=
-          " في نطاق السعر من ${priceRange.start.round()} إلى ${priceRange.end.round()} \$";
+          "${"price_range".tr} ${priceRange.start.round()} ${priceRange.end.round()} \$";
     }
     return message;
   }
@@ -195,8 +220,8 @@ class _ProductsBodyState extends State<ProductsBody> {
                       });
                       _fetchProducts();
                     },
-                    child: const Text(
-                      'مسح الكل',
+                    child: CairoText(
+                      "clear_all".tr,
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
@@ -229,14 +254,14 @@ class _ProductsBodyState extends State<ProductsBody> {
                   child: DropdownButton<String>(
                     value:
                         selectedCategory.isNotEmpty ? selectedCategory : null,
-                    hint: const CairoText("الفئة", fontSize: 11),
+                    hint: CairoText("category".tr, fontSize: 11),
                     isExpanded: true,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     style: TextStyle(fontSize: 13.sp, fontFamily: "Cairo-Bold"),
                     items: [
-                      const DropdownMenuItem(
+                      DropdownMenuItem(
                         value: "",
-                        child: CairoText("الكل", fontSize: 11),
+                        child: CairoText("all".tr, fontSize: 11),
                       ),
                       ...categories.map((category) {
                         return DropdownMenuItem(
@@ -256,7 +281,7 @@ class _ProductsBodyState extends State<ProductsBody> {
               ),
             );
           } else {
-            return const Text("فشل تحميل الفئات");
+            return CairoText("loading_categories_failed".tr);
           }
         },
       ),
@@ -283,14 +308,14 @@ class _ProductsBodyState extends State<ProductsBody> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: selectedStoreId,
-                    hint: const CairoText("المتجر", fontSize: 11),
+                    hint: CairoText("store".tr, fontSize: 11),
                     isExpanded: true,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     style: TextStyle(fontSize: 13.sp, fontFamily: "Cairo-Bold"),
                     items: [
-                      const DropdownMenuItem(
+                      DropdownMenuItem(
                         value: null,
-                        child: CairoText("الكل", fontSize: 11),
+                        child: CairoText("all".tr, fontSize: 11),
                       ),
                       ...shops.map((shop) {
                         final label = "${shop.firstName} ${shop.lastName}";
@@ -314,7 +339,7 @@ class _ProductsBodyState extends State<ProductsBody> {
               ),
             );
           } else {
-            return const Text("فشل تحميل المتاجر");
+            return CairoText("loading_shops_failed".tr);
           }
         },
       ),
@@ -392,7 +417,7 @@ class _ProductsBodyState extends State<ProductsBody> {
                         SizedBox(height: 10.h),
                         CairoText(
                           product.description ?? "",
-                          maxLines: 4,
+                          maxLines: 3,
                           color: Theme.of(context)
                               .colorScheme
                               .onSurface
@@ -464,7 +489,7 @@ class _PriceRangeDialogState extends State<_PriceRangeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("فلترة حسب السعر"),
+      title: CairoText("price_filter".tr),
       content: SizedBox(
         width: double.maxFinite,
         child: Column(
@@ -497,11 +522,11 @@ class _PriceRangeDialogState extends State<_PriceRangeDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("إلغاء"),
+          child: CairoText("cancel".tr),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, _currentRange),
-          child: const Text("تطبيق"),
+          child: CairoText("apply".tr),
         ),
       ],
     );

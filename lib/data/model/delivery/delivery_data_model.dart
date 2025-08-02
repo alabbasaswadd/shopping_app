@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shopping_app/data/model/delivery/delivery_email_model.dart';
 
 part 'delivery_data_model.g.dart';
 
@@ -8,7 +9,7 @@ class DeliveryDataModel {
   final String? name;
   final String? contactPerson;
   final String? phoneNumber;
-  final String? email;
+  final DeliveryEmailModel? email;
   final String? website;
   final String? address;
   final String? coverageAreas;

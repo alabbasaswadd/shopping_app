@@ -3,6 +3,7 @@ import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
 import 'package:shopping_app/data/model/cart/cart_data_model.dart';
 import 'package:shopping_app/data/model/offer/offer_response_model.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
+import 'package:shopping_app/data/model/order/order_request_data_model.dart';
 import 'package:shopping_app/data/model/user/user_data_model.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 
@@ -92,7 +93,7 @@ class Repository {
     return webServices.clearCartWebServices(userId);
   }
 
-  Future<Response> addOrderRepository(OrderDataModel dataOrder) {
+  Future<Response> addOrderRepository(OrderRequestDataModel dataOrder) {
     return webServices.addOrderWebServices(dataOrder);
   }
 

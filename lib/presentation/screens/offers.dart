@@ -11,8 +11,8 @@ import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/data/model/offer/offer_response_model.dart';
-import 'package:shopping_app/presentation/business_logic/offer/offer_cubit.dart';
-import 'package:shopping_app/presentation/business_logic/offer/offer_state.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/offer/offer_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/offer/offer_state.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 
 class Offers extends StatefulWidget {
@@ -53,7 +53,7 @@ class _OffersState extends State<Offers> {
             return _buildOfferList(state.offers);
           } else {
             return Center(
-              child: CairoText("Error"),
+              child: CairoText("error".tr),
             );
           }
         },

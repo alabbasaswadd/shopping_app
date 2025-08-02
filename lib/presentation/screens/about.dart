@@ -3,6 +3,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
@@ -73,21 +74,21 @@ class About extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
+                  CairoText(
                     "Shopping App",
                     style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  CairoText(
                     "Version 1.0.0",
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
+                  CairoText(
                     "The best shopping experience with thousands of products at your fingertips.",
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium,
@@ -98,7 +99,7 @@ class About extends StatelessWidget {
             const SizedBox(height: 24),
 
             // Social Media Section
-            Text(
+            CairoText(
               "connect_with_us".tr,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -109,7 +110,7 @@ class About extends StatelessWidget {
 
             // Contact Info Section
             const SizedBox(height: 24),
-            Text(
+            CairoText(
               "contact_info".tr,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -146,7 +147,7 @@ class About extends StatelessWidget {
             // App Info Footer
             const SizedBox(height: 24),
             Center(
-              child: Text(
+              child: CairoText(
                 "© 2023 Shopping App. All rights reserved.",
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: Colors.grey[600],
@@ -177,11 +178,8 @@ class About extends StatelessWidget {
               color: social.color,
             ),
           ),
-          title: Text(
+          title: CairoText(
             social.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-            ),
           ),
           trailing: Icon(
             Icons.arrow_forward_ios,
@@ -214,20 +212,9 @@ class About extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
-                  ),
+                  CairoText(title),
                   const SizedBox(height: 4),
-                  Text(
-                    value,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  CairoText(value),
                 ],
               ),
             ),

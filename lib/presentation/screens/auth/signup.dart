@@ -119,11 +119,11 @@ class _SignUpState extends State<SignUp> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildStepCircle(0, "المعلومات الشخصية"),
+        _buildStepCircle(0, "personal_info".tr),
         _buildStepLine(),
-        _buildStepCircle(1, "العنوان"),
+        _buildStepCircle(1, "address".tr),
         _buildStepLine(),
-        _buildStepCircle(2, "الحساب"),
+        _buildStepCircle(2, "account".tr),
       ],
     );
   }
@@ -365,16 +365,16 @@ class _SignUpState extends State<SignUp> {
             obscureText: _obscurePassword,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'يجب إدخال كلمة المرور';
+                return "password_required".tr;
               }
               if (value.length < 8) {
-                return 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
+                return "password_min_length".tr;
               }
               if (!value.contains(RegExp(r'[0-9]'))) {
-                return 'يجب أن تحتوي كلمة المرور على رقم واحد على الأقل';
+                return "password_number_required".tr;
               }
               if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>\\$]'))) {
-                return 'يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل (!@#...)';
+                return "password_special_required".tr;
               }
               return null;
             },
@@ -395,7 +395,7 @@ class _SignUpState extends State<SignUp> {
             icon: Icons.lock_outline,
             obscureText: _obscureConfirmPassword,
             validator: (value) => value != passwordController.text
-                ? 'كلمة المرور غير متطابقة'.tr
+                ? "passwords_not_match".tr
                 : null,
             suffixIcon: IconButton(
               icon: Icon(

@@ -36,7 +36,7 @@ class ChangePasswordScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               CairoText(
-                "قم بتغيير كلمة المرور الخاصة بك",
+                "change_password_description".tr,
                 color: Colors.grey[600],
               ),
               const SizedBox(height: 32),
@@ -53,15 +53,15 @@ class ChangePasswordScreen extends StatelessWidget {
                     children: [
                       MyTextFormField(
                         controller: _currentPasswordController,
-                        label: "كلمة المرور الحالية",
+                        label: "current_password".tr,
                         icon: Icons.lock_outline,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "هذا الحقل مطلوب";
+                            return "required_field".tr;
                           }
-                          if (value.length < 6) {
-                            return "يجب أن تكون 6 أحرف على الأقل";
+                          if (value.length < 8) {
+                            return "min_password_length".tr;
                           }
                           return null;
                         },
@@ -69,15 +69,15 @@ class ChangePasswordScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       MyTextFormField(
                         controller: _newPasswordController,
-                        label: "كلمة المرور الجديدة",
+                        label: "new_password".tr,
                         icon: Icons.lock_reset,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "هذا الحقل مطلوب";
+                            return "required_field".tr;
                           }
-                          if (value.length < 6) {
-                            return "يجب أن تكون 6 أحرف على الأقل";
+                          if (value.length < 8) {
+                            return "min_password_length".tr;
                           }
                           return null;
                         },
@@ -85,15 +85,15 @@ class ChangePasswordScreen extends StatelessWidget {
                       const SizedBox(height: 16),
                       MyTextFormField(
                         controller: _confirmPasswordController,
-                        label: "تأكيد كلمة المرور",
+                        label: "confirm_password".tr,
                         icon: Icons.lock_reset,
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "هذا الحقل مطلوب";
+                            return "required_field".tr;
                           }
                           if (value != _newPasswordController.text) {
-                            return "كلمات المرور غير متطابقة";
+                            return "passwords_do_not_match";
                           }
                           return null;
                         },
@@ -107,7 +107,7 @@ class ChangePasswordScreen extends StatelessWidget {
               // Save Button
               MyAnimation(
                 child: MyButton(
-                  text: "حفظ التغييرات",
+                  text: "save_changes".tr,
                   onPressed: () {},
                 ),
               ),
@@ -121,7 +121,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     // الانتقال لصفحة استعادة كلمة المرور
                   },
                   child: CairoText(
-                    "نسيت كلمة المرور؟",
+                    "forgot_password".tr,
                     color: AppColor.kPrimaryColor,
                   ),
                 ),

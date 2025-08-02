@@ -9,7 +9,7 @@ part 'order_data_model.g.dart';
 class OrderDataModel {
   final String? id;
   final String? customerId;
-  final String? deliveryCompanyId;
+  String? deliveryCompanyId;
   final String? noteDelivery;
   final ShopDataModel? shop;
   final String? shopId;
@@ -18,7 +18,7 @@ class OrderDataModel {
   final List<OrderItemsModel>? orderItems;
 
   @JsonKey(fromJson: _orderStateEnumFromJson, toJson: _orderStateEnumToJson)
-  final OrderStateEnum? orderState;
+  OrderStateEnum? orderState;
 
   OrderDataModel({
     this.id,
