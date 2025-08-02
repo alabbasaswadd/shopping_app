@@ -276,7 +276,8 @@ class AppTranslations extends Translations {
           "unexpected_state": "Unexpected state",
           "description": "Description",
           "name": "Name",
-          "auto_reconnect_message": "Trying to reconnect..."
+          "auto_reconnect_message": "Trying to reconnect...",
+          "orderDeletedSuccessfully": "Order deleted successfully"
         },
         'ar': {
           "account": "الحساب",
@@ -544,6 +545,7 @@ class AppTranslations extends Translations {
           "added_successfully": "تمت الإضافة",
           "unexpected_state": "حالة غير متوقعة",
           "description": "الوصف",
+          "orderDeletedSuccessfully": "تم حذف الطلب بنجاح",
           "name": "الاسم",
           "auto_reconnect_message": "جاري محاولة الاتصال تلقائياً..."
         }

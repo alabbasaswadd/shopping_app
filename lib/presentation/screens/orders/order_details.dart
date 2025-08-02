@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/const.dart';

@@ -47,9 +47,8 @@ class _OrdersState extends State<Orders> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await Future.delayed(const Duration(milliseconds: 700));
         final showCase = ShowCaseWidget.of(context);
-        if (showCase != null) {
-          showCase.startShowCase([_firstOrderKey]);
-        }
+
+        showCase.startShowCase([_firstOrderKey]);
       });
       await prefs.setBool('orders_tutorial_shown', true);
     }
@@ -68,7 +67,7 @@ class _OrdersState extends State<Orders> {
         bloc: cubit,
         listener: (context, state) {
           if (state is OrderDeleted) {
-            MySnackbar.showSuccess(context, "تم حذف الطلب بنجاح");
+            MySnackbar.showSuccess(context, "order_deleted_successfully".tr);
           }
         },
         builder: (context, state) {
