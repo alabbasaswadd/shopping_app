@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/presentation/screens/chat.dart';
 import 'package:shopping_app/presentation/screens/about.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
-import 'package:shopping_app/presentation/screens/cart.dart';
+import 'package:shopping_app/presentation/screens/cart/cart.dart';
 import 'package:shopping_app/presentation/screens/change_password_screen.dart';
-import 'package:shopping_app/presentation/screens/cubit/splash_screen.dart';
 import 'package:shopping_app/presentation/screens/delivery_company.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
-import 'package:shopping_app/presentation/screens/cubit/onboarding_screen.dart';
 import 'package:shopping_app/presentation/screens/orders/orders.dart';
 import 'package:shopping_app/presentation/screens/products/product_details.dart';
 import 'package:shopping_app/presentation/screens/products/products.dart';
@@ -39,8 +37,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   Notifications.id: (context) => Notifications(),
   HomeScreen.id: (context) => HomeScreen(),
   Onboarding.id: (context) => Onboarding(),
-  // OnboardingScreen.id: (context) => OnboardingScreen(),
-  SplashScreen.id: (context) => SplashScreen(),
   ChatScreen.id: (context) => ChatScreen(),
   Splash.id: (context) => Splash(),
   ChangePasswordScreen.id: (context) => ChangePasswordScreen(),

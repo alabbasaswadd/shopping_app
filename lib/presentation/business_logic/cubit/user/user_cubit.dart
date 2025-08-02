@@ -18,6 +18,7 @@ class UserCubit extends Cubit<UserState> {
       final response = await repository.getUserRepository(userId);
       if (response.statusCode == 200 &&
           response.data != null &&
+          
           response.data['succeeded'] == true) {
         final user = response.data['data'];
         final userData = UserDataModel.fromJson(user);

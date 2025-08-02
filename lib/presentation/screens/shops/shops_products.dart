@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
 
@@ -88,19 +90,9 @@ class _CustomContainerProductsState extends State<ShopProducts> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    products[i].name ?? "",
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
+                                  child: CairoText(products[i].name ?? ""),
                                 ),
-                                Text(
-                                  "${products[i].price} ₺",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(fontSize: 20),
-                                ),
+                                CairoText("${products[i].price} \$"),
                               ],
                             ),
                           ),
@@ -127,17 +119,17 @@ class _CustomContainerProductsState extends State<ShopProducts> {
           );
         } else if (state is ShopProductsError) {
           return Scaffold(
-            appBar: myAppBar(title: "Error", context: context),
+            appBar: myAppBar(title: "error".tr, context: context),
             body: Center(
-              child: Text(
-                "Error: ${state.error}",
+              child: CairoText(
+                "${"error".tr} ${state.error}",
                 style: const TextStyle(color: Colors.red),
               ),
             ),
           );
         } else {
           return const Scaffold(
-            body: Center(child: Text("Unexpected state")),
+            body: Center(child: CairoText("Unexpected state")),
           );
         }
       },

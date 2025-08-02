@@ -12,7 +12,9 @@ DeliveryDataModel _$DeliveryDataModelFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       contactPerson: json['contactPerson'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
-      email: json['email'] as String?,
+      email: json['email'] == null
+          ? null
+          : DeliveryEmailModel.fromJson(json['email'] as Map<String, dynamic>),
       logo: json['logo'] as String?,
       website: json['website'] as String?,
       address: json['address'] as String?,

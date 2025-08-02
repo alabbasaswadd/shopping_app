@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
+import 'package:shopping_app/data/model/order/order_request_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
@@ -114,12 +115,14 @@ class OrderCubit extends Cubit<OrderState> {
   }
 
   /// إضافة طلب
-  Future<void> addOrder(OrderDataModel dataOrder) async {
+  Future<void> addOrder(OrderRequestDataModel dataOrder) async {
     try {
       emit(OrderLoading());
 
       final response = await repository.addOrderRepository(dataOrder);
-
+      print(response.statusCode);
+      print(response.statusMessage);
+      print(response.data);
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {

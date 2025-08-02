@@ -9,7 +9,7 @@ class ShoppingCartItemsModel {
   final String? productId;
   final String? productName;
   final String? productImage;
-  final int? productPrice;
+  final double? productPrice;
   final String? shopId;
   int? quantity;
 

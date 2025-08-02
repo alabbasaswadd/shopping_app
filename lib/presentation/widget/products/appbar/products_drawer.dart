@@ -68,7 +68,7 @@ class _ProductsDrawerState extends State<ProductsDrawer> {
           ),
           ProductsCustomDrawer(
             icon: Icons.chat,
-            title: "دردشة".tr,
+            title: "chat".tr,
             ontap: () {
               Get.toNamed(ChatScreen.id);
             },

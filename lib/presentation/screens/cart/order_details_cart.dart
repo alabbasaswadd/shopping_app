@@ -1,34 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/constants/const.dart';
+import 'package:shopping_app/core/constants/functions.dart';
+import 'package:shopping_app/core/widgets/my_alert_dialog.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_button.dart';
+import 'package:shopping_app/core/widgets/my_snackbar.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
 import 'package:shopping_app/core/widgets/my_animation.dart';
+import 'package:shopping_app/core/widgets/my_text_form_field.dart';
 import 'package:shopping_app/data/model/order/order_data_model.dart';
 import 'package:shopping_app/data/model/delivery/delivery_data_model.dart';
+import 'package:shopping_app/data/model/order/order_request_data_model.dart';
+import 'package:shopping_app/data/model/order/order_request_item_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/delivery/delivery_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/delivery/delivery_cubit.dart';
+import 'package:shopping_app/presentation/business_logic/cubit/order/order_state.dart';
 
-class OrderDetails extends StatefulWidget {
+class OrderDetailsCart extends StatefulWidget {
   final OrderDataModel order;
 
-  const OrderDetails({super.key, required this.order});
+  const OrderDetailsCart({super.key, required this.order});
 
   @override
-  State<OrderDetails> createState() => _OrderDetailsState();
+  State<OrderDetailsCart> createState() => _OrderDetailsCartState();
 }
 
-class _OrderDetailsState extends State<OrderDetails> {
+class _OrderDetailsCartState extends State<OrderDetailsCart> {
   late OrderCubit orderCubit;
   late DeliveryCubit deliveryCubit;
   DeliveryDataModel? selectedDeliveryCompany;
   bool showDeliveryDetails = false;
   bool noDeliverySelected = false;
+  String deliveryCompanyId = "";
+  TextEditingController _noteController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  DateTime? _selectedDate;
 
   @override
   void initState() {
@@ -40,59 +52,53 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormat = NumberFormat.currency(locale: 'ar', symbol: 'ر.س');
+    final currencyFormat = NumberFormat.currency(locale: 'ar', symbol: "\$");
     final isOnDelivery = widget.order.orderState == 'جاري التوصيل';
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => orderCubit),
-        BlocProvider(create: (_) => deliveryCubit),
-      ],
-      child: Scaffold(
-        appBar: myAppBar(
-          title: 'تفاصيل الطلب #${widget.order.id}',
-          context: context,
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Order Status Card
-              _buildInfoCard(
-                "الحالة الحالية:",
-                widget.order.orderState?.name ?? "",
-                icon: Icons.info_outline,
-                iconColor: AppColor.kPrimaryColor,
-              ),
-              const SizedBox(height: 16),
-
-              // Products Table
-              _buildProductTable(currencyFormat),
-              const SizedBox(height: 24),
-
-              // Delivery Company Section
-              _buildDeliveryHeader(),
-              const SizedBox(height: 8),
-
-              // Delivery Company Selection
-              _buildDeliverySelectionSection(),
-
-              // Delivery Company Details
-              if (showDeliveryDetails && selectedDeliveryCompany != null)
-                _buildDeliveryCompanyCard(selectedDeliveryCompany!),
-
-              if (noDeliverySelected) _buildNoDeliverySelectedCard(),
-
-              const SizedBox(height: 24),
-
-              // Total Section
-              _buildTotalSection(currencyFormat),
-            ],
-          ),
-        ),
-        bottomNavigationBar: _buildBottomActionBar(isOnDelivery),
+    return Scaffold(
+      appBar: myAppBar(
+        title: '${"order_details_title".tr}${widget.order.id}',
+        context: context,
       ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Order Status Card
+            _buildInfoCard(
+              "current_status".tr,
+              widget.order.orderState?.name ?? "",
+              icon: Icons.info_outline,
+              iconColor: AppColor.kPrimaryColor,
+            ),
+            const SizedBox(height: 16),
+
+            // Products Table
+            _buildProductTable(currencyFormat),
+            const SizedBox(height: 24),
+
+            // Delivery Company Section
+            _buildDeliveryHeader(),
+            const SizedBox(height: 8),
+
+            // Delivery Company Selection
+            _buildDeliverySelectionSection(),
+
+            // Delivery Company Details
+            if (showDeliveryDetails && selectedDeliveryCompany != null)
+              _buildDeliveryCompanyCard(selectedDeliveryCompany!),
+
+            if (noDeliverySelected) _buildNoDeliverySelectedCard(),
+
+            const SizedBox(height: 24),
+            _buildInertForm(),
+            // Total Section
+            _buildTotalSection(currencyFormat),
+          ],
+        ),
+      ),
+      bottomNavigationBar: _buildBottomActionBar(isOnDelivery),
     );
   }
 
@@ -127,7 +133,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CairoText('تفاصيل المنتجات',
+          CairoText("products_details".tr,
               fontSize: 16, fontWeight: FontWeight.bold),
           const SizedBox(height: 12),
           Container(
@@ -154,29 +160,29 @@ class _OrderDetailsState extends State<OrderDetails> {
                       topRight: Radius.circular(8),
                     ),
                   ),
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Center(
-                          child:
-                              CairoText('المنتج', fontWeight: FontWeight.bold)),
+                          child: CairoText("product".tr,
+                              fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Center(
-                          child:
-                              CairoText('الكمية', fontWeight: FontWeight.bold)),
+                          child: CairoText('quantity'.tr,
+                              fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Center(
-                          child:
-                              CairoText('السعر', fontWeight: FontWeight.bold)),
+                          child: CairoText('price'.tr,
+                              fontWeight: FontWeight.bold)),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Center(
-                          child: CairoText('الإجمالي',
+                          child: CairoText('total'.tr,
                               fontWeight: FontWeight.bold)),
                     ),
                   ],
@@ -228,11 +234,11 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   Widget _buildDeliveryHeader() {
     return Row(
-      children: const [
+      children: [
         Icon(Icons.local_shipping, color: AppColor.kPrimaryColor),
         SizedBox(width: 8),
         CairoText(
-          'خيارات التوصيل',
+          "delivery_options".tr,
           fontSize: 16,
           fontWeight: FontWeight.bold,
         ),
@@ -242,9 +248,10 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   Widget _buildDeliverySelectionSection() {
     return BlocBuilder<DeliveryCubit, DeliveryState>(
+      bloc: deliveryCubit,
       builder: (context, state) {
         if (state is DeliveryLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return SpinKitChasingDots(color: AppColor.kPrimaryColor);
         } else if (state is DeliveryLoaded) {
           return Column(
             children: [
@@ -258,7 +265,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<DeliveryDataModel>(
                     value: selectedDeliveryCompany,
-                    hint: const CairoText("اختر شركة التوصيل"),
+                    hint: CairoText("select_delivery_company".tr),
                     isExpanded: true,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     style: TextStyle(
@@ -267,9 +274,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                       color: Colors.black,
                     ),
                     items: [
-                      const DropdownMenuItem(
+                      DropdownMenuItem(
                         value: null,
-                        child: CairoText("بدون شركة توصيل"),
+                        child: CairoText("no_delivery_company".tr),
                       ),
                       ...state.deliveryCompanies.map((company) {
                         return DropdownMenuItem<DeliveryDataModel>(
@@ -290,7 +297,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ),
                               Expanded(
                                 child: CairoText(
-                                  company.name ?? 'شركة التوصيل',
+                                  company.name ?? "delivery_company".tr,
                                   fontSize: 14,
                                 ),
                               ),
@@ -307,6 +314,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     onChanged: (value) {
                       setState(() {
                         selectedDeliveryCompany = value;
+                        deliveryCompanyId = selectedDeliveryCompany?.id ?? '';
                         noDeliverySelected = value == null;
                         showDeliveryDetails = value != null;
                       });
@@ -329,11 +337,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(Icons.close, size: 18, color: Colors.grey),
                       SizedBox(width: 4),
                       CairoText(
-                        'المتابعة بدون توصيل',
+                        "continue_without_delivery".tr,
                         color: Colors.grey,
                       ),
                     ],
@@ -341,8 +349,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
             ],
           );
+        } else if (state is DeliveryEmpty) {
+          return CairoText("no_delivery_companies".tr);
         } else {
-          return const CairoText("فشل تحميل شركات التوصيل");
+          return CairoText("failed_loading_delivery_companies".tr);
         }
       },
     );
@@ -382,7 +392,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CairoText(
-                          company.name ?? 'شركة التوصيل',
+                          company.name ?? "delivery_company".tr,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -409,7 +419,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: CairoText(
-                      '${company.basePrice?.toStringAsFixed(2) ?? '--'} ر.س',
+                      '${company.basePrice?.toStringAsFixed(2) ?? '--'} \$',
                       style: TextStyle(
                         color: AppColor.kPrimaryColor,
                         fontWeight: FontWeight.bold,
@@ -432,23 +442,23 @@ class _OrderDetailsState extends State<OrderDetails> {
                 children: [
                   _buildDetailItem(
                     icon: Icons.email,
-                    title: 'البريد الإلكتروني',
-                    value: company.email?.userName ?? 'غير متوفر',
+                    title: "email".tr,
+                    value: company.email?.userName ?? "email_unavailable".tr,
                   ),
                   _buildDetailItem(
                     icon: Icons.public,
-                    title: 'الموقع الإلكتروني',
-                    value: company.website ?? 'غير متوفر',
+                    title: "website".tr,
+                    value: company.website ?? "website_unavailable".tr,
                   ),
                   _buildDetailItem(
                     icon: Icons.location_on,
-                    title: 'العنوان',
-                    value: company.address ?? 'غير متوفر',
+                    title: "address".tr,
+                    value: company.address ?? "address_unavailable".tr,
                   ),
                   _buildDetailItem(
                     icon: Icons.map,
-                    title: 'المناطق المشمولة',
-                    value: company.coverageAreas ?? 'جميع المناطق',
+                    title: "coverage_areas".tr,
+                    value: company.coverageAreas ?? "all_areas".tr,
                   ),
                 ],
               ),
@@ -466,17 +476,17 @@ class _OrderDetailsState extends State<OrderDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CairoText(
-                      'تفاصيل الأسعار',
+                      "price_details".tr,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     _buildPriceDetailRow(
-                      'السعر الأساسي',
-                      '${company.basePrice?.toStringAsFixed(2) ?? '--'} ر.س',
+                      "base_price".tr,
+                      '${company.basePrice?.toStringAsFixed(2) ?? '--'} \$',
                     ),
                     _buildPriceDetailRow(
-                      'سعر الكيلومتر الإضافي',
-                      '${company.pricePerKm?.toStringAsFixed(2) ?? '--'} ر.س',
+                      "price_per_km".tr,
+                      '${company.pricePerKm?.toStringAsFixed(2) ?? '--'} \$',
                     ),
                   ],
                 ),
@@ -561,14 +571,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CairoText(
-                      'سيتم الاستلام من المتجر',
+                      "store_pickup".tr,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.blue.shade800,
                       ),
                     ),
                     CairoText(
-                      'يمكنك اختيار شركة توصيل لاحقاً من خلال صفحة الطلب',
+                      "choose_delivery_later".tr,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blue.shade600,
@@ -581,6 +591,56 @@ class _OrderDetailsState extends State<OrderDetails> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildInertForm() {
+    return Column(
+      children: [
+        MyTextFormField(
+          controller: _noteController,
+          label: "note_delivery".tr,
+        ),
+        const SizedBox(height: 16),
+        GestureDetector(
+          onTap: () async {
+            final now = DateTime.now();
+            final pickedDate = await showDatePicker(
+              context: context,
+              initialDate: now,
+              firstDate: now,
+              lastDate: now.add(Duration(days: 30)),
+              builder: (BuildContext context, Widget? child) {
+                return Theme(
+                  data: Theme.of(context).copyWith(
+                    colorScheme: ColorScheme.light(
+                      // ← يجعل النص أبيض والخلفية داكنة
+                      primary: AppColor.kPrimaryColor, // لون التحديد
+                      onPrimary: Colors.white, // لون نص الزر المحدد
+                      onSurface: Colors.black, // ← لون النص داخل التقويم
+                    ),
+                  ),
+                  child: child!,
+                );
+              },
+            );
+
+            if (pickedDate != null) {
+              setState(() {
+                _selectedDate = pickedDate;
+                _dateController.text =
+                    DateFormat('yyyy-MM-dd').format(pickedDate);
+              });
+            }
+          },
+          child: AbsorbPointer(
+            child: MyTextFormField(
+              controller: _dateController,
+              label: "delivery_start_date".tr,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -599,16 +659,16 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
         child: Column(
           children: [
-            _buildTotalRow('إجمالي الطلب:', currencyFormat.format(orderTotal)),
+            _buildTotalRow("order_total".tr, currencyFormat.format(orderTotal)),
             _buildTotalRow(
-              'تكلفة التوصيل:',
+              "delivery_cost".tr,
               selectedDeliveryCompany != null
                   ? currencyFormat.format(deliveryCost)
                   : '—',
             ),
             const Divider(height: 20),
             _buildTotalRow(
-              'الإجمالي الكلي:',
+              "grand_total".tr,
               currencyFormat.format(grandTotal),
               isBold: true,
               color: AppColor.kPrimaryColor,
@@ -647,49 +707,83 @@ class _OrderDetailsState extends State<OrderDetails> {
           children: [
             if (isOnDelivery)
               MyButton(
-                text: 'جاري التوصيل',
+                text: "delivery_in_progress".tr,
                 color: Colors.grey,
                 onPressed: () {},
               )
             else if (selectedDeliveryCompany != null)
-              MyButton(
-                text: 'بدء التوصيل مع ${selectedDeliveryCompany!.name}',
-                onPressed: () => _startDelivery(context),
+              BlocConsumer<OrderCubit, OrderState>(
+                bloc: orderCubit,
+                listener: (context, state) {
+                  if (state is OrderAdded) {
+                    MySnackbar.showSuccess(context, "send_order".tr);
+                  } else if (state is OrderError) {
+                    MySnackbar.showError(
+                        context, "${"order_send_failed".tr} ${state.error}");
+                  }
+                },
+                builder: (context, state) {
+                  return MyAnimation(
+                    scale: 0.90,
+                    child: MyButton(
+                        isLoading: false,
+                        text: "send_order_title".tr,
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => MyAlertDialog(
+                                  onOk: () async {
+                                    final order = OrderRequestDataModel(
+                                      addressId: UserSession.addressId ?? "",
+                                      shippedDate:
+                                          _selectedDate ?? DateTime.now(),
+                                      noteDelivery: _noteController.text,
+                                      deliveryCompanyId: deliveryCompanyId,
+                                      customerId: UserSession.id ?? "",
+                                      shopId: widget.order.shopId ?? '',
+                                      orderDate: DateTime.now(),
+                                      totalAmount:
+                                          widget.order.totalAmount ?? 0,
+                                      orderState: 0,
+                                      orderItems: widget.order.orderItems!
+                                          .map((item) => OrderRequestItemModel(
+                                                productId: item.productId ?? "",
+                                                quantity: item.quantity ?? 0,
+                                                price: item.price ?? 0,
+                                              ))
+                                          .toList(),
+                                    );
+                                    await orderCubit.addOrder(order);
+                                    Get.back();
+                                  },
+                                  onNo: () {
+                                    Get.back();
+                                  },
+                                  title: "send_order".tr,
+                                  content: "send_order_content".tr));
+                        }),
+                  );
+                },
               )
             else if (noDeliverySelected)
               MyButton(
-                text: 'تأكيد الاستلام من المتجر',
+                text: "confirm_store_pickup".tr,
                 onPressed: () => _confirmStorePickup(context),
               )
             else
               MyButton(
-                text: 'اختر طريقة التوصيل',
+                text: "choose_delivery_method".tr,
                 color: Colors.grey,
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('الرجاء اختيار طريقة التوصيل أولاً'),
+                    SnackBar(
+                      content: Text("please_choose_delivery_method".tr),
                     ),
                   );
                 },
               ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _startDelivery(BuildContext context) {
-    setState(() {
-      widget.order.orderState = OrderStateEnum.inTransit;
-      widget.order.deliveryCompanyId = selectedDeliveryCompany!.id;
-    });
-
-    orderCubit.updateOrder(widget.order.id!, widget.order);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('تم بدء التوصيل مع ${selectedDeliveryCompany!.name}'),
       ),
     );
   }
@@ -703,8 +797,8 @@ class _OrderDetailsState extends State<OrderDetails> {
     orderCubit.updateOrder(widget.order.id!, widget.order);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('تم تأكيد الاستلام من المتجر'),
+      SnackBar(
+        content: Text("confirm_store_pickup_success".tr),
       ),
     );
   }

@@ -36,7 +36,8 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar(title: "اختر شركة التوصيل".tr, context: context),
+      appBar:
+          myAppBar(title: "select_delivery_company".tr.tr, context: context),
       body: BlocConsumer<DeliveryCubit, DeliveryState>(
         bloc: cubit,
         listener: (context, state) {},
@@ -64,7 +65,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
               ],
             );
           } else {
-            return Center(child: CairoText("حدث خطأ في تحميل البيانات"));
+            return Center(child: CairoText("delivery_company_error".tr));
           }
         },
       ),
@@ -132,7 +133,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CairoText(
-                            company.name ?? 'شركة التوصيل',
+                            company.name ?? "delivery_company".tr,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -142,7 +143,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                               Icon(Icons.phone, size: 16, color: Colors.green),
                               const SizedBox(width: 4),
                               CairoText(
-                                company.phoneNumber ?? 'غير متوفر',
+                                company.phoneNumber ?? "not_available".tr,
                                 fontSize: 14,
                                 color: Colors.grey[600],
                               ),
@@ -157,7 +158,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         CairoText(
-                          '${company.basePrice?.toStringAsFixed(2) ?? '--'} ر.س',
+                          '${company.basePrice?.toStringAsFixed(2) ?? '--'}\$',
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColor.kPrimaryColor,
@@ -180,20 +181,20 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                   // Contact Info
                   _buildDetailRow(
                     icon: Icons.email,
-                    label: 'البريد الإلكتروني',
-                    value: company.email ?? 'غير متوفر',
+                    label: "email".tr,
+                    value: company.email?.userName ?? "not_available".tr,
                   ),
 
                   _buildDetailRow(
                     icon: Icons.public,
-                    label: 'الموقع الإلكتروني',
-                    value: company.website ?? 'غير متوفر',
+                    label: "website".tr,
+                    value: company.website ?? "not_available".tr,
                   ),
 
                   _buildDetailRow(
                     icon: Icons.location_on,
-                    label: 'العنوان',
-                    value: company.address ?? 'غير متوفر',
+                    label: "address".tr,
+                    value: company.address ?? "not_available".tr,
                   ),
 
                   // Coverage Areas
@@ -209,7 +210,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               CairoText(
-                                'المناطق المشمولة:',
+                                "coverage_areas".tr,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -231,7 +232,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                       Icon(Icons.attach_money, size: 18, color: Colors.orange),
                       const SizedBox(width: 8),
                       CairoText(
-                        'تفاصيل الأسعار:',
+                        "pricing_details".tr,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -244,11 +245,11 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CairoText(
-                          'السعر الأساسي: ${company.basePrice?.toStringAsFixed(2) ?? '--'} ر.س',
+                          '${"base_price".tr} ${company.basePrice?.toStringAsFixed(2) ?? '--'}\$',
                           fontSize: 14,
                         ),
                         CairoText(
-                          'سعر الكيلومتر الإضافي: ${company.pricePerKm?.toStringAsFixed(2) ?? '--'} ر.س',
+                          '${"extra_km_price".tr} ${company.pricePerKm?.toStringAsFixed(2) ?? '--'}\$',
                           fontSize: 14,
                         ),
                       ],
@@ -258,7 +259,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                   // Select Button
                   const SizedBox(height: 16),
                   MyButton(
-                    text: 'اختيار هذه الشركة',
+                    text: "select_this_company".tr,
                     onPressed: () {
                       setState(() {
                         _selectedCompanyIndex = index;
@@ -316,7 +317,7 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
         child: Column(
           children: [
             MyButton(
-              text: 'تأكيد اختيار ${selectedCompany.name}',
+              text: '${'confirm_selection'.tr}${selectedCompany.name}',
               onPressed: () {
                 // تأكيد الاختيار وإرجاع البيانات
                 Get.back(result: selectedCompany);
@@ -328,8 +329,8 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                 showDialog(
                   context: context,
                   builder: (context) => MyAlertDialog(
-                    title: 'مقارنة الأسعار',
-                    content: 'هل ترغب بمقارنة أسعار شركات التوصيل الأخرى؟',
+                    title: "compare_prices".tr,
+                    content: "compare_prompt".tr,
                     onOk: () {
                       Get.back();
                       setState(() {
@@ -341,10 +342,8 @@ class _DeliveryCompanySelectionState extends State<DeliveryCompanySelection> {
                   ),
                 );
               },
-              child: CairoText(
-                'مقارنة مع شركات أخرى',
-                color: AppColor.kPrimaryColor,
-              ),
+              child: CairoText("compare_with_others".tr,
+                  color: AppColor.kPrimaryColor),
             ),
           ],
         ),
