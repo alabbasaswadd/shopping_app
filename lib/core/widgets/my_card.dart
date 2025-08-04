@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_app/core/constants/colors.dart';
 
 class MyCard extends StatefulWidget {
   final Widget child;
@@ -20,29 +21,39 @@ class MyCard extends StatefulWidget {
   final Duration animationDuration;
   final Curve animationCurve;
 
-  final bool enableAutoPulse; // إضافة خاصية لتشغيل/إيقاف النبض التلقائي
-  final Duration pulseDuration; // مدة دورة النبض الكاملة
-  final double pulseScaleFactor; // مقدار التكبير/التصغير
+  final bool enableAutoPulse;
+  final Duration pulseDuration;
+  final double pulseScaleFactor;
+
+  final bool enableGradient;
+  final bool enableShadow;
+
+  /// تحكم إضافي في شدة الظل
+  final double shadowIntensity;
 
   const MyCard({
     super.key,
     required this.child,
     this.onTap,
     this.onLongPress,
-    this.elevation = 6.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(16)),
-    this.padding = const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-    this.margin = const EdgeInsets.symmetric(horizontal: 3.0, vertical: 3.0),
+    this.elevation = 4.0, // تقليل الارتفاع الافتراضي لمظهر أكثر أناقة
+    this.borderRadius =
+        const BorderRadius.all(Radius.circular(12)), // نصف قطر أقل لمظهر حديث
+    this.padding = const EdgeInsets.all(16.0),
+    this.margin = const EdgeInsets.all(4.0),
     this.color,
     this.gradient,
     this.border,
     this.shadow,
     this.enableRippleEffect = true,
-    this.animationDuration = const Duration(milliseconds: 250),
-    this.animationCurve = Curves.easeInOut,
+    this.animationDuration = const Duration(milliseconds: 200),
+    this.animationCurve = Curves.easeOut,
     this.enableAutoPulse = false,
     this.pulseDuration = const Duration(milliseconds: 1500),
     this.pulseScaleFactor = 0.02,
+    this.enableGradient = false, // تعطيل التدرج الافتراضي لمظهر أنظف
+    this.enableShadow = true,
+    this.shadowIntensity = 0.5,
   });
 
   @override
@@ -60,7 +71,11 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
     _controller = AnimationController(
       duration: widget.pulseDuration,
       vsync: this,
-    )..repeat(reverse: true);
+    );
+
+    if (widget.enableAutoPulse) {
+      _controller.repeat(reverse: true);
+    }
 
     _scaleAnimation = Tween<double>(
       begin: 1.0 - widget.pulseScaleFactor,
@@ -79,29 +94,43 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+  List<BoxShadow> _buildShadow(BuildContext context) {
+    if (!widget.enableShadow) return [];
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final intensity = widget.shadowIntensity.clamp(0.0, 1.0);
+
+    return widget.shadow ??
+        [
+          if (isDark)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5 * intensity),
+              blurRadius: widget.elevation * 1.5,
+              spreadRadius: -1.0, // تقليل الانتشار لمظهر أكثر دقة
+              offset: const Offset(0, 2),
+            )
+          else
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15 * intensity),
+              blurRadius: widget.elevation * 2,
+              spreadRadius: -1.0,
+              offset: const Offset(0, 2),
+            ),
+        ];
+  }
+
+  Color _getBackgroundColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return widget.color ??
+        (isDark ? AppColor.kPrimaryColorDarkMode : Colors.white);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final effectiveColor = widget.color ?? theme.cardColor.withOpacity(0.95);
-
-    final rippleColor = theme.colorScheme.primary.withOpacity(0.08);
-    final highlightColor = theme.colorScheme.primary.withOpacity(0.04);
-
-    final effectiveShadow = widget.shadow ??
-        [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: widget.elevation * 2,
-            spreadRadius: 0,
-            offset: Offset(0, widget.elevation),
-          ),
-          BoxShadow(
-            color: Colors.white.withOpacity(0.6),
-            blurRadius: widget.elevation,
-            spreadRadius: 0,
-            offset: Offset(0, -1),
-          ),
-        ];
+    final backgroundColor = _getBackgroundColor(context);
+    final effectiveShadow = _buildShadow(context);
 
     Widget cardContent = AnimatedContainer(
       duration: widget.animationDuration,
@@ -115,16 +144,7 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
         color: Colors.transparent,
         child: Ink(
           decoration: BoxDecoration(
-            color: widget.gradient != null ? null : effectiveColor,
-            gradient: widget.gradient ??
-                LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    effectiveColor.withOpacity(1.0),
-                    effectiveColor.withOpacity(0.92),
-                  ],
-                ),
+            color: backgroundColor,
             borderRadius: widget.borderRadius,
             border: widget.border,
           ),
@@ -132,10 +152,12 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
             borderRadius: widget.borderRadius,
             onTap: widget.onTap,
             onLongPress: widget.onLongPress,
-            splashColor:
-                widget.enableRippleEffect ? rippleColor : Colors.transparent,
-            highlightColor:
-                widget.enableRippleEffect ? highlightColor : Colors.transparent,
+            splashColor: widget.enableRippleEffect
+                ? theme.colorScheme.primary.withOpacity(0.08)
+                : Colors.transparent,
+            highlightColor: widget.enableRippleEffect
+                ? theme.colorScheme.primary.withOpacity(0.04)
+                : Colors.transparent,
             child: Padding(
               padding: widget.padding,
               child: widget.child,
@@ -145,7 +167,6 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
       ),
     );
 
-    // تطبيق تأثير النبض التلقائي إذا كان مفعلاً
     if (widget.enableAutoPulse) {
       return AnimatedBuilder(
         animation: _scaleAnimation,
@@ -157,8 +178,8 @@ class _MyCardState extends State<MyCard> with SingleTickerProviderStateMixin {
         },
         child: cardContent,
       );
-    } else {
-      return cardContent;
     }
+
+    return cardContent;
   }
 }

@@ -101,7 +101,7 @@ class _AccountState extends State<Account> {
     return BlocProvider(
       create: (_) => cubit,
       child: Scaffold(
-        appBar: myAppBar(title: "edit_profile_page", context: context),
+        appBar: myAppBar(title: "edit_profile_page".tr, context: context),
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             if (state is UserLoading) {

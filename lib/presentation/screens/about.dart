@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_card.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
@@ -41,12 +40,6 @@ class About extends StatelessWidget {
       url: "https://instagram.com",
       color: const Color(0xFFE4405F),
     ),
-    SocialMedia(
-      name: "twitter".tr,
-      icon: Icons.campaign,
-      url: "https://twitter.com",
-      color: Color(0xFF000000),
-    ),
   ];
 
   @override
@@ -61,42 +54,6 @@ class About extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // App Info Card
-            MyCard(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundColor: AppColor.kPrimaryColor.withOpacity(0.1),
-                    child: Icon(
-                      Icons.shopping_cart,
-                      size: 40,
-                      color: AppColor.kPrimaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  CairoText(
-                    "Shopping App",
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  CairoText(
-                    "Version 1.0.0",
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  CairoText(
-                    "The best shopping experience with thousands of products at your fingertips.",
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
 
             // Social Media Section
             CairoText(
@@ -107,53 +64,6 @@ class About extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             ...socialMediaList.map((social) => _buildSocialMediaCard(social)),
-
-            // Contact Info Section
-            const SizedBox(height: 24),
-            CairoText(
-              "contact_info".tr,
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            MyCard(
-              child: Column(
-                children: [
-                  _buildContactItem(
-                    icon: Icons.email,
-                    title: "Email",
-                    value: "support@shoppingapp.com",
-                    onTap: () => _launchUrl("mailto:support@shoppingapp.com"),
-                  ),
-                  const Divider(),
-                  _buildContactItem(
-                    icon: Icons.phone,
-                    title: "Phone",
-                    value: "+1 (123) 456-7890",
-                    onTap: () => _launchUrl("tel:+11234567890"),
-                  ),
-                  const Divider(),
-                  _buildContactItem(
-                    icon: Icons.location_on,
-                    title: "Address",
-                    value: "123 Main St, City, Country",
-                    onTap: () => _launchUrl("https://maps.google.com"),
-                  ),
-                ],
-              ),
-            ),
-
-            // App Info Footer
-            const SizedBox(height: 24),
-            Center(
-              child: CairoText(
-                "© 2023 Shopping App. All rights reserved.",
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -164,6 +74,8 @@ class About extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: MyCard(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
         onTap: () => _launchUrl(social.url),
         child: ListTile(
           leading: Container(
@@ -186,39 +98,6 @@ class About extends StatelessWidget {
             size: 16,
             color: Colors.grey[400],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContactItem({
-    required IconData icon,
-    required String title,
-    required String value,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: AppColor.kPrimaryColor,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CairoText(title),
-                  const SizedBox(height: 4),
-                  CairoText(value),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );
