@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
+import 'package:shopping_app/core/widgets/my_text.dart';
 
 class Favorite extends StatefulWidget {
   const Favorite({super.key});
@@ -26,18 +27,10 @@ class _FavoriteState extends State<Favorite> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            AppImages.klogo,
-            width: 200,
-            height: 200,
-          ),
+          Image.asset(AppImages.klogo, width: 200, height: 200),
           SizedBox(height: 20),
-          Text(
+          CairoText(
             "no_products_in_favorite".tr,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
-            ),
           ),
           SizedBox(height: 10),
         ],

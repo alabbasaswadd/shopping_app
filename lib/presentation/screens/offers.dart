@@ -47,7 +47,7 @@ class _OffersState extends State<Offers> {
             );
           } else if (state is OfferEmpty) {
             return Center(
-              child: CairoText("no_offers"),
+              child: CairoText("no_offers".tr),
             );
           } else if (state is OfferLoaded) {
             return _buildOfferList(state.offers);
@@ -132,21 +132,25 @@ class _OffersState extends State<Offers> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CairoText(
-                                      "${newPrice.toStringAsFixed(2)}${offer.product?.currency ?? ""}",
-                                      style: TextStyle(
-                                        fontSize: 15.sp,
-                                        color: AppColor.kPrimaryColor,
+                                    Expanded(
+                                      child: CairoText(
+                                        "${newPrice.toStringAsFixed(2)}${offer.product?.currency ?? ""}",
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: AppColor.kPrimaryColor,
+                                        ),
                                       ),
                                     ),
-                                    CairoText(
-                                      "${oldPrice.toStringAsFixed(2)} ${offer.product?.currency ?? ""}",
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          decorationColor: Colors.red),
-                                      fontSize: 15,
+                                    Expanded(
+                                      child: CairoText(
+                                        "${oldPrice.toStringAsFixed(2)} ${offer.product?.currency ?? ""}",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            decorationColor: Colors.red),
+                                        fontSize: 15,
+                                      ),
                                     ),
                                     SizedBox(width: 6.w),
                                   ],

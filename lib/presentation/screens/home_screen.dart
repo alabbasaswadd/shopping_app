@@ -1,5 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shopping_app/core/constants/cached/cached_helper.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders/orders.dart';
@@ -29,7 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          final tokenFcm = await CacheHelper.getString("tokenFCM");
+          await Clipboard.setData(ClipboardData(text: tokenFcm));
+          print("تم نسخ التوكن: $tokenFcm");
+          Clipboard.setData(ClipboardData(text: tokenFcm));
           setState(() {
             selectedIndex = 2;
           });

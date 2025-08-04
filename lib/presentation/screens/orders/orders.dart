@@ -163,7 +163,6 @@ class _OrdersState extends State<Orders> {
                                   children: [
                                     CairoText(
                                       "${"order".tr} ${order.totalAmount}",
-                                      color: Colors.black87,
                                     ),
                                   ],
                                 ),

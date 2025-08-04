@@ -48,7 +48,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(248, 249, 253, 1),
       appBar: myAppBar(title: "مساعد الذكاء الصناعي", context: context),
       body: Column(
         children: [
@@ -77,7 +76,6 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: Colors.white,
                 border:
                     Border.all(color: AppColor.kPrimaryColor.withOpacity(0.2)),
                 borderRadius: BorderRadius.circular(24),
@@ -86,6 +84,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 controller: _messageController,
                 decoration: const InputDecoration(
                   hintText: 'أدخل وصف المنتج الذي تبحث عنه...',
+                  hintStyle: TextStyle(fontFamily: "Cairo-Bold", fontSize: 11),
                   border: InputBorder.none,
                 ),
                 textDirection: TextDirection.rtl,
@@ -121,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
               width: 220,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSecondary,
                 border:
                     Border.all(color: AppColor.kPrimaryColor.withOpacity(0.1)),
                 borderRadius: BorderRadius.circular(16),
@@ -137,7 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 _exampleMessages[index],
                 maxLines: 5,
                 fontSize: 14,
-                color: Colors.black87,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           );
@@ -164,7 +163,7 @@ class ChatMessage extends StatelessWidget {
         decoration: BoxDecoration(
           color: isUser
               ? AppColor.kPrimaryColor
-              : const Color.fromARGB(255, 238, 238, 238),
+              : Theme.of(context).colorScheme.onSecondary,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
@@ -176,7 +175,7 @@ class ChatMessage extends StatelessWidget {
         ),
         child: CairoText(
           text,
-          color: isUser ? Colors.white : Colors.black87,
+          color: Theme.of(context).colorScheme.onSurface,
           fontSize: 15,
           maxLines: 5,
         ),

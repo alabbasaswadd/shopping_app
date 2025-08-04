@@ -78,5 +78,5 @@ class CacheHelper {
   static Future<bool> clearInstance(String key) async {
     final instance = await pref;
     return instance.clear();
-    }
+  }
 }

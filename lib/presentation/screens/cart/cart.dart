@@ -20,7 +20,7 @@ import 'package:shopping_app/data/model/order/order_items_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/cart/cart_state.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/order/order_cubit.dart';
-import 'package:shopping_app/presentation/screens/cart/order_details_cart.dart';
+import 'package:shopping_app/presentation/screens/orders/order_details.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -252,14 +252,9 @@ class _CartPageState extends State<CartPage> {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: Offset(0, -5),
-          ),
-        ],
+        color: Theme.of(context).colorScheme.onSurface == Colors.white
+            ? AppColor.kSecondColorDarkMode.withOpacity(0.5)
+            : Colors.white,
       ),
       child: Column(
         children: [
@@ -306,7 +301,7 @@ class _CartPageState extends State<CartPage> {
                               }).toList(),
                             );
                             Get.back();
-                            Get.to(OrderDetailsCart(order: order));
+                            Get.to(OrderDetails(order: order));
                           },
                           onNo: () {
                             Get.back();

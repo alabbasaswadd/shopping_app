@@ -150,37 +150,36 @@ class _ShopsState extends State<Shops> {
                                   shopId: shop.id ?? "",
                                 ));
                               },
-                              child: MyCard(
-                                padding: EdgeInsets.zero,
-                                borderRadius: BorderRadius.circular(16.r),
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Positioned.fill(
-                                      child: CachedImageWidget(
-                                        heightRatio: double.infinity,
-                                        widthRatio: double.infinity,
-                                        imageUrl: "",
-                                        memCacheHeight: (0.25.sh).toInt(),
-                                        memCacheWidth: (0.25.sw).toInt(),
-                                        // يمكنك تعديل الصورة حسب الحاجة
+                              child: ClipRRect(
+                                child: MyCard(
+                                  padding: EdgeInsets.zero,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Positioned.fill(
+                                        child: CachedImageWidget(
+                                          heightRatio: double.infinity,
+                                          widthRatio: double.infinity,
+                                          imageUrl: "",
+                                          memCacheHeight: (0.25.sh).toInt(),
+                                          memCacheWidth: (0.25.sw).toInt(),
+                                          // يمكنك تعديل الصورة حسب الحاجة
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.black
-                                            .withOpacity(0.3), // تظليل للصورة
-                                        borderRadius:
-                                            BorderRadius.circular(16.r),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.black
+                                              .withOpacity(0.3), // تظليل للصورة
+                                        ),
                                       ),
-                                    ),
-                                    Center(
-                                      child: CairoText(
-                                        shop.firstName ?? "",
-                                        color: Colors.white,
+                                      Center(
+                                        child: CairoText(
+                                          shop.firstName ?? "",
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

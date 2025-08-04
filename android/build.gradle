@@ -4,14 +4,14 @@ allprojects {
         mavenCentral()
     }
 }
-
 buildscript {
-     repositories {
-        google()  // لإضافة مستودع Google
-        mavenCentral()  // لإضافة Maven Central
+    repositories {
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2' // أو أي إصدار حديث متوافق
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 rootProject.buildDir = "../build"
