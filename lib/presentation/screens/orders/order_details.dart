@@ -627,17 +627,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                     data: Theme.of(context).copyWith(
                       colorScheme: isDark
                           ? ColorScheme.dark(
-                              primary: AppColor
-                                  .kPrimaryColor, // لون التحديد في الوضع الليلي
-                              onPrimary: Colors.white, // لون نص الزر المحدد
-                              onSurface: Colors.white, // لون النص داخل التقويم
-                              surface:
-                                  AppColor.kSecondColorDarkMode, // لون الخلفية
+                              primary: AppColor.kPrimaryColor,
+                              onPrimary: Colors.white,
+                              onSurface: Colors.white,
+                              surface: AppColor.kSecondColorDarkMode,
                             )
                           : ColorScheme.light(
-                              primary: AppColor
-                                  .kPrimaryColor, // لون التحديد في الوضع النهاري
-                              onPrimary: Colors.white,
+                              primary: AppColor.kPrimaryColor,
                               onSurface: Colors.black,
                             ),
                     ),

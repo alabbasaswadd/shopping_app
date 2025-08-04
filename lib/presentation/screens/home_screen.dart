@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopping_app/core/constants/cached/cached_helper.dart';
+import 'package:shopping_app/core/widgets/my_animation.dart';
 import 'package:shopping_app/presentation/screens/account.dart';
 import 'package:shopping_app/presentation/screens/offers.dart';
 import 'package:shopping_app/presentation/screens/orders/orders.dart';
@@ -30,21 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final tokenFcm = await CacheHelper.getString("tokenFCM");
-          await Clipboard.setData(ClipboardData(text: tokenFcm));
-          print("تم نسخ التوكن: $tokenFcm");
-          Clipboard.setData(ClipboardData(text: tokenFcm));
-          setState(() {
-            selectedIndex = 2;
-          });
-        },
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        child: const Icon(
-          Icons.home,
-          size: 30,
-          color: Colors.white,
+      floatingActionButton: MyAnimation(
+        scale: 0.8,
+        child: FloatingActionButton(
+          onPressed: () async {
+            final tokenFcm = await CacheHelper.getString("tokenFCM");
+            await Clipboard.setData(ClipboardData(text: tokenFcm));
+            print("تم نسخ التوكن: $tokenFcm");
+            setState(() {
+              selectedIndex = 2;
+            });
+            Clipboard.setData(ClipboardData(text: tokenFcm));
+          },
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          child: const Icon(
+            Icons.home,
+            size: 30,
+            color: Colors.white,
+          ),
         ),
       ),
       floatingActionButtonLocation:
@@ -54,18 +58,22 @@ class _HomeScreenState extends State<HomeScreen> {
         icons: const [
           Icons.store,
           Icons.percent,
-          Icons.home,
+          // Icons.home, ← نحذفها من هنا
           Icons.list,
           Icons.person,
         ],
-        activeIndex: selectedIndex,
-        gapLocation: GapLocation.none,
+        activeIndex: selectedIndex == 2
+            ? -1 // هذا يمنع تمييز أي أيقونة
+            : selectedIndex > 2
+                ? selectedIndex - 1
+                : selectedIndex,
+        gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.smoothEdge,
         leftCornerRadius: 30,
         rightCornerRadius: 30,
         onTap: (index) {
           setState(() {
-            selectedIndex = index;
+            selectedIndex = index >= 2 ? index + 1 : index;
           });
         },
         backgroundColor: Theme.of(context).colorScheme.secondary,
