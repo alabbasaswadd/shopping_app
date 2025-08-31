@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
@@ -76,7 +77,8 @@ class _CustomContainerProductsState extends State<CategoryProducts> {
                           SizedBox(
                             height: double.infinity,
                             width: 100,
-                            child: Image.asset(AppImages.klogo),
+                            child: CachedImageWidget(
+                                imageUrl: products[i].image ?? ""),
                           ),
                           const SizedBox(width: 10),
                           Expanded(

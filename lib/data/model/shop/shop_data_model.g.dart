@@ -13,7 +13,10 @@ ShopDataModel _$ShopDataModelFromJson(Map<String, dynamic> json) =>
       lastName: json['lastName'] as String?,
       phone: json['phone'] as String?,
       addressId: json['addressId'] as String?,
-      email: json['email'] as String?,
+      email: json['email'] == null
+          ? null
+          : ShopEmailModel.fromJson(json['email'] as Map<String, dynamic>),
+      imageUrl: json['imageUrl'] as String?,
       shopState: ShopDataModel._shopStateEnumFromJson(json['shopState']),
       address: json['address'],
     );
@@ -26,6 +29,7 @@ Map<String, dynamic> _$ShopDataModelToJson(ShopDataModel instance) =>
       'phone': instance.phone,
       'addressId': instance.addressId,
       'email': instance.email,
+      'imageUrl': instance.imageUrl,
       'shopState': ShopDataModel._shopStateEnumToJson(instance.shopState),
       'address': instance.address,
     };

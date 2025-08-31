@@ -296,7 +296,6 @@ class _ProductsBodyState extends State<ProductsBody> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ShopLoaded) {
             final shops = state.shops;
-
             return Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -399,7 +398,7 @@ class _ProductsBodyState extends State<ProductsBody> {
                       heightRatio: 178,
                       widthRatio: 200,
                       imageUrl: product.image ?? "",
-                      memCacheHeight: (0.25.sh).toInt(),
+                      memCacheHeight: (0.23.sh).toInt(),
                       memCacheWidth: (0.25.sh).toInt(),
                     ),
                   ),

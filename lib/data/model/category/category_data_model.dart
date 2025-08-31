@@ -6,11 +6,11 @@ part 'category_data_model.g.dart';
 class CategoryDataModel {
   final String? id;
   final String? name;
-  final String? image;
+  final String? imageUrl;
   CategoryDataModel({
     this.id,
     this.name,
-    this.image,
+    this.imageUrl,
   });
 
   factory CategoryDataModel.fromJson(Map<String, dynamic> json) =>

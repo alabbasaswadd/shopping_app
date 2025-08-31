@@ -49,6 +49,10 @@ class Repository {
     return webServices.getUserWebServices(userId);
   }
 
+  Future<Response> getNotificationsRepository() {
+    return webServices.getNotificationsWebServices();
+  }
+
   Future<Response> updateUserRepository(String userId, UserDataModel user) {
     return webServices.updateUserWebServices(userId, user);
   }

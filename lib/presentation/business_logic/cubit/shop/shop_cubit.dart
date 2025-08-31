@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:shopping_app/data/model/products/product_data_model.dart';
 import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/data/repository/repository.dart';
 import 'package:shopping_app/data/web_services/web_services.dart';
@@ -35,12 +36,15 @@ class ShopCubit extends Cubit<ShopState> {
       if (response.statusCode == 200 &&
           response.data != null &&
           response.data['succeeded'] == true) {
-        final shopsJsonList = response.data['data'] as List;
-        final shops =
-            shopsJsonList.map((json) => ShopDataModel.fromJson(json)).toList();
+        final productsJsonList = response.data['data'] as List? ?? [];
+        final products = productsJsonList
+            .map((json) => ProductDataModel.fromJson(json))
+            .toList();
 
-        // افترض أن getProductsRepository تُرجع Future<List<ProductModel>>
-        final products = await repository.getProductsRepository(shopId: id);
+        // هنا نجيب المتجر من أول منتج (لأن كل منتج يحتوي shop)
+        final shops = productsJsonList
+            .map((json) => ShopDataModel.fromJson(json['shop']))
+            .toList();
 
         emit(ShopProductsLoaded(products, shops));
       } else {

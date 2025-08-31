@@ -12,6 +12,7 @@ const String offer = "/multi-vendor-api/Offer";
 const String getDeliveryCompanies = "/multi-vendor-api/DeliveryCompany";
 
 String getUserRoute(String id) => "/multi-vendor-api/Customer/$id";
+String getNotifications() => "/multi-vendor-api/Notification";
 String getProductsByCategory(String categoryName) =>
     "/multi-vendor-api/Product/$categoryName";
 String updateOrder(String id) => "/multi-vendor-api/Order/$id";
