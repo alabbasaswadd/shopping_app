@@ -5,5 +5,6 @@ class AppImages {
   static String kBackgroundDark = "${kAsset}backgroundDark.png";
   static String kCamera = "${kAsset}camera.png";
   static String klogo = "${kAsset}logo.png";
+  static String kEcommercelogo = "${kAsset}ecommerce_logo.png";
   static String kerrorImage = "${kAsset}error-image.jpg";
 }

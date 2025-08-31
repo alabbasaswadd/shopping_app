@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:shopping_app/core/constants/const.dart';
+import 'package:shopping_app/data/model/shop/shop_email_model.dart';
 
 part 'shop_data_model.g.dart';
 
@@ -10,8 +11,8 @@ class ShopDataModel {
   final String? lastName;
   final String? phone;
   final String? addressId;
-  final String? email;
-  // final String? image;
+  final ShopEmailModel? email;
+  final String? imageUrl;
 
   @JsonKey(fromJson: _shopStateEnumFromJson, toJson: _shopStateEnumToJson)
   final ShopStateEnum? shopState;
@@ -25,7 +26,7 @@ class ShopDataModel {
     this.phone,
     this.addressId,
     this.email,
-    // this.image,
+    this.imageUrl,
     this.shopState,
     this.address,
   });

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shopping_app/core/constants/cached/cached_helper.dart';
 import 'package:shopping_app/core/constants/functions.dart';
 import 'package:shopping_app/core/constants/route.dart';
 import 'package:shopping_app/data/model/cart/add_to_cart_request.dart';
@@ -47,11 +48,13 @@ class WebServices {
   }
 
   Future<Response> loginWebServices(String email, String password) async {
+    String tokenFCM = await CacheHelper.getString("tokenFCM");
     final response = await dio.post(
       "$baseUrl$login",
       data: {
         'email': email,
         'password': password,
+        'token': tokenFCM,
       },
     );
     return response;
@@ -61,6 +64,17 @@ class WebServices {
     final token = await UserPreferencesService.getToken();
     final response = await dio.get(
       '$baseUrl${getUserRoute(userId)}',
+      options: Options(headers: {"Authorization": "Bearer $token"}),
+    );
+    return response;
+  }
+
+  Future<Response> getNotificationsWebServices() async {
+    final token = await UserPreferencesService.getToken();
+    final userId = UserSession.id;
+    final response = await dio.get(
+      '$baseUrl${getNotifications()}',
+      queryParameters: {"userId": userId},
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
     return response;

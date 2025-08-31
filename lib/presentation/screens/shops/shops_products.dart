@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:shopping_app/core/constants/cached/cached_image.dart';
 import 'package:shopping_app/core/constants/images.dart';
 import 'package:shopping_app/core/constants/colors.dart';
 import 'package:shopping_app/core/widgets/my_app_bar.dart';
 import 'package:shopping_app/core/widgets/my_text.dart';
+import 'package:shopping_app/data/model/shop/shop_data_model.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_cubit.dart';
 import 'package:shopping_app/presentation/business_logic/cubit/shop/shop_state.dart';
 
@@ -43,11 +45,16 @@ class _CustomContainerProductsState extends State<ShopProducts> {
           var products = state.products;
           return Scaffold(
             appBar: myAppBar(
-                title: state.shops
-                        .firstWhere((shop) => shop.id == widget.shopId)
-                        .firstName ??
-                    "",
-                context: context),
+              title: state.shops
+                      .firstWhere(
+                        (shop) => shop.id == widget.shopId,
+                        orElse: () =>
+                            ShopDataModel(id: "", firstName: "غير موجود"),
+                      )
+                      .firstName ??
+                  "",
+              context: context,
+            ),
             body: Padding(
               padding: const EdgeInsets.all(16),
               child: ListView.builder(
@@ -82,7 +89,8 @@ class _CustomContainerProductsState extends State<ShopProducts> {
                           SizedBox(
                             height: double.infinity,
                             width: 100,
-                            child: Image.asset(AppImages.klogo),
+                            child: CachedImageWidget(
+                                imageUrl: products[i].image ?? ""),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
@@ -122,8 +130,9 @@ class _CustomContainerProductsState extends State<ShopProducts> {
             appBar: myAppBar(title: "error".tr, context: context),
             body: Center(
               child: CairoText(
+                maxLines: 5,
                 "${"error".tr} ${state.error}",
-                style: const TextStyle(color: Colors.red),
+                color: Colors.red,
               ),
             ),
           );

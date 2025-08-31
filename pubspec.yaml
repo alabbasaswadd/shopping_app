@@ -33,6 +33,7 @@ dependencies:
   bloc: ^9.0.0
   # onesignal_flutter: ^5.0.4
   meta: ^1.15.0
+  timeago: ^3.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   image_picker: ^1.1.2
@@ -70,7 +71,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo.png" # غيّر المسار حسب صورتك
+  image_path: "assets/images/ecommerce_logo.png" # غيّر المسار حسب صورتك
   min_sdk_android: 21
 # The following section is specific to Flutter packages.
 flutter:

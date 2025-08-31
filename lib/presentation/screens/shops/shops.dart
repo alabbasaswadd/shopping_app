@@ -40,9 +40,8 @@ class _ShopsState extends State<Shops> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      appBar: myAppBar(title: "stores".tr, context: context),
+      appBar: myAppBar(title: "shopsAndCategories".tr, context: context),
       body: BlocBuilder<ShopCubit, ShopState>(
         bloc: cubit,
         builder: (context, shopState) {
@@ -53,140 +52,173 @@ class _ShopsState extends State<Shops> {
           } else if (shopState is ShopLoaded) {
             var shops = shopState.shops;
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ✅ الفئات بدون height ثابت
-                  BlocBuilder<CategoryCubit, CategoryState>(
-                    bloc: categoryCubit,
-                    builder: (context, categoryState) {
-                      if (categoryState is CategoryLoading) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (categoryState is CategoryLoaded &&
-                          categoryState.categories.isNotEmpty) {
-                        return ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: 50,
-                            maxHeight: size.height * 0.2, // مرن حسب حجم الشاشة
-                          ),
-                          child: ListView.builder(
-                            itemExtent: 150,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categoryState.categories.length,
-                            itemBuilder: (context, i) => MyAnimation(
-                              child: InkWell(
-                                onTap: () {
-                                  Get.to(() => CategoryProducts(
-                                      categoryName:
-                                          categoryState.categories[i].name ??
-                                              ""));
-                                },
-                                child: MyCard(
-                                  padding: EdgeInsets.zero,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      // الصورة في الخلفية
-                                      Positioned.fill(
-                                        child: CachedImageWidget(
-                                          heightRatio: 178,
-                                          widthRatio: 200,
-                                          imageUrl: categoryState
-                                                  .categories[i].image ??
-                                              "",
-                                          memCacheHeight: (0.25.sh).toInt(),
-                                          memCacheWidth: (0.25.sh).toInt(),
-                                        ),
-                                      ),
-
-                                      // النص في المنتصف فوق الصورة
-                                      Center(
-                                        child: CairoText(
-                                          categoryState.categories[i].name ??
-                                              "",
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return CairoText("no_categories".tr);
-                      }
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(right: 16, top: 16),
+                    child: CairoText("categories".tr),
                   ),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        BlocBuilder<CategoryCubit, CategoryState>(
+                          bloc: categoryCubit,
+                          builder: (context, categoryState) {
+                            if (categoryState is CategoryLoading) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (categoryState is CategoryLoaded &&
+                                categoryState.categories.isNotEmpty) {
+                              return ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  minHeight: 50,
+                                  maxHeight:
+                                      size.height * 0.2, // مرن حسب حجم الشاشة
+                                ),
+                                child: ListView.builder(
+                                  itemExtent: 150,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: categoryState.categories.length,
+                                  itemBuilder: (context, i) => MyAnimation(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(() => CategoryProducts(
+                                            categoryName: categoryState
+                                                    .categories[i].name ??
+                                                ""));
+                                      },
+                                      child: MyCard(
+                                        padding: EdgeInsets.zero,
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            // الصورة في الخلفية
+                                            Positioned.fill(
+                                              child: CachedImageWidget(
+                                                heightRatio: 178,
+                                                widthRatio: 200,
+                                                imageUrl: categoryState
+                                                        .categories[i]
+                                                        .imageUrl ??
+                                                    "",
+                                                memCacheHeight:
+                                                    (0.25.sh).toInt(),
+                                                memCacheWidth:
+                                                    (0.25.sh).toInt(),
+                                              ),
+                                            ),
 
-                  const SizedBox(height: 24),
-
-                  // ✅ شبكة المتاجر بدون أبعاد ثابتة
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      int crossAxisCount = size.width > 900
-                          ? 4
-                          : size.width > 600
-                              ? 3
-                              : 2;
-                      return GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          crossAxisSpacing: 12.w,
-                          mainAxisSpacing: 12.h,
-                          childAspectRatio: 1.2, // اضبط حسب الشكل المطلوب
-                        ),
-                        itemCount: shops.length,
-                        itemBuilder: (context, index) {
-                          final shop = shops[index];
-                          return MyAnimation(
-                            child: InkWell(
-                              onTap: () {
-                                Get.to(ShopProducts(
-                                  shopId: shop.id ?? "",
-                                ));
-                              },
-                              child: ClipRRect(
-                                child: MyCard(
-                                  padding: EdgeInsets.zero,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Positioned.fill(
-                                        child: CachedImageWidget(
-                                          heightRatio: double.infinity,
-                                          widthRatio: double.infinity,
-                                          imageUrl: "",
-                                          memCacheHeight: (0.25.sh).toInt(),
-                                          memCacheWidth: (0.25.sw).toInt(),
-                                          // يمكنك تعديل الصورة حسب الحاجة
+                                            // النص في المنتصف فوق الصورة
+                                            Center(
+                                              child: CairoText(
+                                                categoryState
+                                                        .categories[i].name ??
+                                                    "",
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.black
-                                              .withOpacity(0.3), // تظليل للصورة
-                                        ),
-                                      ),
-                                      Center(
-                                        child: CairoText(
-                                          shop.firstName ?? "",
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ),
+                              );
+                            } else {
+                              return CairoText("no_categories".tr);
+                            }
+                          },
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        // ✅ شبكة المتاجر بدون أبعاد ثابتة
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            int crossAxisCount = size.width > 900
+                                ? 4
+                                : size.width > 600
+                                    ? 3
+                                    : 2;
+                            return SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CairoText("stores".tr),
+                                  SizedBox(height: 8),
+                                  GridView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: crossAxisCount,
+                                      crossAxisSpacing: 12.w,
+                                      mainAxisSpacing: 12.h,
+                                      childAspectRatio:
+                                          1.2, // اضبط حسب الشكل المطلوب
+                                    ),
+                                    itemCount: shops.length,
+                                    itemBuilder: (context, index) {
+                                      final shop = shops[index];
+                                      return MyAnimation(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.to(ShopProducts(
+                                              shopId: shop.id ?? "",
+                                            ));
+                                          },
+                                          child: ClipRRect(
+                                            child: MyCard(
+                                              padding: EdgeInsets.zero,
+                                              child: Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: CachedImageWidget(
+                                                      heightRatio:
+                                                          double.infinity,
+                                                      widthRatio:
+                                                          double.infinity,
+                                                      imageUrl:
+                                                          shop.imageUrl ?? "",
+                                                      memCacheHeight:
+                                                          (0.25.sh).toInt(),
+                                                      memCacheWidth:
+                                                          (0.25.sw).toInt(),
+                                                      // يمكنك تعديل الصورة حسب الحاجة
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(
+                                                              0.3), // تظليل للصورة
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: CairoText(
+                                                      shop.firstName ?? "",
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
